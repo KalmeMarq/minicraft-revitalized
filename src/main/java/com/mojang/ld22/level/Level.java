@@ -37,7 +37,7 @@ public class Level {
 	private final Comparator<Entity> spriteSorter = Comparator.comparingInt(e0 -> e0.y);
 
 	@SuppressWarnings("unchecked")
-	public Level(int w, int h, int level, Level parentLevel) {
+	public Level(int w, int h, long seed, int level, Level parentLevel) {
 		if (level < 0) {
             this.dirtColor = 222;
 		}
@@ -45,8 +45,6 @@ public class Level {
 		this.w = w;
 		this.h = h;
 		byte[][] maps;
-
-		long seed = this.random.nextLong();
 
 		if (level == 1) {
             this.dirtColor = 444;

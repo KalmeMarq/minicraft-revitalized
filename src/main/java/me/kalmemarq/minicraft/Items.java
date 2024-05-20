@@ -28,7 +28,6 @@ import java.util.IdentityHashMap;
 import java.util.Map;
 
 // TODO: Use dynamic registry
-// TODO: Translation for item names
 public final class Items {
 	private static final ObjectList<Item> REGISTRY_IV = new ObjectArrayList<>();
 	private static final Reference2IntMap<Item> REGISTRY_VI = new Reference2IntOpenHashMap<>();

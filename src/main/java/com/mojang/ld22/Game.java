@@ -42,6 +42,7 @@ import java.awt.image.DataBufferInt;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Objects;
+import java.util.Random;
 
 public class Game implements Runnable, Window.WindowEventHandler {
 	public static final Logger LOGGER = LogManager.getLogger(Game.class);
@@ -97,6 +98,8 @@ public class Game implements Runnable, Window.WindowEventHandler {
 
 	public boolean screenshotRequested;
 
+	private long seed;
+
 	public Game(JFrame frame) {
 		instance = this;
 		this.frame = frame;
@@ -118,6 +121,10 @@ public class Game implements Runnable, Window.WindowEventHandler {
 	}
 
 	public void resetGame() {
+		this.resetGame(true);
+	}
+
+	public void resetGame(boolean generate) {
 		this.playerDeadTime = 0;
 		this.wonTimer = 0;
 		this.gameTime = 0;
@@ -126,11 +133,17 @@ public class Game implements Runnable, Window.WindowEventHandler {
 		this.levels = new Level[5];
 		this.currentLevel = 3;
 
-		this.levels[4] = new Level(128, 128, 1, null);
-		this.levels[3] = new Level(128, 128, 0, this.levels[4]);
-		this.levels[2] = new Level(128, 128, -1, this.levels[3]);
-		this.levels[1] = new Level(128, 128, -2, this.levels[2]);
-		this.levels[0] = new Level(128, 128, -3, this.levels[1]);
+		if (!generate) {
+			return;
+		}
+
+		this.seed = new Random().nextLong();
+
+		this.levels[3] = new Level(128, 128, this.seed, 0, this.levels[4]);
+		this.levels[2] = new Level(128, 128, this.seed, -1, this.levels[3]);
+		this.levels[1] = new Level(128, 128, this.seed, -2, this.levels[2]);
+		this.levels[4] = new Level(128, 128, this.seed, 1, null);
+		this.levels[0] = new Level(128, 128, this.seed, -3, this.levels[1]);
 
 		this.level = this.levels[this.currentLevel];
 		this.player = new Player(this, this.input);
@@ -157,7 +170,7 @@ public class Game implements Runnable, Window.WindowEventHandler {
 			this.stop();
 		}
 
-		this.resetGame();
+		this.resetGame(false);
 		this.setMenu(new TitleMenu());
 	}
 
@@ -321,7 +334,7 @@ public class Game implements Runnable, Window.WindowEventHandler {
 		if (!hasFocus) {
 			this.input.releaseAll();
 		} else {
-			if (!this.player.removed && !this.hasWon) this.gameTime++;
+			if (this.level != null && !this.player.removed && !this.hasWon) this.gameTime++;
 
 			this.input.tick();
 			if (this.menu != null) {
@@ -367,27 +380,29 @@ public class Game implements Runnable, Window.WindowEventHandler {
 			return;
 		}
 
-		int xScroll = this.player.x - this.screen.w / 2;
-		int yScroll = this.player.y - (this.screen.h - 8) / 2;
-		if (xScroll < 16) xScroll = 16;
-		if (yScroll < 16) yScroll = 16;
-		if (xScroll > this.level.w * 16 - this.screen.w - 16) xScroll = this.level.w * 16 - this.screen.w - 16;
-		if (yScroll > this.level.h * 16 - this.screen.h - 16) yScroll = this.level.h * 16 - this.screen.h - 16;
-		if (this.currentLevel > 3) {
-			int col = Color.get(20, 20, 121, 121);
-			for (int y = 0; y < 14; y++)
-				for (int x = 0; x < 24; x++) {
-					this.screen.render(x * 8 - ((xScroll / 4) & 7), y * 8 - ((yScroll / 4) & 7), 0, col, 0);
-				}
-		}
+		if (this.level != null) {
+			int xScroll = this.player.x - this.screen.w / 2;
+			int yScroll = this.player.y - (this.screen.h - 8) / 2;
+			if (xScroll < 16) xScroll = 16;
+			if (yScroll < 16) yScroll = 16;
+			if (xScroll > this.level.w * 16 - this.screen.w - 16) xScroll = this.level.w * 16 - this.screen.w - 16;
+			if (yScroll > this.level.h * 16 - this.screen.h - 16) yScroll = this.level.h * 16 - this.screen.h - 16;
+			if (this.currentLevel > 3) {
+				int col = Color.get(20, 20, 121, 121);
+				for (int y = 0; y < 14; y++)
+					for (int x = 0; x < 24; x++) {
+						this.screen.render(x * 8 - ((xScroll / 4) & 7), y * 8 - ((yScroll / 4) & 7), 0, col, 0);
+					}
+			}
 
-		this.level.renderBackground(this.screen, xScroll, yScroll);
-		this.level.renderSprites(this.screen, xScroll, yScroll);
+			this.level.renderBackground(this.screen, xScroll, yScroll);
+			this.level.renderSprites(this.screen, xScroll, yScroll);
 
-		if (this.currentLevel < 3) {
-			this.lightScreen.clear(0);
-			this.level.renderLight(this.lightScreen, xScroll, yScroll);
-			this.screen.overlay(this.lightScreen, xScroll, yScroll);
+			if (this.currentLevel < 3) {
+				this.lightScreen.clear(0);
+				this.level.renderLight(this.lightScreen, xScroll, yScroll);
+				this.screen.overlay(this.lightScreen, xScroll, yScroll);
+			}
 		}
 
 		this.renderGui();
@@ -426,32 +441,34 @@ public class Game implements Runnable, Window.WindowEventHandler {
 	}
 
 	private void renderGui() {
-		for (int y = 0; y < 2; y++) {
-			for (int x = 0; x < 20; x++) {
-				this.screen.render(x * 8, this.screen.h - 16 + y * 8, 12 * 32, Color.get(0, 0, 0, 0), 0);
+		if (this.level != null) {
+			for (int y = 0; y < 2; y++) {
+				for (int x = 0; x < 20; x++) {
+					this.screen.render(x * 8, this.screen.h - 16 + y * 8, 12 * 32, Color.get(0, 0, 0, 0), 0);
+				}
 			}
-		}
 
-		for (int i = 0; i < 10; i++) {
-			if (i < this.player.health)
-				this.screen.render(i * 8, this.screen.h - 16, 12 * 32, Color.get(0, 200, 500, 533), 0);
-			else
-				this.screen.render(i * 8, this.screen.h - 16, 12 * 32, Color.get(0, 100, 0, 0), 0);
+			for (int i = 0; i < 10; i++) {
+				if (i < this.player.health)
+					this.screen.render(i * 8, this.screen.h - 16, 12 * 32, Color.get(0, 200, 500, 533), 0);
+				else
+					this.screen.render(i * 8, this.screen.h - 16, 12 * 32, Color.get(0, 100, 0, 0), 0);
 
-			if (this.player.staminaRechargeDelay > 0) {
-				if (this.player.staminaRechargeDelay / 4 % 2 == 0)
-					this.screen.render(i * 8, this.screen.h - 8, 1 + 12 * 32, Color.get(0, 555, 0, 0), 0);
-				else
-					this.screen.render(i * 8, this.screen.h - 8, 1 + 12 * 32, Color.get(0, 110, 0, 0), 0);
-			} else {
-				if (i < this.player.stamina)
-					this.screen.render(i * 8, this.screen.h - 8, 1 + 12 * 32, Color.get(0, 220, 550, 553), 0);
-				else
-					this.screen.render(i * 8, this.screen.h - 8, 1 + 12 * 32, Color.get(0, 110, 0, 0), 0);
+				if (this.player.staminaRechargeDelay > 0) {
+					if (this.player.staminaRechargeDelay / 4 % 2 == 0)
+						this.screen.render(i * 8, this.screen.h - 8, 1 + 12 * 32, Color.get(0, 555, 0, 0), 0);
+					else
+						this.screen.render(i * 8, this.screen.h - 8, 1 + 12 * 32, Color.get(0, 110, 0, 0), 0);
+				} else {
+					if (i < this.player.stamina)
+						this.screen.render(i * 8, this.screen.h - 8, 1 + 12 * 32, Color.get(0, 220, 550, 553), 0);
+					else
+						this.screen.render(i * 8, this.screen.h - 8, 1 + 12 * 32, Color.get(0, 110, 0, 0), 0);
+				}
 			}
-		}
-		if (this.player.activeItem != null) {
-			this.player.activeItem.renderInventory(this.screen, 10 * 8, this.screen.h - 16);
+			if (this.player.activeItem != null) {
+				this.player.activeItem.renderInventory(this.screen, 10 * 8, this.screen.h - 16);
+			}
 		}
 
 		if (this.menu != null) {

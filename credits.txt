@@ -1,2 +1,0 @@
-Notch (Creator of Minicraft)
-Zandgall (Lighting shader code. The math is mathing)
