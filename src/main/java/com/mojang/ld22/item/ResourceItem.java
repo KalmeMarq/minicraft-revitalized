@@ -9,6 +9,7 @@ import com.mojang.ld22.item.resource.Resource;
 import com.mojang.ld22.level.Level;
 import com.mojang.ld22.level.tile.Tile;
 import me.kalmemarq.minicraft.ItemStack;
+import me.kalmemarq.minicraft.Translation;
 
 public class ResourceItem extends Item {
 	public Resource resource;
@@ -37,11 +38,11 @@ public class ResourceItem extends Item {
 
 	public void renderInventory(Screen screen, int x, int y, ItemStack stack) {
 		screen.render(x, y, this.resource.sprite, this.resource.color, 0);
-		Font.draw(this.resource.name, screen, x + 8, y, Color.get(-1, 555, 555, 555));
+		Font.draw(this.getName(), screen, x + 8, y, Color.get(-1, 555, 555, 555));
 	}
 
 	public String getName() {
-		return this.resource.name;
+		return Translation.translate(this.getTranslationKey());
 	}
 
 	public void onTake(ItemEntity itemEntity) {

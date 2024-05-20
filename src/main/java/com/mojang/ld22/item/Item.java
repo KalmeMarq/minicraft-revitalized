@@ -8,8 +8,26 @@ import com.mojang.ld22.level.Level;
 import com.mojang.ld22.level.tile.Tile;
 import com.mojang.ld22.screen.ListItem;
 import me.kalmemarq.minicraft.ItemStack;
+import me.kalmemarq.minicraft.Items;
 
 public class Item implements ListItem {
+	private int numericId = -1;
+	private String stringId;
+
+	public int getNumericId() {
+		if (this.numericId == -1) this.numericId = Items.getNumericId(this);
+		return this.numericId;
+	}
+
+	public String getStringId() {
+		if (this.stringId == null) this.stringId = Items.getStringId(this);
+		return this.stringId;
+	}
+
+	public String getTranslationKey() {
+		return "minicraft.item." + this.getStringId();
+	}
+
 	public int getColor() {
 		return 0;
 	}

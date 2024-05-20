@@ -1,5 +1,7 @@
-package com.mojang.ld22.entity;
+package com.mojang.ld22.entity.furniture;
 
+import com.mojang.ld22.entity.Inventory;
+import com.mojang.ld22.entity.Player;
 import com.mojang.ld22.gfx.Color;
 import com.mojang.ld22.screen.ContainerMenu;
 import me.kalmemarq.minicraft.ItemStack;

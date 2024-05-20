@@ -1,11 +1,11 @@
-package com.mojang.ld22.entity;
+package com.mojang.ld22.entity.furniture;
 
+import com.mojang.ld22.entity.Entity;
+import com.mojang.ld22.entity.Player;
 import com.mojang.ld22.gfx.Screen;
-import com.mojang.ld22.item.FurnitureItem;
 import com.mojang.ld22.item.PowerGloveItem;
 import me.kalmemarq.minicraft.ItemStack;
 import me.kalmemarq.minicraft.Items;
-import me.kalmemarq.minicraft.bso.BsoListTag;
 import me.kalmemarq.minicraft.bso.BsoMapTag;
 
 public class Furniture extends Entity {
@@ -32,7 +32,7 @@ public class Furniture extends Entity {
 		if (this.shouldTake != null) {
 			if (this.shouldTake.activeItem.getItem() instanceof PowerGloveItem) {
                 this.remove();
-                this.shouldTake.inventory.IS_add(0, this.shouldTake.activeItem);
+                this.shouldTake.inventory.add(0, this.shouldTake.activeItem);
 				if (this instanceof Anvil) {
 					this.shouldTake.activeItem = this.beforeGivenItem(new ItemStack(Items.ANVIL));
 				}

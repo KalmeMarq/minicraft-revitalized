@@ -12,6 +12,7 @@ import com.mojang.ld22.screen.LevelTransitionMenu;
 import com.mojang.ld22.screen.Menu;
 import com.mojang.ld22.screen.TitleMenu;
 import com.mojang.ld22.screen.WonMenu;
+import me.kalmemarq.minicraft.Translation;
 import me.kalmemarq.minicraft.render.Framebuffer;
 import me.kalmemarq.minicraft.render.NativeImage;
 import me.kalmemarq.minicraft.render.ShaderProgram;
@@ -242,6 +243,7 @@ public class Game implements Runnable, Window.WindowEventHandler {
 		int ticks = 0;
 		long lastTimer1 = System.currentTimeMillis();
 
+		Translation.load("en_us");
 		this.init();
 		this.setupGl();
 		this.soundManager = new SoundManager();

@@ -1,12 +1,13 @@
 package com.mojang.ld22.item;
 
 import com.mojang.ld22.entity.Entity;
-import com.mojang.ld22.entity.Furniture;
+import com.mojang.ld22.entity.furniture.Furniture;
 import com.mojang.ld22.entity.Player;
 import com.mojang.ld22.gfx.Color;
 import com.mojang.ld22.gfx.Font;
 import com.mojang.ld22.gfx.Screen;
 import me.kalmemarq.minicraft.ItemStack;
+import me.kalmemarq.minicraft.Translation;
 
 public class PowerGloveItem extends Item {
 	public int getColor() {
@@ -27,7 +28,7 @@ public class PowerGloveItem extends Item {
 	}
 
 	public String getName() {
-		return "Pow glove";
+		return Translation.translate(this.getTranslationKey());
 	}
 
 	public boolean interact(Player player, Entity entity, int attackDir) {

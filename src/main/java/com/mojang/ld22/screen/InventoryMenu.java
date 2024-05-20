@@ -3,6 +3,7 @@ package com.mojang.ld22.screen;
 import com.mojang.ld22.entity.Player;
 import com.mojang.ld22.gfx.Font;
 import com.mojang.ld22.gfx.Screen;
+import me.kalmemarq.minicraft.Translation;
 
 public class InventoryMenu extends Menu {
 	private final Player player;
@@ -35,7 +36,7 @@ public class InventoryMenu extends Menu {
 	}
 
 	public void render(Screen screen) {
-		Font.renderFrame(screen, "inventory", 1, 1, 12, 11);
+		Font.renderFrame(screen, Translation.translate("minicraft.menu.inventory"), 1, 1, 12, 11);
         this.renderItemStackList(screen, 1, 1, 12, 11, this.player.inventory.itemStacks, this.selected);
 	}
 }

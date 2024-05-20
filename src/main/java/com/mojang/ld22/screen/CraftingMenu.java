@@ -6,9 +6,9 @@ import com.mojang.ld22.entity.Player;
 import com.mojang.ld22.gfx.Color;
 import com.mojang.ld22.gfx.Font;
 import com.mojang.ld22.gfx.Screen;
-import com.mojang.ld22.item.ResourceItem;
 import com.mojang.ld22.sound.Sound;
 import me.kalmemarq.minicraft.ItemStack;
+import me.kalmemarq.minicraft.Translation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,21 +53,21 @@ public class CraftingMenu extends Menu {
 				r.craft(this.player);
 				Game.instance.soundManager.play(Sound.craft);
 			}
-			for (int i = 0; i < this.recipes.size(); i++) {
-                this.recipes.get(i).checkCanCraft(this.player);
+			for (Recipe recipe : this.recipes) {
+				recipe.checkCanCraft(this.player);
 			}
 		}
 	}
 
 	public void render(Screen screen) {
-		Font.renderFrame(screen, "Have", 12, 1, 19, 3);
-		Font.renderFrame(screen, "Cost", 12, 4, 19, 11);
-		Font.renderFrame(screen, "Crafting", 0, 1, 11, 11);
+		Font.renderFrame(screen, Translation.translate("minicraft.menu.crafting.have"), 12, 1, 19, 3);
+		Font.renderFrame(screen, Translation.translate("minicraft.menu.crafting.cost"), 12, 4, 19, 11);
+		Font.renderFrame(screen, Translation.translate("minicraft.menu.crafting"), 0, 1, 11, 11);
         this.renderRecipeList(screen, 0, 1, 11, 11, this.recipes, this.selected);
 
 		if (!this.recipes.isEmpty()) {
 			Recipe recipe = this.recipes.get(this.selected);
-			int hasResultItems = this.player.inventory.IS_count(recipe.resultTemplate);
+			int hasResultItems = this.player.inventory.count(recipe.resultTemplate);
 			int xo = 13 * 8;
 			screen.render(xo, 2 * 8, recipe.resultTemplate.getItem().getSprite(), recipe.resultTemplate.getItem().getColor(), 0);
 			Font.draw("" + hasResultItems, screen, xo + 8, 2 * 8, Color.get(-1, 555, 555, 555));
@@ -78,7 +78,7 @@ public class CraftingMenu extends Menu {
 				int yo = (5 + i) * 8;
 				screen.render(xo, yo, item.getItem().getSprite(), item.getItem().getColor(), 0);
 				int requiredAmt = item.getCount();
-				int has = this.player.inventory.IS_count(item);
+				int has = this.player.inventory.count(item);
 				int color = Color.get(-1, 555, 555, 555);
 				if (has < requiredAmt) {
 					color = Color.get(-1, 222, 222, 222);
@@ -87,7 +87,5 @@ public class CraftingMenu extends Menu {
 				Font.draw(requiredAmt + "/" + has, screen, xo + 8, yo, color);
 			}
 		}
-
-//		this.renderItemStackList(screen, 12, 4, 19, 11, recipes.get(selected).costs, -1);
 	}
 }

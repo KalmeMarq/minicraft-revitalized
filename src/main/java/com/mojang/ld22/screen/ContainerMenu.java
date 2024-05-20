@@ -4,6 +4,7 @@ import com.mojang.ld22.entity.Inventory;
 import com.mojang.ld22.entity.Player;
 import com.mojang.ld22.gfx.Font;
 import com.mojang.ld22.gfx.Screen;
+import me.kalmemarq.minicraft.Translation;
 
 public class ContainerMenu extends Menu {
 	private final Player player;
@@ -50,7 +51,7 @@ public class ContainerMenu extends Menu {
 		if (this.selected >= len) this.selected -= len;
 
 		if (this.input.attack.clicked && len > 0) {
-			i2.IS_add(this.oSelected, i.itemStacks.remove(this.selected));
+			i2.add(this.oSelected, i.itemStacks.remove(this.selected));
 			if (this.selected >= i.itemStacks.size()) this.selected = i.itemStacks.size() - 1;
 		}
 	}
@@ -60,7 +61,7 @@ public class ContainerMenu extends Menu {
 		Font.renderFrame(screen, this.title, 1, 1, 12, 11);
         this.renderItemStackList(screen, 1, 1, 12, 11, this.container.itemStacks, this.window == 0 ? this.selected : -this.oSelected - 1);
 
-		Font.renderFrame(screen, "inventory", 13, 1, 13 + 11, 11);
+		Font.renderFrame(screen, Translation.translate("minicraft.menu.inventory"), 13, 1, 13 + 11, 11);
         this.renderItemStackList(screen, 13, 1, 13 + 11, 11, this.player.inventory.itemStacks, this.window == 1 ? this.selected : -this.oSelected - 1);
 		screen.setOffset(0, 0);
 	}

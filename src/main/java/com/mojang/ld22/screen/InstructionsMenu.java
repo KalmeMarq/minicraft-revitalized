@@ -3,6 +3,7 @@ package com.mojang.ld22.screen;
 import com.mojang.ld22.gfx.Color;
 import com.mojang.ld22.gfx.Font;
 import com.mojang.ld22.gfx.Screen;
+import me.kalmemarq.minicraft.Translation;
 
 public class InstructionsMenu extends Menu {
 	private final Menu parent;
@@ -21,7 +22,7 @@ public class InstructionsMenu extends Menu {
 		screen.clear(0);
 		screen.renderBackgroundRGBA(0, 0, 0xFF090909);
 
-		Font.draw("HOW TO PLAY", screen, 4 * 8 + 4, 8, Color.get(0, 555, 555, 555));
+		Font.draw(Translation.translate("minicraft.menu.how_to_play"), screen, 4 * 8 + 4, 8, Color.get(0, 555, 555, 555));
 		Font.draw("Move your character", screen, 4, 3 * 8, Color.get(0, 333, 333, 333));
 		Font.draw("with the arrow keys", screen, 4, 4 * 8, Color.get(0, 333, 333, 333));
 		Font.draw("press C to attack", screen, 4, 5 * 8, Color.get(0, 333, 333, 333));

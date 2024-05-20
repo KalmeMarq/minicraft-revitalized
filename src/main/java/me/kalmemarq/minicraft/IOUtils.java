@@ -1,5 +1,6 @@
 package me.kalmemarq.minicraft;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.lwjgl.system.MemoryUtil;
 
 import java.io.IOException;
@@ -9,6 +10,8 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 
 public final class IOUtils {
+	public static final ObjectMapper JSON_OBJECT_MAPPER = new ObjectMapper();
+
 	private IOUtils() {
 	}
 

@@ -2,12 +2,11 @@ package com.mojang.ld22.entity;
 
 import com.mojang.ld22.Game;
 import com.mojang.ld22.InputHandler;
+import com.mojang.ld22.entity.furniture.Furniture;
 import com.mojang.ld22.entity.particle.TextParticle;
 import com.mojang.ld22.gfx.Color;
 import com.mojang.ld22.gfx.Screen;
 import com.mojang.ld22.item.FurnitureItem;
-import com.mojang.ld22.item.Item;
-import com.mojang.ld22.item.PowerGloveItem;
 import com.mojang.ld22.level.Level;
 import com.mojang.ld22.level.tile.Tile;
 import com.mojang.ld22.screen.InventoryMenu;
@@ -40,8 +39,8 @@ public class Player extends Mob {
         this.y = 24;
         this.stamina = this.maxStamina;
 
-        this.inventory.IS_add(new ItemStack(Items.WORKBENCH));
-        this.inventory.IS_add(new ItemStack(Items.POWER_GLOVE));
+        this.inventory.add(new ItemStack(Items.WORKBENCH));
+        this.inventory.add(new ItemStack(Items.POWER_GLOVE));
 	}
 
 	public void tick() {
@@ -316,8 +315,8 @@ public class Player extends Mob {
 
 	public void touchItem(ItemEntity itemEntity) {
 		itemEntity.take(this);
-        if (itemEntity.stack == null) this.inventory.IS_add(itemEntity.stack);
-		else this.inventory.IS_add(itemEntity.stack);
+        if (itemEntity.stack == null) this.inventory.add(itemEntity.stack);
+		else this.inventory.add(itemEntity.stack);
 	}
 
 	public boolean canSwim() {

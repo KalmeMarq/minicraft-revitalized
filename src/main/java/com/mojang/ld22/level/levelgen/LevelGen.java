@@ -14,10 +14,6 @@ public class LevelGen {
 	private final int w;
     private final int h;
 
-	public LevelGen(int w, int h, int featureSize) {
-		this(random, w, h, featureSize);
-	}
-
 	public LevelGen(Random random, int w, int h, int featureSize) {
 		this.w = w;
 		this.h = h;

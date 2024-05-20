@@ -1,6 +1,6 @@
 package com.mojang.ld22.item;
 
-import com.mojang.ld22.entity.Furniture;
+import com.mojang.ld22.entity.furniture.Furniture;
 import com.mojang.ld22.entity.ItemEntity;
 import com.mojang.ld22.entity.Player;
 import com.mojang.ld22.gfx.Color;
@@ -9,6 +9,7 @@ import com.mojang.ld22.gfx.Screen;
 import com.mojang.ld22.level.Level;
 import com.mojang.ld22.level.tile.Tile;
 import me.kalmemarq.minicraft.ItemStack;
+import me.kalmemarq.minicraft.Translation;
 
 public class FurnitureItem extends Item {
 	public Furniture furniture;
@@ -32,7 +33,7 @@ public class FurnitureItem extends Item {
 
 	public void renderInventory(Screen screen, int x, int y, ItemStack itemStack) {
 		screen.render(x, y, this.getSprite(), this.getColor(), 0);
-		Font.draw(this.furniture.name, screen, x + 8, y, Color.get(-1, 555, 555, 555));
+		Font.draw(this.getName(), screen, x + 8, y, Color.get(-1, 555, 555, 555));
 	}
 
 	public void onTake(ItemEntity itemEntity) {
@@ -66,6 +67,6 @@ public class FurnitureItem extends Item {
 	}
 
 	public String getName() {
-		return this.furniture.name;
+		return Translation.translate(this.getTranslationKey());
 	}
 }

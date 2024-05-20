@@ -1,24 +1,39 @@
 package com.mojang.ld22.screen;
 
 import com.mojang.ld22.Game;
+import com.mojang.ld22.InputHandler;
 import com.mojang.ld22.gfx.Color;
 import com.mojang.ld22.gfx.Font;
 import com.mojang.ld22.gfx.Screen;
 import com.mojang.ld22.sound.Sound;
+import me.kalmemarq.minicraft.Translation;
 
 public class TitleMenu extends Menu {
 	private int selected = 0;
 
-	private static final String[] options = { "Start game", "How to play", "About" };
+	private String[] options;
 
 	public TitleMenu() {
+	}
+
+	@Override
+	public void init(Game game, InputHandler input) {
+		super.init(game, input);
+
+		this.options = new String[]{
+			Translation.translate("minicraft.menu.play"),
+			Translation.translate("minicraft.menu.how_to_play"),
+			Translation.translate("minicraft.menu.about"),
+			Translation.translate("minicraft.menu.language"),
+			Translation.translate("minicraft.menu.quit")
+		};
 	}
 
 	public void tick() {
 		if (this.input.up.clicked) this.selected--;
 		if (this.input.down.clicked) this.selected++;
 
-		int len = options.length;
+		int len = this.options.length;
 		if (this.selected < 0) this.selected += len;
 		if (this.selected >= len) this.selected -= len;
 
@@ -30,6 +45,8 @@ public class TitleMenu extends Menu {
 			}
 			if (this.selected == 1) this.game.setMenu(new InstructionsMenu(this));
 			if (this.selected == 2) this.game.setMenu(new AboutMenu(this));
+			if (this.selected == 3) this.game.setMenu(new LanguageMenu(this));
+			if (this.selected == 4) this.game.running = false;
 		}
 	}
 
@@ -48,8 +65,8 @@ public class TitleMenu extends Menu {
 			}
 		}
 
-		for (int i = 0; i < 3; i++) {
-			String msg = options[i];
+		for (int i = 0; i < this.options.length; i++) {
+			String msg = this.options[i];
 			int col = Color.get(0, 222, 222, 222);
 			if (i == this.selected) {
 				msg = "> " + msg + " <";

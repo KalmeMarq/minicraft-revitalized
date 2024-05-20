@@ -6,6 +6,7 @@ import com.mojang.ld22.gfx.Color;
 import com.mojang.ld22.gfx.Font;
 import com.mojang.ld22.gfx.Screen;
 import me.kalmemarq.minicraft.ItemStack;
+import me.kalmemarq.minicraft.Translation;
 
 import java.util.Random;
 
@@ -51,7 +52,7 @@ public class ToolItem extends Item {
 	}
 
 	public String getName() {
-		return LEVEL_NAMES[this.level] + " " + this.type.name;
+		return Translation.translate(this.getTranslationKey());
 	}
 
 	public void onTake(ItemEntity itemEntity) {

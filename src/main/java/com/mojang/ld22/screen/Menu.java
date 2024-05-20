@@ -45,7 +45,7 @@ public class Menu {
 			int ry = (i + 1 + yo) * 8;
 
 			ItemStack stack = listItems.get(i + io);
-			if (stack.getMaxStackSize() > 1) {
+			if (stack.isStackable()) {
 				Font.draw("" + stack.getCount(), screen, rx + 8, ry, Color.get(-1, 444, 444, 444));
 				stack.getItem().renderInventory(screen, rx + 26, ry, stack);
 			} else {
@@ -82,7 +82,7 @@ public class Menu {
 			Recipe recipe = listItems.get(i + io);
 			ItemStack stack = recipe.resultTemplate;
 
-			if (stack.getMaxStackSize() > 1) {
+			if (stack.isStackable()) {
 				Font.draw("" + stack.getCount(), screen, rx + 8, ry, Color.get(-1, 444, 444, 444));
 				recipe.renderInventory(screen, rx, ry, stack);
 			} else {

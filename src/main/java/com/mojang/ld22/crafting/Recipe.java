@@ -26,7 +26,7 @@ public class Recipe implements ListItem {
 
 	public void checkCanCraft(Player player) {
         for (ItemStack item : this.costs) {
-			if (!player.inventory.IS_has(item)) {
+			if (!player.inventory.has(item)) {
 				this.canCraft = false;
 				return;
 			}
@@ -41,12 +41,12 @@ public class Recipe implements ListItem {
 	}
 
 	public void craft(Player player) {
-		player.inventory.IS_add(0, this.resultTemplate.copy());
+		player.inventory.add(0, this.resultTemplate.copy());
 	}
 
 	public void deductCost(Player player) {
         for (ItemStack item : this.costs) {
-			player.inventory.IS_remove(item);
+			player.inventory.remove(item);
         }
 	}
 }

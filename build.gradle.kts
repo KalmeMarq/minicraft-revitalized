@@ -32,6 +32,20 @@ dependencies {
     implementation("org.joml", "joml", jomlVersion)
     implementation("it.unimi.dsi:fastutil:$fastUtilVersion")
     implementation("org.jcraft:jorbis:0.0.17")
+
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.17.1")
+}
+
+tasks {
+    javadoc {
+        options.encoding = "UTF-8"
+    }
+    compileJava {
+        options.encoding = "UTF-8"
+    }
+    compileTestJava {
+        options.encoding = "UTF-8"
+    }
 }
 
 tasks {
