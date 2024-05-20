@@ -12,11 +12,55 @@ public class Font {
 			"юяışő";
 
 	public static void draw(String msg, Screen screen, int x, int y, int col) {
-		for (int i = 0; i < msg.length(); i++) {
-			int ix = chars.indexOf(msg.charAt(i));
-			if (ix >= 0) {
-				screen.render(x + i * 8, y, ix + 24 * 32, col, 0);
+		for (int i = 0, line = 0, il = 0; i < msg.length(); i++, il++) {
+			char chr = msg.charAt(i);
+			if (chr == '\n') {
+				il = 0;
+				line++;
+				continue;
 			}
+			int ix = chars.indexOf(chr);
+			if (ix >= 0) {
+				screen.render(x + il * 8, y + line * 8, ix + 24 * 32, col, 0);
+			}
+		}
+	}
+
+	// TODO: Fix the max cpl not really being accurate
+	public static void drawWithMaxWidth(String msg, Screen screen, int x, int y, int col, int maxCharactersPerLine) {
+		int line = 0;
+
+		for (int i = 0, il = 0, ls = 0, nsp = -1; i < msg.length(); i++) {
+			if (msg.charAt(i) == '\n') {
+				il = 0;
+				line++;
+				ls = i + 1;
+				continue;
+			}
+
+			if (msg.charAt(i) == ' ') {
+				il++;
+				continue;
+			}
+
+			if (il == 0 || nsp == -1 || nsp <= i) {
+				nsp = msg.indexOf(' ', i);
+			}
+
+			if (nsp - ls >= maxCharactersPerLine) {
+				il = 0;
+				line++;
+				ls = i + 1;
+				i--;
+				continue;
+			}
+
+			int ix = chars.indexOf(msg.charAt(i));
+
+			if (ix >= 0) {
+				screen.render(x + il * 8, y + line * 8, ix + 24 * 32, col, 0);
+			}
+			il++;
 		}
 	}
 

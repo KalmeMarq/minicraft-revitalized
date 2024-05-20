@@ -23,16 +23,6 @@ public class InstructionsMenu extends Menu {
 		screen.renderBackgroundRGBA(0, 0, 0xFF090909);
 
 		Font.draw(Translation.translate("minicraft.menu.how_to_play"), screen, 4 * 8 + 4, 8, Color.get(0, 555, 555, 555));
-		Font.draw("Move your character", screen, 4, 3 * 8, Color.get(0, 333, 333, 333));
-		Font.draw("with the arrow keys", screen, 4, 4 * 8, Color.get(0, 333, 333, 333));
-		Font.draw("press C to attack", screen, 4, 5 * 8, Color.get(0, 333, 333, 333));
-		Font.draw("and X to open the", screen, 4, 6 * 8, Color.get(0, 333, 333, 333));
-		Font.draw("inventory and to", screen, 4, 7 * 8, Color.get(0, 333, 333, 333));
-		Font.draw("use items.", screen, 4, 8 * 8, Color.get(0, 333, 333, 333));
-		Font.draw("Select an item in", screen, 4, 9 * 8, Color.get(0, 333, 333, 333));
-		Font.draw("the inventory to", screen, 4, 10 * 8, Color.get(0, 333, 333, 333));
-		Font.draw("equip it.", screen, 4, 11 * 8, Color.get(0, 333, 333, 333));
-		Font.draw("Kill the air wizard", screen, 4, 12 * 8, Color.get(0, 333, 333, 333));
-		Font.draw("to win the game!", screen, 4, 13 * 8, Color.get(0, 333, 333, 333));
+		Font.drawWithMaxWidth(Translation.translate("minicraft.menu.how_to_play.message"), screen, 4, 3 * 8, Color.get(0, 333, 333, 333), 19);
 	}
 }

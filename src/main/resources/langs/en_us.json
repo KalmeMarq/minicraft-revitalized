@@ -1,7 +1,10 @@
 {
   "minicraft.menu.play": "Start Game",
   "minicraft.menu.how_to_play": "How to Play",
+  "minicraft.menu.how_to_play.message": "Move your character with the arrow keys press C to attack and X to open the inventory and to use items.\nSelect an item in the inventory to equip it. Kill the air wizard to win the game!",
   "minicraft.menu.about": "About",
+  "minicraft.menu.about.title": "About Minicraft",
+  "minicraft.menu.about.message": "Minicraft was made by Markus Persson for the 22'nd ludum dare competition in december 2011.\nIt is dedicated to my father. <3",
   "minicraft.menu.language": "Language",
   "minicraft.menu.quit": "Quit",
   "minicraft.menu.inventory": "Inventory",
