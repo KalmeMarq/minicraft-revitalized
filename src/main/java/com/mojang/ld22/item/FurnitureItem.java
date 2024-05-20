@@ -3,6 +3,7 @@ package com.mojang.ld22.item;
 import com.mojang.ld22.entity.furniture.Furniture;
 import com.mojang.ld22.entity.ItemEntity;
 import com.mojang.ld22.entity.Player;
+import com.mojang.ld22.entity.furniture.FurnitureType;
 import com.mojang.ld22.gfx.Color;
 import com.mojang.ld22.gfx.Font;
 import com.mojang.ld22.gfx.Screen;
@@ -12,10 +13,10 @@ import me.kalmemarq.minicraft.ItemStack;
 import me.kalmemarq.minicraft.Translation;
 
 public class FurnitureItem extends Item {
-	public Furniture furniture;
+	public FurnitureType<?> furniture;
 	public boolean placed = false;
 
-	public FurnitureItem(Furniture furniture) {
+	public FurnitureItem(FurnitureType<?> furniture) {
 		this.furniture = furniture;
 	}
 
@@ -45,9 +46,10 @@ public class FurnitureItem extends Item {
 
 	@Override
 	public boolean interactOn(Tile tile, Level level, int xt, int yt, Player player, ItemStack stack, int attackDir) {
-		if (tile.mayPass(level, xt, yt, this.furniture)) {
+		Furniture furniture = this.furniture.create();
+
+		if (tile.mayPass(level, xt, yt, furniture)) {
 			try {
-				Furniture furniture = this.furniture.getClass().getConstructor().newInstance();
 				furniture.x = xt * 16 + 8;
 				furniture.y = yt * 16 + 8;
 				if (stack.getData() != null) furniture.read(stack.getData());

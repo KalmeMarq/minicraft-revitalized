@@ -304,12 +304,8 @@ public class Player extends Mob {
 			}
 		}
 
-		if (this.activeItem != null && this.activeItem.getItem() instanceof FurnitureItem) {
-			Furniture furniture = ((FurnitureItem) this.activeItem.getItem()).furniture;
-			furniture.x = this.x;
-			furniture.y = yo;
-			furniture.render(screen);
-
+		if (this.activeItem != null && this.activeItem.getItem() instanceof FurnitureItem furnitureItem) {
+			furnitureItem.furniture.render(screen, this.x, yo);
 		}
 	}
 
@@ -349,7 +345,7 @@ public class Player extends Mob {
 		int r = 2;
 		if (this.activeItem != null) {
 			if (this.activeItem.getItem() instanceof FurnitureItem) {
-				int rr = ((FurnitureItem) this.activeItem.getItem()).furniture.getLightRadius();
+				int rr = ((FurnitureItem) this.activeItem.getItem()).furniture.lightRadius;
 				if (rr > r) r = rr;
 			}
 		}

@@ -11,14 +11,16 @@ import me.kalmemarq.minicraft.bso.BsoMapTag;
 public class Furniture extends Entity {
 	private int pushTime = 0;
 	private int pushDir = -1;
-	public int col, sprite;
-	public String name;
+
 	private Player shouldTake;
 
-	public Furniture(String name) {
-		this.name = name;
+	public Furniture() {
         this.xr = 3;
         this.yr = 3;
+	}
+
+	public FurnitureType<?> getFurnitureType() {
+		return null;
 	}
 
 	public ItemStack beforeGivenItem(ItemStack stack) {
@@ -63,10 +65,7 @@ public class Furniture extends Entity {
 	}
 
 	public void render(Screen screen) {
-		screen.render(this.x - 8, this.y - 8 - 4, this.sprite * 2 + 8 * 32, this.col, 0);
-		screen.render(this.x, this.y - 8 - 4, this.sprite * 2 + 8 * 32 + 1, this.col, 0);
-		screen.render(this.x - 8, this.y - 4, this.sprite * 2 + 8 * 32 + 32, this.col, 0);
-		screen.render(this.x, this.y - 4, this.sprite * 2 + 8 * 32 + 33, this.col, 0);
+		this.getFurnitureType().render(screen, this.x, this.y);
 	}
 
 	public boolean blocks(Entity e) {
@@ -82,5 +81,10 @@ public class Furniture extends Entity {
 
 	public void take(Player player) {
         this.shouldTake = player;
+	}
+
+	@Override
+	public int getLightRadius() {
+		return this.getFurnitureType().lightRadius;
 	}
 }

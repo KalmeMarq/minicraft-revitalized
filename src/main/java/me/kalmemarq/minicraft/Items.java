@@ -3,6 +3,7 @@ package me.kalmemarq.minicraft;
 import com.mojang.ld22.entity.furniture.Anvil;
 import com.mojang.ld22.entity.furniture.Chest;
 import com.mojang.ld22.entity.furniture.Furnace;
+import com.mojang.ld22.entity.furniture.FurnitureType;
 import com.mojang.ld22.entity.furniture.Lantern;
 import com.mojang.ld22.entity.furniture.Oven;
 import com.mojang.ld22.entity.furniture.Workbench;
@@ -105,12 +106,10 @@ public final class Items {
 	public static Item CLOTH = register("cloth", new ResourceItem(new Resource("cloth", 1 + 4 * 32, Color.get(-1, 25, 252, 141))));
 	public static Item CLOUD = register("cloud", new ResourceItem(new PlantableResource("cloud", 2 + 4 * 32, Color.get(-1, 222, 555, 444), Tile.cloud, Tile.infiniteFall)));
 	public static Item GEM = register("gem", new ResourceItem(new Resource("gem", 13 + 4 * 32, Color.get(-1, 101, 404, 545))));
-
-	// TODO: Use a FurniteType instead of creating an instance of the entity
-	public static Item ANVIL = register("anvil", new FurnitureItem(new Anvil()));
-	public static Item CHEST = register("chest", new FurnitureItem(new Chest()));
-	public static Item FURNACE = register("furnace", new FurnitureItem(new Furnace()));
-	public static Item LANTERN = register("lantern", new FurnitureItem(new Lantern()));
-	public static Item OVEN = register("oven", new FurnitureItem(new Oven()));
-	public static Item WORKBENCH = register("workbench", new FurnitureItem(new Workbench()));
+	public static Item ANVIL = register("anvil", new FurnitureItem(FurnitureType.ANVIL));
+	public static Item CHEST = register("chest", new FurnitureItem(FurnitureType.CHEST));
+	public static Item FURNACE = register("furnace", new FurnitureItem(FurnitureType.FURNACE));
+	public static Item LANTERN = register("lantern", new FurnitureItem(FurnitureType.LANTERN));
+	public static Item OVEN = register("oven", new FurnitureItem(FurnitureType.OVEN));
+	public static Item WORKBENCH = register("workbench", new FurnitureItem(FurnitureType.WORKBENCH));
 }
