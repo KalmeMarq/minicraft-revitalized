@@ -11,6 +11,8 @@ import com.mojang.ld22.item.ToolItem;
 import com.mojang.ld22.item.ToolType;
 import com.mojang.ld22.item.resource.Resource;
 import com.mojang.ld22.level.Level;
+import me.kalmemarq.minicraft.ItemStack;
+import me.kalmemarq.minicraft.Items;
 
 public class FlowerTile extends GrassTile {
 	public FlowerTile(int id) {
@@ -32,12 +34,13 @@ public class FlowerTile extends GrassTile {
 		if (shape == 0) screen.render(x * 16 + 8, y * 16 + 8, 1 + 32, flowerCol, 0);
 	}
 
-	public boolean interact(Level level, int x, int y, Player player, Item item, int attackDir) {
-		if (item instanceof ToolItem tool) {
-            if (tool.type == ToolType.shovel) {
+	@Override
+	public boolean interact(Level level, int x, int y, Player player, ItemStack item, int attackDir) {
+		if (item.getItem() instanceof ToolItem tool) {
+            if (tool.type == ToolType.SHOVEL) {
 				if (player.payStamina(4 - tool.level)) {
-					level.add(new ItemEntity(new ResourceItem(Resource.flower), x * 16 + this.random.nextInt(10) + 3, y * 16 + this.random.nextInt(10) + 3));
-					level.add(new ItemEntity(new ResourceItem(Resource.flower), x * 16 + this.random.nextInt(10) + 3, y * 16 + this.random.nextInt(10) + 3));
+					level.add(new ItemEntity(new ItemStack(Items.FLOWER), x * 16 + this.random.nextInt(10) + 3, y * 16 + this.random.nextInt(10) + 3));
+					level.add(new ItemEntity(new ItemStack(Items.FLOWER), x * 16 + this.random.nextInt(10) + 3, y * 16 + this.random.nextInt(10) + 3));
 					level.setTile(x, y, Tile.grass, 0);
 					return true;
 				}
@@ -49,7 +52,7 @@ public class FlowerTile extends GrassTile {
 	public void hurt(Level level, int x, int y, Mob source, int dmg, int attackDir) {
 		int count = this.random.nextInt(2) + 1;
 		for (int i = 0; i < count; i++) {
-			level.add(new ItemEntity(new ResourceItem(Resource.flower), x * 16 + this.random.nextInt(10) + 3, y * 16 + this.random.nextInt(10) + 3));
+			level.add(new ItemEntity(new ItemStack(Items.FLOWER), x * 16 + this.random.nextInt(10) + 3, y * 16 + this.random.nextInt(10) + 3));
 		}
 		level.setTile(x, y, Tile.grass, 0);
 	}

@@ -12,6 +12,8 @@ import com.mojang.ld22.item.ToolItem;
 import com.mojang.ld22.item.ToolType;
 import com.mojang.ld22.item.resource.Resource;
 import com.mojang.ld22.level.Level;
+import me.kalmemarq.minicraft.ItemStack;
+import me.kalmemarq.minicraft.Items;
 
 public class SandTile extends Tile {
 	public SandTile(int id) {
@@ -68,12 +70,13 @@ public class SandTile extends Tile {
 		}
 	}
 
-	public boolean interact(Level level, int xt, int yt, Player player, Item item, int attackDir) {
-		if (item instanceof ToolItem tool) {
-            if (tool.type == ToolType.shovel) {
+	@Override
+	public boolean interact(Level level, int xt, int yt, Player player, ItemStack item, int attackDir) {
+		if (item.getItem() instanceof ToolItem tool) {
+            if (tool.type == ToolType.SHOVEL) {
 				if (player.payStamina(4 - tool.level)) {
 					level.setTile(xt, yt, Tile.dirt, 0);
-					level.add(new ItemEntity(new ResourceItem(Resource.sand), xt * 16 + this.random.nextInt(10) + 3, yt * 16 + this.random.nextInt(10) + 3));
+					level.add(new ItemEntity(new ItemStack(Items.SAND), xt * 16 + this.random.nextInt(10) + 3, yt * 16 + this.random.nextInt(10) + 3));
 					return true;
 				}
 			}

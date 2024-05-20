@@ -5,6 +5,7 @@ import com.mojang.ld22.entity.ItemEntity;
 import com.mojang.ld22.gfx.Color;
 import com.mojang.ld22.gfx.Font;
 import com.mojang.ld22.gfx.Screen;
+import me.kalmemarq.minicraft.ItemStack;
 
 import java.util.Random;
 
@@ -44,7 +45,7 @@ public class ToolItem extends Item {
 		screen.render(x, y, this.getSprite(), this.getColor(), 0);
 	}
 
-	public void renderInventory(Screen screen, int x, int y) {
+	public void renderInventory(Screen screen, int x, int y, ItemStack stack) {
 		screen.render(x, y, this.getSprite(), this.getColor(), 0);
 		Font.draw(this.getName(), screen, x + 8, y, Color.get(-1, 555, 555, 555));
 	}
@@ -61,10 +62,10 @@ public class ToolItem extends Item {
 	}
 
 	public int getAttackDamageBonus(Entity e) {
-		if (this.type == ToolType.axe) {
+		if (this.type == ToolType.AXE) {
 			return (this.level + 1) * 2 + this.random.nextInt(4);
 		}
-		if (this.type == ToolType.sword) {
+		if (this.type == ToolType.SWORD) {
 			return (this.level + 1) * 3 + this.random.nextInt(2 + this.level * this.level * 2);
 		}
 		return 1;

@@ -30,7 +30,8 @@ dependencies {
     implementation("org.apache.logging.log4j:log4j-api:$log4jVersion")
     implementation("org.apache.logging.log4j:log4j-core:$log4jVersion")
     implementation("org.joml", "joml", jomlVersion)
-    implementation("it.unimi.dsi:fastutil-core:$fastUtilVersion")
+    implementation("it.unimi.dsi:fastutil:$fastUtilVersion")
+    implementation("org.jcraft:jorbis:0.0.17")
 }
 
 tasks {

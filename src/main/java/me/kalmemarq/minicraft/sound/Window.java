@@ -1,11 +1,11 @@
-package me.kalmemarq.minicraft;
+package me.kalmemarq.minicraft.sound;
 
+import me.kalmemarq.minicraft.IOUtils;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWImage;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
-import org.lwjgl.opengl.GLDebugMessageCallback;
 import org.lwjgl.opengl.GLUtil;
 import org.lwjgl.stb.STBImage;
 import org.lwjgl.system.Callback;

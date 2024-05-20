@@ -4,6 +4,7 @@ import com.mojang.ld22.gfx.Screen;
 import com.mojang.ld22.item.Item;
 import com.mojang.ld22.level.Level;
 import com.mojang.ld22.level.tile.Tile;
+import me.kalmemarq.minicraft.ItemStack;
 
 import java.util.List;
 import java.util.Random;
@@ -119,7 +120,7 @@ public class Entity {
 		return false;
 	}
 
-	public boolean interact(Player player, Item item, int attackDir) {
+	public boolean interact(Player player, ItemStack item, int attackDir) {
 		return item.interact(player, this, attackDir);
 	}
 

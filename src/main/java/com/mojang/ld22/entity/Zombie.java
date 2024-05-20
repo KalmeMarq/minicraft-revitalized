@@ -4,6 +4,8 @@ import com.mojang.ld22.gfx.Color;
 import com.mojang.ld22.gfx.Screen;
 import com.mojang.ld22.item.ResourceItem;
 import com.mojang.ld22.item.resource.Resource;
+import me.kalmemarq.minicraft.ItemStack;
+import me.kalmemarq.minicraft.Items;
 
 public class Zombie extends Mob {
 	private int xa, ya;
@@ -90,7 +92,7 @@ public class Zombie extends Mob {
 
 		int count = this.random.nextInt(2) + 1;
 		for (int i = 0; i < count; i++) {
-            this.level.add(new ItemEntity(new ResourceItem(Resource.cloth), this.x + this.random.nextInt(11) - 5, this.y + this.random.nextInt(11) - 5));
+            this.level.add(new ItemEntity(new ItemStack(Items.CLOTH), this.x + this.random.nextInt(11) - 5, this.y + this.random.nextInt(11) - 5));
 		}
 
 		if (this.level.player != null) {

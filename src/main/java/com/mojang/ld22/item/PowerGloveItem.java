@@ -6,6 +6,7 @@ import com.mojang.ld22.entity.Player;
 import com.mojang.ld22.gfx.Color;
 import com.mojang.ld22.gfx.Font;
 import com.mojang.ld22.gfx.Screen;
+import me.kalmemarq.minicraft.ItemStack;
 
 public class PowerGloveItem extends Item {
 	public int getColor() {
@@ -20,7 +21,7 @@ public class PowerGloveItem extends Item {
 		screen.render(x, y, this.getSprite(), this.getColor(), 0);
 	}
 
-	public void renderInventory(Screen screen, int x, int y) {
+	public void renderInventory(Screen screen, int x, int y, ItemStack stack) {
 		screen.render(x, y, this.getSprite(), this.getColor(), 0);
 		Font.draw(this.getName(), screen, x + 8, y, Color.get(-1, 555, 555, 555));
 	}

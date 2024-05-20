@@ -12,6 +12,8 @@ import com.mojang.ld22.item.ToolItem;
 import com.mojang.ld22.item.ToolType;
 import com.mojang.ld22.item.resource.Resource;
 import com.mojang.ld22.level.Level;
+import me.kalmemarq.minicraft.ItemStack;
+import me.kalmemarq.minicraft.Items;
 
 public class WheatTile extends Tile {
 	public WheatTile(int id) {
@@ -43,9 +45,10 @@ public class WheatTile extends Tile {
 		if (age < 50) level.setData(xt, yt, age + 1);
 	}
 
-	public boolean interact(Level level, int xt, int yt, Player player, Item item, int attackDir) {
-		if (item instanceof ToolItem tool) {
-            if (tool.type == ToolType.shovel) {
+	@Override
+	public boolean interact(Level level, int xt, int yt, Player player, ItemStack item, int attackDir) {
+		if (item.getItem() instanceof ToolItem tool) {
+            if (tool.type == ToolType.SHOVEL) {
 				if (player.payStamina(4 - tool.level)) {
 					level.setTile(xt, yt, Tile.dirt, 0);
 					return true;
@@ -71,7 +74,7 @@ public class WheatTile extends Tile {
 
 		int count = this.random.nextInt(2);
 		for (int i = 0; i < count; i++) {
-			level.add(new ItemEntity(new ResourceItem(Resource.seeds), x * 16 + this.random.nextInt(10) + 3, y * 16 + this.random.nextInt(10) + 3));
+			level.add(new ItemEntity(new ItemStack(Items.SEEDS), x * 16 + this.random.nextInt(10) + 3, y * 16 + this.random.nextInt(10) + 3));
 		}
 
 		count = 0;
@@ -81,7 +84,7 @@ public class WheatTile extends Tile {
 			count = this.random.nextInt(2) + 1;
 		}
 		for (int i = 0; i < count; i++) {
-			level.add(new ItemEntity(new ResourceItem(Resource.wheat), x * 16 + this.random.nextInt(10) + 3, y * 16 + this.random.nextInt(10) + 3));
+			level.add(new ItemEntity(new ItemStack(Items.WHEAT), x * 16 + this.random.nextInt(10) + 3, y * 16 + this.random.nextInt(10) + 3));
 		}
 
 		level.setTile(x, y, Tile.dirt, 0);

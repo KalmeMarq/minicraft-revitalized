@@ -1,8 +1,8 @@
 package com.mojang.ld22.gfx;
 
 import com.mojang.ld22.Game;
-import me.kalmemarq.minicraft.Framebuffer;
-import me.kalmemarq.minicraft.Texture;
+import me.kalmemarq.minicraft.render.Framebuffer;
+import me.kalmemarq.minicraft.render.Texture;
 import org.joml.Matrix4f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL33;

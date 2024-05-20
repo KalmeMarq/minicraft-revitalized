@@ -9,11 +9,11 @@ import com.mojang.ld22.entity.particle.TextParticle;
 import com.mojang.ld22.gfx.Color;
 import com.mojang.ld22.gfx.Screen;
 import com.mojang.ld22.item.Item;
-import com.mojang.ld22.item.ResourceItem;
 import com.mojang.ld22.item.ToolItem;
 import com.mojang.ld22.item.ToolType;
-import com.mojang.ld22.item.resource.Resource;
 import com.mojang.ld22.level.Level;
+import me.kalmemarq.minicraft.ItemStack;
+import me.kalmemarq.minicraft.Items;
 
 public class HardRockTile extends Tile {
 	public HardRockTile(int id) {
@@ -74,9 +74,10 @@ public class HardRockTile extends Tile {
         this.hurt(level, x, y, 0);
 	}
 
-	public boolean interact(Level level, int xt, int yt, Player player, Item item, int attackDir) {
-		if (item instanceof ToolItem tool) {
-            if (tool.type == ToolType.pickaxe && tool.level == 4) {
+	@Override
+	public boolean interact(Level level, int xt, int yt, Player player, ItemStack item, int attackDir) {
+		if (item.getItem() instanceof ToolItem tool) {
+            if (tool.type == ToolType.PICKAXE && tool.level == 4) {
 				if (player.payStamina(4 - tool.level)) {
                     this.hurt(level, xt, yt, this.random.nextInt(10) + (tool.level) * 5 + 10);
 					return true;
@@ -93,11 +94,11 @@ public class HardRockTile extends Tile {
 		if (damage >= 200) {
 			int count = this.random.nextInt(4) + 1;
 			for (int i = 0; i < count; i++) {
-				level.add(new ItemEntity(new ResourceItem(Resource.stone), x * 16 + this.random.nextInt(10) + 3, y * 16 + this.random.nextInt(10) + 3));
+				level.add(new ItemEntity(new ItemStack(Items.STONE), x * 16 + this.random.nextInt(10) + 3, y * 16 + this.random.nextInt(10) + 3));
 			}
 			count = this.random.nextInt(2);
 			for (int i = 0; i < count; i++) {
-				level.add(new ItemEntity(new ResourceItem(Resource.coal), x * 16 + this.random.nextInt(10) + 3, y * 16 + this.random.nextInt(10) + 3));
+				level.add(new ItemEntity(new ItemStack(Items.COAL), x * 16 + this.random.nextInt(10) + 3, y * 16 + this.random.nextInt(10) + 3));
 			}
 			level.setTile(x, y, Tile.dirt, 0);
 		} else {

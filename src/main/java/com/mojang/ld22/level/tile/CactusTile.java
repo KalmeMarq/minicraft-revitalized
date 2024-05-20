@@ -7,9 +7,9 @@ import com.mojang.ld22.entity.particle.SmashParticle;
 import com.mojang.ld22.entity.particle.TextParticle;
 import com.mojang.ld22.gfx.Color;
 import com.mojang.ld22.gfx.Screen;
-import com.mojang.ld22.item.ResourceItem;
-import com.mojang.ld22.item.resource.Resource;
 import com.mojang.ld22.level.Level;
+import me.kalmemarq.minicraft.ItemStack;
+import me.kalmemarq.minicraft.Items;
 
 public class CactusTile extends Tile {
 	public CactusTile(int id) {
@@ -36,7 +36,7 @@ public class CactusTile extends Tile {
 		if (damage >= 10) {
 			int count = this.random.nextInt(2) + 1;
 			for (int i = 0; i < count; i++) {
-				level.add(new ItemEntity(new ResourceItem(Resource.cactusFlower), x * 16 + this.random.nextInt(10) + 3, y * 16 + this.random.nextInt(10) + 3));
+				level.add(new ItemEntity(new ItemStack(Items.CACTUS_FLOWER), x * 16 + this.random.nextInt(10) + 3, y * 16 + this.random.nextInt(10) + 3));
 			}
 			level.setTile(x, y, Tile.sand, 0);
 		} else {

@@ -5,7 +5,6 @@ import com.mojang.ld22.gfx.Color;
 import com.mojang.ld22.gfx.Font;
 import com.mojang.ld22.gfx.Screen;
 import com.mojang.ld22.sound.Sound;
-import org.lwjgl.opengl.GL33;
 
 public class TitleMenu extends Menu {
 	private int selected = 0;

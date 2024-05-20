@@ -6,12 +6,12 @@ import com.mojang.ld22.entity.Player;
 import com.mojang.ld22.gfx.Color;
 import com.mojang.ld22.gfx.Screen;
 import com.mojang.ld22.item.Item;
-import com.mojang.ld22.item.ResourceItem;
 import com.mojang.ld22.item.ToolItem;
 import com.mojang.ld22.item.ToolType;
-import com.mojang.ld22.item.resource.Resource;
 import com.mojang.ld22.level.Level;
 import com.mojang.ld22.sound.Sound;
+import me.kalmemarq.minicraft.ItemStack;
+import me.kalmemarq.minicraft.Items;
 
 public class GrassTile extends Tile {
 	public GrassTile(int id) {
@@ -64,23 +64,24 @@ public class GrassTile extends Tile {
 		}
 	}
 
-	public boolean interact(Level level, int xt, int yt, Player player, Item item, int attackDir) {
-		if (item instanceof ToolItem tool) {
-            if (tool.type == ToolType.shovel) {
+	@Override
+	public boolean interact(Level level, int xt, int yt, Player player, ItemStack item, int attackDir) {
+		if (item.getItem() instanceof ToolItem tool) {
+            if (tool.type == ToolType.SHOVEL) {
 				if (player.payStamina(4 - tool.level)) {
 					level.setTile(xt, yt, Tile.dirt, 0);
 					Game.instance.soundManager.play(Sound.monsterHurt);
 					if (this.random.nextInt(5) == 0) {
-						level.add(new ItemEntity(new ResourceItem(Resource.seeds), xt * 16 + this.random.nextInt(10) + 3, yt * 16 + this.random.nextInt(10) + 3));
+						level.add(new ItemEntity(new ItemStack(Items.SEEDS), xt * 16 + this.random.nextInt(10) + 3, yt * 16 + this.random.nextInt(10) + 3));
 						return true;
 					}
 				}
 			}
-			if (tool.type == ToolType.hoe) {
+			if (tool.type == ToolType.HOE) {
 				if (player.payStamina(4 - tool.level)) {
 					Game.instance.soundManager.play(Sound.monsterHurt);
 					if (this.random.nextInt(5) == 0) {
-						level.add(new ItemEntity(new ResourceItem(Resource.seeds), xt * 16 + this.random.nextInt(10) + 3, yt * 16 + this.random.nextInt(10) + 3));
+						level.add(new ItemEntity(new ItemStack(Items.SEEDS), xt * 16 + this.random.nextInt(10) + 3, yt * 16 + this.random.nextInt(10) + 3));
 						return true;
 					}
 					level.setTile(xt, yt, Tile.farmland, 0);

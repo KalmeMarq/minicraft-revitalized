@@ -14,19 +14,20 @@ import com.mojang.ld22.item.ToolItem;
 import com.mojang.ld22.item.ToolType;
 import com.mojang.ld22.item.resource.Resource;
 import com.mojang.ld22.level.Level;
+import me.kalmemarq.minicraft.ItemStack;
 
 public class OreTile extends Tile {
-	private final Resource toDrop;
+	private final ItemStack toDrop;
 	private int color;
 
-	public OreTile(int id, Resource toDrop) {
+	public OreTile(int id, ItemStack toDrop) {
 		super(id);
 		this.toDrop = toDrop;
-		this.color = toDrop.color & 0xffff00;
+		this.color = ((ResourceItem) toDrop.getItem()).resource.color & 0xffff00;
 	}
 
 	public void render(Screen screen, Level level, int x, int y) {
-        this.color = (this.toDrop.color & 0xffffff00) + Color.get(level.dirtColor);
+        this.color = (((ResourceItem) this.toDrop.getItem()).resource.color & 0xffffff00) + Color.get(level.dirtColor);
 		screen.render(x * 16, y * 16, 17 + 32, this.color, 0);
 		screen.render(x * 16 + 8, y * 16, 18 + 32, this.color, 0);
 		screen.render(x * 16, y * 16 + 8, 17 + 2 * 32, this.color, 0);
@@ -41,9 +42,10 @@ public class OreTile extends Tile {
         this.hurt(level, x, y, 0);
 	}
 
-	public boolean interact(Level level, int xt, int yt, Player player, Item item, int attackDir) {
-		if (item instanceof ToolItem tool) {
-            if (tool.type == ToolType.pickaxe) {
+	@Override
+	public boolean interact(Level level, int xt, int yt, Player player, ItemStack item, int attackDir) {
+		if (item.getItem() instanceof ToolItem tool) {
+            if (tool.type == ToolType.PICKAXE) {
 				if (player.payStamina(6 - tool.level)) {
                     this.hurt(level, xt, yt, 1);
 					return true;
@@ -66,7 +68,7 @@ public class OreTile extends Tile {
 				level.setData(x, y, damage);
 			}
 			for (int i = 0; i < count; i++) {
-				level.add(new ItemEntity(new ResourceItem(this.toDrop), x * 16 + this.random.nextInt(10) + 3, y * 16 + this.random.nextInt(10) + 3));
+				level.add(new ItemEntity(this.toDrop.copy(), x * 16 + this.random.nextInt(10) + 3, y * 16 + this.random.nextInt(10) + 3));
 			}
 		}
 	}

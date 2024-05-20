@@ -38,7 +38,7 @@ public class ContainerMenu extends Menu {
 		Inventory i = this.window == 1 ? this.player.inventory : this.container;
 		Inventory i2 = this.window == 0 ? this.player.inventory : this.container;
 
-		int len = i.items.size();
+		int len = i.itemStacks.size();
 		if (this.selected < 0) this.selected = 0;
 		if (this.selected >= len) this.selected = len - 1;
 
@@ -50,18 +50,18 @@ public class ContainerMenu extends Menu {
 		if (this.selected >= len) this.selected -= len;
 
 		if (this.input.attack.clicked && len > 0) {
-			i2.add(this.oSelected, i.items.remove(this.selected));
-			if (this.selected >= i.items.size()) this.selected = i.items.size() - 1;
+			i2.IS_add(this.oSelected, i.itemStacks.remove(this.selected));
+			if (this.selected >= i.itemStacks.size()) this.selected = i.itemStacks.size() - 1;
 		}
 	}
 
 	public void render(Screen screen) {
 		if (this.window == 1) screen.setOffset(6 * 8, 0);
 		Font.renderFrame(screen, this.title, 1, 1, 12, 11);
-        this.renderItemList(screen, 1, 1, 12, 11, this.container.items, this.window == 0 ? this.selected : -this.oSelected - 1);
+        this.renderItemStackList(screen, 1, 1, 12, 11, this.container.itemStacks, this.window == 0 ? this.selected : -this.oSelected - 1);
 
 		Font.renderFrame(screen, "inventory", 13, 1, 13 + 11, 11);
-        this.renderItemList(screen, 13, 1, 13 + 11, 11, this.player.inventory.items, this.window == 1 ? this.selected : -this.oSelected - 1);
+        this.renderItemStackList(screen, 13, 1, 13 + 11, 11, this.player.inventory.itemStacks, this.window == 1 ? this.selected : -this.oSelected - 1);
 		screen.setOffset(0, 0);
 	}
 }

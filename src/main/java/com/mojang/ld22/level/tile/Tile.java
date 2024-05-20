@@ -1,14 +1,14 @@
 package com.mojang.ld22.level.tile;
 
-import java.util.Random;
-
 import com.mojang.ld22.entity.Entity;
 import com.mojang.ld22.entity.Mob;
 import com.mojang.ld22.entity.Player;
 import com.mojang.ld22.gfx.Screen;
-import com.mojang.ld22.item.Item;
-import com.mojang.ld22.item.resource.Resource;
 import com.mojang.ld22.level.Level;
+import me.kalmemarq.minicraft.ItemStack;
+import me.kalmemarq.minicraft.Items;
+
+import java.util.Random;
 
 public class Tile {
 	public static int tickCount = 0;
@@ -34,9 +34,9 @@ public class Tile {
 	public static Tile infiniteFall = new InfiniteFallTile(16);
 	public static Tile cloud = new CloudTile(17);
 	public static Tile hardRock = new HardRockTile(18);
-	public static Tile ironOre = new OreTile(19, Resource.ironOre);
-	public static Tile goldOre = new OreTile(20, Resource.goldOre);
-	public static Tile gemOre = new OreTile(21, Resource.gem);
+	public static Tile ironOre = new OreTile(19, new ItemStack(Items.IRON_ORE));
+	public static Tile goldOre = new OreTile(20, new ItemStack(Items.GOLD_ORE));
+	public static Tile gemOre = new OreTile(21, new ItemStack(Items.GEM));
 	public static Tile cloudCactus = new CloudCactusTile(22);
 
 	public final byte id;
@@ -75,7 +75,7 @@ public class Tile {
 	public void steppedOn(Level level, int xt, int yt, Entity entity) {
 	}
 
-	public boolean interact(Level level, int xt, int yt, Player player, Item item, int attackDir) {
+	public boolean interact(Level level, int xt, int yt, Player player, ItemStack item, int attackDir) {
 		return false;
 	}
 

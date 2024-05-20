@@ -1,7 +1,8 @@
-package me.kalmemarq.minicraft;
+package me.kalmemarq.minicraft.render;
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import me.kalmemarq.minicraft.StringUtils;
 import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL33;
 import org.lwjgl.system.MemoryStack;

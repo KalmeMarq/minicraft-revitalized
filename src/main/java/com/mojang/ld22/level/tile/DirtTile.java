@@ -12,6 +12,8 @@ import com.mojang.ld22.item.ToolType;
 import com.mojang.ld22.item.resource.Resource;
 import com.mojang.ld22.level.Level;
 import com.mojang.ld22.sound.Sound;
+import me.kalmemarq.minicraft.ItemStack;
+import me.kalmemarq.minicraft.Items;
 
 public class DirtTile extends Tile {
 	public DirtTile(int id) {
@@ -26,17 +28,18 @@ public class DirtTile extends Tile {
 		screen.render(x * 16 + 8, y * 16 + 8, 3, col, 0);
 	}
 
-	public boolean interact(Level level, int xt, int yt, Player player, Item item, int attackDir) {
-		if (item instanceof ToolItem tool) {
-            if (tool.type == ToolType.shovel) {
+	@Override
+	public boolean interact(Level level, int xt, int yt, Player player, ItemStack item, int attackDir) {
+		if (item.getItem() instanceof ToolItem tool) {
+            if (tool.type == ToolType.SHOVEL) {
 				if (player.payStamina(4 - tool.level)) {
 					level.setTile(xt, yt, Tile.hole, 0);
-					level.add(new ItemEntity(new ResourceItem(Resource.dirt), xt * 16 + this.random.nextInt(10) + 3, yt * 16 + this.random.nextInt(10) + 3));
+					level.add(new ItemEntity(new ItemStack(Items.DIRT), xt * 16 + this.random.nextInt(10) + 3, yt * 16 + this.random.nextInt(10) + 3));
 					Game.instance.soundManager.play(Sound.monsterHurt);
 					return true;
 				}
 			}
-			if (tool.type == ToolType.hoe) {
+			if (tool.type == ToolType.HOE) {
 				if (player.payStamina(4 - tool.level)) {
 					level.setTile(xt, yt, Tile.farmland, 0);
 					Game.instance.soundManager.play(Sound.monsterHurt);

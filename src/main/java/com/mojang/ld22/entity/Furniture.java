@@ -3,6 +3,10 @@ package com.mojang.ld22.entity;
 import com.mojang.ld22.gfx.Screen;
 import com.mojang.ld22.item.FurnitureItem;
 import com.mojang.ld22.item.PowerGloveItem;
+import me.kalmemarq.minicraft.ItemStack;
+import me.kalmemarq.minicraft.Items;
+import me.kalmemarq.minicraft.bso.BsoListTag;
+import me.kalmemarq.minicraft.bso.BsoMapTag;
 
 public class Furniture extends Entity {
 	private int pushTime = 0;
@@ -17,12 +21,36 @@ public class Furniture extends Entity {
         this.yr = 3;
 	}
 
+	public ItemStack beforeGivenItem(ItemStack stack) {
+		return stack;
+	}
+
+	public void read(BsoMapTag data) {
+	}
+
 	public void tick() {
 		if (this.shouldTake != null) {
-			if (this.shouldTake.activeItem instanceof PowerGloveItem) {
+			if (this.shouldTake.activeItem.getItem() instanceof PowerGloveItem) {
                 this.remove();
-                this.shouldTake.inventory.add(0, this.shouldTake.activeItem);
-                this.shouldTake.activeItem = new FurnitureItem(this);
+                this.shouldTake.inventory.IS_add(0, this.shouldTake.activeItem);
+				if (this instanceof Anvil) {
+					this.shouldTake.activeItem = this.beforeGivenItem(new ItemStack(Items.ANVIL));
+				}
+				if (this instanceof Chest) {
+					this.shouldTake.activeItem = this.beforeGivenItem(new ItemStack(Items.CHEST));
+				}
+				if (this instanceof Furnace) {
+					this.shouldTake.activeItem = this.beforeGivenItem(new ItemStack(Items.FURNACE));
+				}
+				if (this instanceof Lantern) {
+					this.shouldTake.activeItem = this.beforeGivenItem(new ItemStack(Items.LANTERN));
+				}
+				if (this instanceof Oven) {
+					this.shouldTake.activeItem = this.beforeGivenItem(new ItemStack(Items.OVEN));
+				}
+				if (this instanceof Workbench) {
+					this.shouldTake.activeItem = this.beforeGivenItem(new ItemStack(Items.WORKBENCH));
+				}
 			}
             this.shouldTake = null;
 		}

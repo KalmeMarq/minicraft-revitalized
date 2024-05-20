@@ -1,5 +1,6 @@
-package me.kalmemarq.minicraft;
+package me.kalmemarq.minicraft.render;
 
+import me.kalmemarq.minicraft.IOUtils;
 import org.lwjgl.opengl.GL33;
 import org.lwjgl.opengl.GL45;
 import org.lwjgl.stb.STBImage;

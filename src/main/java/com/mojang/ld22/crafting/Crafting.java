@@ -1,17 +1,12 @@
 package com.mojang.ld22.crafting;
 
-import com.mojang.ld22.entity.Anvil;
-import com.mojang.ld22.entity.Chest;
-import com.mojang.ld22.entity.Furnace;
-import com.mojang.ld22.entity.Lantern;
-import com.mojang.ld22.entity.Oven;
-import com.mojang.ld22.entity.Workbench;
-import com.mojang.ld22.item.ToolType;
-import com.mojang.ld22.item.resource.Resource;
+import me.kalmemarq.minicraft.ItemStack;
+import me.kalmemarq.minicraft.Items;
 
 import java.util.ArrayList;
 import java.util.List;
 
+// TODO: Data-driven/dynamic registry
 public class Crafting {
 	public static final List<Recipe> anvilRecipes = new ArrayList<>();
 	public static final List<Recipe> ovenRecipes = new ArrayList<>();
@@ -19,51 +14,50 @@ public class Crafting {
 	public static final List<Recipe> workbenchRecipes = new ArrayList<>();
 
 	static {
-		try {
-			workbenchRecipes.add(new FurnitureRecipe(Lantern.class).addCost(Resource.wood, 5).addCost(Resource.slime, 10).addCost(Resource.glass, 4));
+		workbenchRecipes.add(new Recipe(new ItemStack(Items.LANTERN))
+			.addCost(new ItemStack(Items.WOOD, 5))
+			.addCost(new ItemStack(Items.SLIME, 10))
+			.addCost(new ItemStack(Items.GLASS, 4)));
 
-			workbenchRecipes.add(new FurnitureRecipe(Oven.class).addCost(Resource.stone, 15));
-			workbenchRecipes.add(new FurnitureRecipe(Furnace.class).addCost(Resource.stone, 20));
-			workbenchRecipes.add(new FurnitureRecipe(Workbench.class).addCost(Resource.wood, 20));
-			workbenchRecipes.add(new FurnitureRecipe(Chest.class).addCost(Resource.wood, 20));
-			workbenchRecipes.add(new FurnitureRecipe(Anvil.class).addCost(Resource.ironIngot, 5));
+		workbenchRecipes.add(new Recipe(new ItemStack(Items.OVEN)).addCost(new ItemStack(Items.STONE, 15)));
+		workbenchRecipes.add(new Recipe(new ItemStack(Items.FURNACE)).addCost(new ItemStack(Items.STONE, 20)));
+		workbenchRecipes.add(new Recipe(new ItemStack(Items.WORKBENCH)).addCost(new ItemStack(Items.WOOD, 20)));
+		workbenchRecipes.add(new Recipe(new ItemStack(Items.CHEST)).addCost(new ItemStack(Items.WOOD, 20)));
+		workbenchRecipes.add(new Recipe(new ItemStack(Items.ANVIL)).addCost(new ItemStack(Items.IRON_INGOT, 5)));
 
-			workbenchRecipes.add(new ToolRecipe(ToolType.sword, 0).addCost(Resource.wood, 5));
-			workbenchRecipes.add(new ToolRecipe(ToolType.axe, 0).addCost(Resource.wood, 5));
-			workbenchRecipes.add(new ToolRecipe(ToolType.hoe, 0).addCost(Resource.wood, 5));
-			workbenchRecipes.add(new ToolRecipe(ToolType.pickaxe, 0).addCost(Resource.wood, 5));
-			workbenchRecipes.add(new ToolRecipe(ToolType.shovel, 0).addCost(Resource.wood, 5));
-			workbenchRecipes.add(new ToolRecipe(ToolType.sword, 1).addCost(Resource.wood, 5).addCost(Resource.stone, 5));
-			workbenchRecipes.add(new ToolRecipe(ToolType.axe, 1).addCost(Resource.wood, 5).addCost(Resource.stone, 5));
-			workbenchRecipes.add(new ToolRecipe(ToolType.hoe, 1).addCost(Resource.wood, 5).addCost(Resource.stone, 5));
-			workbenchRecipes.add(new ToolRecipe(ToolType.pickaxe, 1).addCost(Resource.wood, 5).addCost(Resource.stone, 5));
-			workbenchRecipes.add(new ToolRecipe(ToolType.shovel, 1).addCost(Resource.wood, 5).addCost(Resource.stone, 5));
+		workbenchRecipes.add(new Recipe(new ItemStack(Items.WOOD_SWORD)).addCost(new ItemStack(Items.WOOD, 5)));
+		workbenchRecipes.add(new Recipe(new ItemStack(Items.WOOD_AXE)).addCost(new ItemStack(Items.WOOD, 5)));
+		workbenchRecipes.add(new Recipe(new ItemStack(Items.WOOD_HOE)).addCost(new ItemStack(Items.WOOD, 5)));
+		workbenchRecipes.add(new Recipe(new ItemStack(Items.WOOD_PICKAXE)).addCost(new ItemStack(Items.WOOD, 5)));
+		workbenchRecipes.add(new Recipe(new ItemStack(Items.WOOD_SHOVEL)).addCost(new ItemStack(Items.WOOD, 5)));
+		workbenchRecipes.add(new Recipe(new ItemStack(Items.ROCK_SWORD)).addCost(new ItemStack(Items.WOOD, 5)).addCost(new ItemStack(Items.STONE, 5)));
+		workbenchRecipes.add(new Recipe(new ItemStack(Items.ROCK_AXE)).addCost(new ItemStack(Items.WOOD, 5)).addCost(new ItemStack(Items.STONE, 5)));
+		workbenchRecipes.add(new Recipe(new ItemStack(Items.ROCK_HOE)).addCost(new ItemStack(Items.WOOD, 5)).addCost(new ItemStack(Items.STONE, 5)));
+		workbenchRecipes.add(new Recipe(new ItemStack(Items.ROCK_PICKAXE)).addCost(new ItemStack(Items.WOOD, 5)).addCost(new ItemStack(Items.STONE, 5)));
+		workbenchRecipes.add(new Recipe(new ItemStack(Items.ROCK_SHOVEL)).addCost(new ItemStack(Items.WOOD, 5)).addCost(new ItemStack(Items.STONE, 5)));
 
-			anvilRecipes.add(new ToolRecipe(ToolType.sword, 2).addCost(Resource.wood, 5).addCost(Resource.ironIngot, 5));
-			anvilRecipes.add(new ToolRecipe(ToolType.axe, 2).addCost(Resource.wood, 5).addCost(Resource.ironIngot, 5));
-			anvilRecipes.add(new ToolRecipe(ToolType.hoe, 2).addCost(Resource.wood, 5).addCost(Resource.ironIngot, 5));
-			anvilRecipes.add(new ToolRecipe(ToolType.pickaxe, 2).addCost(Resource.wood, 5).addCost(Resource.ironIngot, 5));
-			anvilRecipes.add(new ToolRecipe(ToolType.shovel, 2).addCost(Resource.wood, 5).addCost(Resource.ironIngot, 5));
+		anvilRecipes.add(new Recipe(new ItemStack(Items.IRON_SWORD)).addCost(new ItemStack(Items.WOOD, 5)).addCost(new ItemStack(Items.IRON_INGOT, 5)));
+		anvilRecipes.add(new Recipe(new ItemStack(Items.IRON_AXE)).addCost(new ItemStack(Items.WOOD, 5)).addCost(new ItemStack(Items.IRON_INGOT, 5)));
+		anvilRecipes.add(new Recipe(new ItemStack(Items.IRON_HOE)).addCost(new ItemStack(Items.WOOD, 5)).addCost(new ItemStack(Items.IRON_INGOT, 5)));
+		anvilRecipes.add(new Recipe(new ItemStack(Items.IRON_PICKAXE)).addCost(new ItemStack(Items.WOOD, 5)).addCost(new ItemStack(Items.IRON_INGOT, 5)));
+		anvilRecipes.add(new Recipe(new ItemStack(Items.IRON_SHOVEL)).addCost(new ItemStack(Items.WOOD, 5)).addCost(new ItemStack(Items.IRON_INGOT, 5)));
 
-			anvilRecipes.add(new ToolRecipe(ToolType.sword, 3).addCost(Resource.wood, 5).addCost(Resource.goldIngot, 5));
-			anvilRecipes.add(new ToolRecipe(ToolType.axe, 3).addCost(Resource.wood, 5).addCost(Resource.goldIngot, 5));
-			anvilRecipes.add(new ToolRecipe(ToolType.hoe, 3).addCost(Resource.wood, 5).addCost(Resource.goldIngot, 5));
-			anvilRecipes.add(new ToolRecipe(ToolType.pickaxe, 3).addCost(Resource.wood, 5).addCost(Resource.goldIngot, 5));
-			anvilRecipes.add(new ToolRecipe(ToolType.shovel, 3).addCost(Resource.wood, 5).addCost(Resource.goldIngot, 5));
+		anvilRecipes.add(new Recipe(new ItemStack(Items.GOLD_SWORD)).addCost(new ItemStack(Items.WOOD, 5)).addCost(new ItemStack(Items.GOLD_INGOT, 5)));
+		anvilRecipes.add(new Recipe(new ItemStack(Items.GOLD_AXE)).addCost(new ItemStack(Items.WOOD, 5)).addCost(new ItemStack(Items.GOLD_INGOT, 5)));
+		anvilRecipes.add(new Recipe(new ItemStack(Items.GOLD_HOE)).addCost(new ItemStack(Items.WOOD, 5)).addCost(new ItemStack(Items.GOLD_INGOT, 5)));
+		anvilRecipes.add(new Recipe(new ItemStack(Items.GOLD_PICKAXE)).addCost(new ItemStack(Items.WOOD, 5)).addCost(new ItemStack(Items.GOLD_INGOT, 5)));
+		anvilRecipes.add(new Recipe(new ItemStack(Items.GOLD_SHOVEL)).addCost(new ItemStack(Items.WOOD, 5)).addCost(new ItemStack(Items.GOLD_INGOT, 5)));
 
-			anvilRecipes.add(new ToolRecipe(ToolType.sword, 4).addCost(Resource.wood, 5).addCost(Resource.gem, 50));
-			anvilRecipes.add(new ToolRecipe(ToolType.axe, 4).addCost(Resource.wood, 5).addCost(Resource.gem, 50));
-			anvilRecipes.add(new ToolRecipe(ToolType.hoe, 4).addCost(Resource.wood, 5).addCost(Resource.gem, 50));
-			anvilRecipes.add(new ToolRecipe(ToolType.pickaxe, 4).addCost(Resource.wood, 5).addCost(Resource.gem, 50));
-			anvilRecipes.add(new ToolRecipe(ToolType.shovel, 4).addCost(Resource.wood, 5).addCost(Resource.gem, 50));
+		anvilRecipes.add(new Recipe(new ItemStack(Items.GEM_SWORD)).addCost(new ItemStack(Items.WOOD, 5)).addCost(new ItemStack(Items.GEM, 50)));
+		anvilRecipes.add(new Recipe(new ItemStack(Items.GEM_AXE)).addCost(new ItemStack(Items.WOOD, 5)).addCost(new ItemStack(Items.GEM, 50)));
+		anvilRecipes.add(new Recipe(new ItemStack(Items.GEM_HOE)).addCost(new ItemStack(Items.WOOD, 5)).addCost(new ItemStack(Items.GEM, 50)));
+		anvilRecipes.add(new Recipe(new ItemStack(Items.GEM_PICKAXE)).addCost(new ItemStack(Items.WOOD, 5)).addCost(new ItemStack(Items.GEM, 50)));
+		anvilRecipes.add(new Recipe(new ItemStack(Items.GEM_SHOVEL)).addCost(new ItemStack(Items.WOOD, 5)).addCost(new ItemStack(Items.GEM, 50)));
 
-			furnaceRecipes.add(new ResourceRecipe(Resource.ironIngot).addCost(Resource.ironOre, 4).addCost(Resource.coal, 1));
-			furnaceRecipes.add(new ResourceRecipe(Resource.goldIngot).addCost(Resource.goldOre, 4).addCost(Resource.coal, 1));
-			furnaceRecipes.add(new ResourceRecipe(Resource.glass).addCost(Resource.sand, 4).addCost(Resource.coal, 1));
+		furnaceRecipes.add(new Recipe(new ItemStack(Items.IRON_INGOT)).addCost(new ItemStack(Items.IRON_ORE, 4)).addCost(new ItemStack(Items.COAL, 1)));
+		furnaceRecipes.add(new Recipe(new ItemStack(Items.GOLD_INGOT)).addCost(new ItemStack(Items.GOLD_ORE, 4)).addCost(new ItemStack(Items.COAL, 1)));
+		furnaceRecipes.add(new Recipe(new ItemStack(Items.GLASS)).addCost(new ItemStack(Items.SAND, 4)).addCost(new ItemStack(Items.COAL, 1)));
 
-			ovenRecipes.add(new ResourceRecipe(Resource.bread).addCost(Resource.wheat, 4));
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		ovenRecipes.add(new Recipe(new ItemStack(Items.BREAD)).addCost(new ItemStack(Items.WHEAT, 4)));
 	}
 }

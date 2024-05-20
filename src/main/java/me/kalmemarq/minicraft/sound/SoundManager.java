@@ -1,4 +1,4 @@
-package me.kalmemarq.minicraft;
+package me.kalmemarq.minicraft.sound;
 
 import com.mojang.ld22.Game;
 import com.mojang.ld22.sound.Sound;
@@ -12,33 +12,26 @@ import org.lwjgl.openal.ALC10;
 import org.lwjgl.openal.ALC11;
 import org.lwjgl.openal.ALCCapabilities;
 import org.lwjgl.openal.ALCapabilities;
-import org.lwjgl.stb.STBVorbis;
-import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
 
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
-import java.nio.ShortBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public class SoundManager {
-	private static final Logger LOGGER = LogManager.getLogger(SoundManager.class);
+	protected static final Logger LOGGER = LogManager.getLogger(SoundManager.class);
 	private final long deviceHandle;
 	private long contextHandle = 0L;
 	private ALCapabilities capabilities = null;
 
 	private final Map<String, Integer> buffers = new HashMap<>();
 	private final List<StaticSoundSource> sources = new ArrayList<>();
+	private final List<StreamSoundSource> streamSources = new ArrayList<>();
 
 	private boolean initialized;
 
@@ -80,7 +73,23 @@ public class SoundManager {
 	}
 
 	public void playStream(String filepath, float volume, float pitch) {
-		// TODO
+		if (filepath.endsWith(".wav")) {
+			LOGGER.error("Streaming not supported for WAV files");
+			return;
+		}
+		OggFile.OggAudioInputStream inputStream;
+		try {
+			inputStream = new OggFile.OggAudioInputStream(SoundManager.class.getResourceAsStream(filepath));
+		} catch (IOException e) {
+			LOGGER.error(e);
+			return;
+		}
+		StreamSoundSource source = new StreamSoundSource();
+		source.setStream(inputStream);
+		source.setVolume(Math.clamp(volume, 0.1f, 10.0f));
+		source.setPitch(Math.clamp(pitch, 0.1f, 10.0f));
+		source.play();
+		this.streamSources.add(source);
 	}
 
 	public void play(String filepath, float volume, float pitch) {
@@ -88,9 +97,9 @@ public class SoundManager {
 			int buffer = AL11.alGenBuffers();
 			try {
 				if (filepath.endsWith(".wav")) {
-					loadAndSetBufferDataWav(buffer, filepath);
+					WavFile.loadAndSetBufferData(buffer, filepath);
 				} else {
-					loadAndSetBufferDataOgg(buffer, filepath);
+					OggFile.loadAndSetBufferData(buffer, filepath);
 				}
 			} catch (Exception e) {
 				LOGGER.error(e);
@@ -109,10 +118,18 @@ public class SoundManager {
 		for (StaticSoundSource source : this.sources) {
 			source.pause();
 		}
+
+		for (StreamSoundSource source : this.streamSources) {
+			source.pause();
+		}
 	}
 
 	public void resumeAll() {
 		for (StaticSoundSource source : this.sources) {
+			source.resume();
+		}
+
+		for (StreamSoundSource source : this.streamSources) {
 			source.resume();
 		}
 	}
@@ -124,6 +141,16 @@ public class SoundManager {
 			if (source.isStopped()) {
 				source.close();
 				iter.remove();
+			}
+		}
+
+		Iterator<StreamSoundSource> iterS = this.streamSources.iterator();
+		while (iterS.hasNext()) {
+			StreamSoundSource source = iterS.next();
+			source.tick();
+			if (source.isStopped()) {
+				source.close();
+				iterS.remove();
 			}
 		}
 	}
@@ -138,6 +165,11 @@ public class SoundManager {
 			source.close();
 		}
 		this.sources.clear();
+
+		for (StreamSoundSource source : this.streamSources) {
+			source.close();
+		}
+		this.streamSources.clear();
 
 		for (int buffer : this.buffers.values()) {
 			AL11.alDeleteBuffers(buffer);
@@ -158,43 +190,6 @@ public class SoundManager {
 		int err = AL10.alGetError();
 		if (err != AL10.AL_NO_ERROR) {
 			throw new RuntimeException(AL11.alGetString(err));
-		}
-	}
-
-	private static void loadAndSetBufferDataWav(int buffer, String filepath) throws IOException, UnsupportedAudioFileException {
-		AudioInputStream inputStream = AudioSystem.getAudioInputStream(Objects.requireNonNull(Sound.class.getResource(filepath)));
-		AudioFormat audioFormat = inputStream.getFormat();
-
-		int format = AL10.AL_FALSE;
-		if (audioFormat.getSampleSizeInBits() == 8) {
-			format = audioFormat.getChannels() == 1 ? AL10.AL_FORMAT_MONO8 : AL10.AL_FORMAT_STEREO8;
-		} else if (audioFormat.getSampleSizeInBits() == 16) {
-			format = audioFormat.getChannels() == 1 ? AL10.AL_FORMAT_MONO16 : AL10.AL_FORMAT_STEREO16;
-		}
-
-		ByteBuffer data = IOUtils.readInputStreamToByteBuffer(inputStream);
-		if (data != null) {
-			AL11.alBufferData(buffer, format, data, (int) audioFormat.getSampleRate());
-			checkALError();
-			MemoryUtil.memFree(data);
-		}
-	}
-
-	private static void loadAndSetBufferDataOgg(int buffer, String filepath) {
-		try (MemoryStack stack = MemoryStack.stackPush()) {
-			ByteBuffer data = IOUtils.readInputStreamToByteBuffer(SoundManager.class.getResourceAsStream(filepath));
-
-			if (data != null) {
-				IntBuffer channels = stack.mallocInt(1);
-				IntBuffer sampleRate = stack.mallocInt(1);
-
-				ShortBuffer audioData = STBVorbis.stb_vorbis_decode_memory(data, channels, sampleRate);
-				if (audioData != null) {
-					AL11.alBufferData(buffer, channels.get(0) == 1 ? AL11.AL_FORMAT_MONO16 : AL11.AL_FORMAT_STEREO16, audioData, sampleRate.get(0));
-					checkALError();
-				}
-				MemoryUtil.memFree(data);
-			}
 		}
 	}
 }

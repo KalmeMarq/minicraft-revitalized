@@ -12,6 +12,7 @@ import com.mojang.ld22.item.Item;
 import com.mojang.ld22.item.ToolItem;
 import com.mojang.ld22.item.ToolType;
 import com.mojang.ld22.level.Level;
+import me.kalmemarq.minicraft.ItemStack;
 
 public class CloudCactusTile extends Tile {
 	public CloudCactusTile(int id) {
@@ -34,9 +35,10 @@ public class CloudCactusTile extends Tile {
         this.hurt(level, x, y, 0);
 	}
 
-	public boolean interact(Level level, int xt, int yt, Player player, Item item, int attackDir) {
-		if (item instanceof ToolItem tool) {
-            if (tool.type == ToolType.pickaxe) {
+	@Override
+	public boolean interact(Level level, int xt, int yt, Player player, ItemStack item, int attackDir) {
+		if (item.getItem() instanceof ToolItem tool) {
+            if (tool.type == ToolType.PICKAXE) {
 				if (player.payStamina(6 - tool.level)) {
                     this.hurt(level, xt, yt, 1);
 					return true;

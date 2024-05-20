@@ -8,14 +8,12 @@ import com.mojang.ld22.gfx.Screen;
 import com.mojang.ld22.item.FurnitureItem;
 import com.mojang.ld22.item.Item;
 import com.mojang.ld22.item.PowerGloveItem;
-import com.mojang.ld22.item.ResourceItem;
-import com.mojang.ld22.item.ToolItem;
-import com.mojang.ld22.item.ToolType;
-import com.mojang.ld22.item.resource.Resource;
 import com.mojang.ld22.level.Level;
 import com.mojang.ld22.level.tile.Tile;
 import com.mojang.ld22.screen.InventoryMenu;
 import com.mojang.ld22.sound.Sound;
+import me.kalmemarq.minicraft.ItemStack;
+import me.kalmemarq.minicraft.Items;
 
 import java.util.List;
 
@@ -25,8 +23,8 @@ public class Player extends Mob {
 
 	public Game game;
 	public Inventory inventory = new Inventory();
-	public Item attackItem;
-	public Item activeItem;
+	public ItemStack attackItem;
+	public ItemStack activeItem;
 	public int stamina;
 	public int staminaRecharge;
 	public int staminaRechargeDelay;
@@ -42,9 +40,8 @@ public class Player extends Mob {
         this.y = 24;
         this.stamina = this.maxStamina;
 
-        this.inventory.add(new FurnitureItem(new Workbench()));
-        this.inventory.add(new PowerGloveItem());
-        this.inventory.add(new FurnitureItem(new Lantern()));
+        this.inventory.IS_add(new ItemStack(Items.WORKBENCH));
+        this.inventory.IS_add(new ItemStack(Items.POWER_GLOVE));
 	}
 
 	public void tick() {
@@ -276,7 +273,7 @@ public class Player extends Mob {
 			col = Color.get(-1, 555, 555, 555);
 		}
 
-		if (this.activeItem instanceof FurnitureItem) {
+		if (this.activeItem != null && this.activeItem.getItem() instanceof FurnitureItem) {
 			yt += 2;
 		}
 		screen.render(xo + 8 * flip1, yo, xt + yt * 32, col, flip1);
@@ -308,8 +305,8 @@ public class Player extends Mob {
 			}
 		}
 
-		if (this.activeItem instanceof FurnitureItem) {
-			Furniture furniture = ((FurnitureItem) this.activeItem).furniture;
+		if (this.activeItem != null && this.activeItem.getItem() instanceof FurnitureItem) {
+			Furniture furniture = ((FurnitureItem) this.activeItem.getItem()).furniture;
 			furniture.x = this.x;
 			furniture.y = yo;
 			furniture.render(screen);
@@ -319,7 +316,8 @@ public class Player extends Mob {
 
 	public void touchItem(ItemEntity itemEntity) {
 		itemEntity.take(this);
-        this.inventory.add(itemEntity.item);
+        if (itemEntity.stack == null) this.inventory.IS_add(itemEntity.stack);
+		else this.inventory.IS_add(itemEntity.stack);
 	}
 
 	public boolean canSwim() {
@@ -351,8 +349,8 @@ public class Player extends Mob {
 	public int getLightRadius() {
 		int r = 2;
 		if (this.activeItem != null) {
-			if (this.activeItem instanceof FurnitureItem) {
-				int rr = ((FurnitureItem) this.activeItem).furniture.getLightRadius();
+			if (this.activeItem.getItem() instanceof FurnitureItem) {
+				int rr = ((FurnitureItem) this.activeItem.getItem()).furniture.getLightRadius();
 				if (rr > r) r = rr;
 			}
 		}
@@ -361,7 +359,7 @@ public class Player extends Mob {
 
 	protected void die() {
 		super.die();
-		Game.instance.soundManager.play(Sound.playerDeath);
+		this.game.soundManager.play(Sound.playerDeath);
 	}
 
 	protected void touchedBy(Entity entity) {
@@ -373,7 +371,7 @@ public class Player extends Mob {
 	protected void doHurt(int damage, int attackDir) {
 		if (this.hurtTime > 0 || this.invulnerableTime > 0) return;
 
-		Game.instance.soundManager.play(Sound.playerHurt);
+		this.game.soundManager.play(Sound.playerHurt);
         this.level.add(new TextParticle("" + damage, this.x, this.y, Color.get(-1, 504, 504, 504)));
         this.health -= damage;
 		if (attackDir == 0) this.yKnockback = +6;

@@ -8,6 +8,7 @@ import com.mojang.ld22.gfx.Screen;
 import com.mojang.ld22.item.resource.Resource;
 import com.mojang.ld22.level.Level;
 import com.mojang.ld22.level.tile.Tile;
+import me.kalmemarq.minicraft.ItemStack;
 
 public class ResourceItem extends Item {
 	public Resource resource;
@@ -34,12 +35,9 @@ public class ResourceItem extends Item {
 		screen.render(x, y, this.resource.sprite, this.resource.color, 0);
 	}
 
-	public void renderInventory(Screen screen, int x, int y) {
+	public void renderInventory(Screen screen, int x, int y, ItemStack stack) {
 		screen.render(x, y, this.resource.sprite, this.resource.color, 0);
-		Font.draw(this.resource.name, screen, x + 32, y, Color.get(-1, 555, 555, 555));
-		int cc = this.count;
-		if (cc > 999) cc = 999;
-		Font.draw("" + cc, screen, x + 8, y, Color.get(-1, 444, 444, 444));
+		Font.draw(this.resource.name, screen, x + 8, y, Color.get(-1, 555, 555, 555));
 	}
 
 	public String getName() {
@@ -49,9 +47,10 @@ public class ResourceItem extends Item {
 	public void onTake(ItemEntity itemEntity) {
 	}
 
-	public boolean interactOn(Tile tile, Level level, int xt, int yt, Player player, int attackDir) {
+	@Override
+	public boolean interactOn(Tile tile, Level level, int xt, int yt, Player player, ItemStack stack, int attackDir) {
 		if (this.resource.interactOn(tile, level, xt, yt, player, attackDir)) {
-            this.count--;
+            stack.decrement(1);
 			return true;
 		}
 		return false;
@@ -60,5 +59,4 @@ public class ResourceItem extends Item {
 	public boolean isDepleted() {
 		return this.count <= 0;
 	}
-
 }

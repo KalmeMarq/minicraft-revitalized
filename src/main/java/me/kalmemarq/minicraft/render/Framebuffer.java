@@ -1,4 +1,4 @@
-package me.kalmemarq.minicraft;
+package me.kalmemarq.minicraft.render;
 
 import com.mojang.ld22.Game;
 import org.lwjgl.opengl.GL33;

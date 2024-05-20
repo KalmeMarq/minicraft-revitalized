@@ -1,17 +1,13 @@
-package me.kalmemarq.minicraft;
+package me.kalmemarq.minicraft.sound;
 
 import org.lwjgl.openal.AL10;
 import org.lwjgl.system.MemoryStack;
 
-public class StaticSoundSource {
-	private int handle;
+public abstract class SoundSource {
+	protected int handle;
 
-	public StaticSoundSource() {
+	public SoundSource() {
 		this.handle = AL10.alGenSources();
-	}
-
-	public void setBuffer(int buffer) {
-		AL10.alSourcei(this.handle, AL10.AL_BUFFER, buffer);
 	}
 
 	public void play() {

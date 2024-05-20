@@ -7,6 +7,7 @@ import com.mojang.ld22.gfx.Screen;
 import com.mojang.ld22.level.Level;
 import com.mojang.ld22.level.tile.Tile;
 import com.mojang.ld22.screen.ListItem;
+import me.kalmemarq.minicraft.ItemStack;
 
 public class Item implements ListItem {
 	public int getColor() {
@@ -20,7 +21,7 @@ public class Item implements ListItem {
 	public void onTake(ItemEntity itemEntity) {
 	}
 
-	public void renderInventory(Screen screen, int x, int y) {
+	public void renderInventory(Screen screen, int x, int y, ItemStack stack) {
 	}
 
 	public boolean interact(Player player, Entity entity, int attackDir) {
@@ -30,10 +31,10 @@ public class Item implements ListItem {
 	public void renderIcon(Screen screen, int x, int y) {
 	}
 
-	public boolean interactOn(Tile tile, Level level, int xt, int yt, Player player, int attackDir) {
+	public boolean interactOn(Tile tile, Level level, int xt, int yt, Player player, ItemStack stack, int attackDir) {
 		return false;
 	}
-	
+
 	public boolean isDepleted() {
 		return false;
 	}

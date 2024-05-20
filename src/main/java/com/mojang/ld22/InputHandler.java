@@ -2,7 +2,7 @@ package com.mojang.ld22;
 
 import it.unimi.dsi.fastutil.ints.Int2IntMap;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
-import me.kalmemarq.minicraft.NativeImage;
+import me.kalmemarq.minicraft.render.NativeImage;
 import org.lwjgl.glfw.GLFW;
 
 import java.awt.event.KeyEvent;

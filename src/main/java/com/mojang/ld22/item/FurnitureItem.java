@@ -8,6 +8,7 @@ import com.mojang.ld22.gfx.Font;
 import com.mojang.ld22.gfx.Screen;
 import com.mojang.ld22.level.Level;
 import com.mojang.ld22.level.tile.Tile;
+import me.kalmemarq.minicraft.ItemStack;
 
 public class FurnitureItem extends Item {
 	public Furniture furniture;
@@ -29,7 +30,7 @@ public class FurnitureItem extends Item {
 		screen.render(x, y, this.getSprite(), this.getColor(), 0);
 	}
 
-	public void renderInventory(Screen screen, int x, int y) {
+	public void renderInventory(Screen screen, int x, int y, ItemStack itemStack) {
 		screen.render(x, y, this.getSprite(), this.getColor(), 0);
 		Font.draw(this.furniture.name, screen, x + 8, y, Color.get(-1, 555, 555, 555));
 	}
@@ -41,13 +42,21 @@ public class FurnitureItem extends Item {
 		return false;
 	}
 
-	public boolean interactOn(Tile tile, Level level, int xt, int yt, Player player, int attackDir) {
+	@Override
+	public boolean interactOn(Tile tile, Level level, int xt, int yt, Player player, ItemStack stack, int attackDir) {
 		if (tile.mayPass(level, xt, yt, this.furniture)) {
-            this.furniture.x = xt * 16 + 8;
-            this.furniture.y = yt * 16 + 8;
-			level.add(this.furniture);
-            this.placed = true;
-			return true;
+			try {
+				Furniture furniture = this.furniture.getClass().getConstructor().newInstance();
+				furniture.x = xt * 16 + 8;
+				furniture.y = yt * 16 + 8;
+				if (stack.getData() != null) furniture.read(stack.getData());
+				level.add(furniture);
+				this.placed = true;
+				return true;
+			} catch (Exception e) {
+				e.printStackTrace();
+				return false;
+			}
 		}
 		return false;
 	}
@@ -55,7 +64,7 @@ public class FurnitureItem extends Item {
 	public boolean isDepleted() {
 		return this.placed;
 	}
-	
+
 	public String getName() {
 		return this.furniture.name;
 	}

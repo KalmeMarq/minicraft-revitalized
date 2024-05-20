@@ -3,8 +3,8 @@ package com.mojang.ld22.entity;
 import com.mojang.ld22.Game;
 import com.mojang.ld22.gfx.Color;
 import com.mojang.ld22.gfx.Screen;
-import com.mojang.ld22.item.Item;
 import com.mojang.ld22.sound.Sound;
+import me.kalmemarq.minicraft.ItemStack;
 
 public class ItemEntity extends Entity {
 	private final int lifeTime;
@@ -14,22 +14,22 @@ public class ItemEntity extends Entity {
 	protected int xKnockback, yKnockback;
 	public double xa, ya, za;
 	public double xx, yy, zz;
-	public Item item;
+	public ItemStack stack;
 	private int time = 0;
 
-	public ItemEntity(Item item, int x, int y) {
-		this.item = item;
-        this.xx = this.x = x;
-        this.yy = this.y = y;
-        this.xr = 3;
-        this.yr = 3;
+	public ItemEntity(ItemStack stack, int x, int y) {
+		this.stack = stack;
+		this.xx = this.x = x;
+		this.yy = this.y = y;
+		this.xr = 3;
+		this.yr = 3;
 
-        this.zz = 2;
-        this.xa = this.random.nextGaussian() * 0.3;
-        this.ya = this.random.nextGaussian() * 0.2;
-        this.za = this.random.nextFloat() * 0.7 + 1;
+		this.zz = 2;
+		this.xa = this.random.nextGaussian() * 0.3;
+		this.ya = this.random.nextGaussian() * 0.2;
+		this.za = this.random.nextFloat() * 0.7 + 1;
 
-        this.lifeTime = 60 * 10 + this.random.nextInt(60);
+		this.lifeTime = 60 * 10 + this.random.nextInt(60);
 	}
 
 	public void tick() {
@@ -71,8 +71,9 @@ public class ItemEntity extends Entity {
 		if (this.time >= this.lifeTime - 6 * 20) {
 			if (this.time / 6 % 2 == 0) return;
 		}
-		screen.render(this.x - 4, this.y - 4, this.item.getSprite(), Color.get(-1, 0, 0, 0), 0);
-		screen.render(this.x - 4, this.y - 4 - (int) (this.zz), this.item.getSprite(), this.item.getColor(), 0);
+
+		screen.render(this.x - 4, this.y - 4, this.stack.getItem().getSprite(), Color.get(-1, 0, 0, 0), 0);
+		screen.render(this.x - 4, this.y - 4 - (int) (this.zz), this.stack.getItem().getSprite(), this.stack.getItem().getColor(), 0);
 	}
 
 	protected void touchedBy(Entity entity) {
@@ -82,7 +83,7 @@ public class ItemEntity extends Entity {
 	public void take(Player player) {
 		Game.instance.soundManager.play(Sound.pickup);
 		player.score++;
-        this.item.onTake(this);
+//        if (this.item != null) this.item.onTake(this);
         this.remove();
 	}
 }

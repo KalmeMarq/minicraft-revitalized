@@ -12,14 +12,14 @@ import com.mojang.ld22.screen.LevelTransitionMenu;
 import com.mojang.ld22.screen.Menu;
 import com.mojang.ld22.screen.TitleMenu;
 import com.mojang.ld22.screen.WonMenu;
-import me.kalmemarq.minicraft.Framebuffer;
-import me.kalmemarq.minicraft.NativeImage;
-import me.kalmemarq.minicraft.ShaderProgram;
-import me.kalmemarq.minicraft.SoundManager;
-import me.kalmemarq.minicraft.Texture;
-import me.kalmemarq.minicraft.VertexBuffer;
-import me.kalmemarq.minicraft.VertexLayout;
-import me.kalmemarq.minicraft.Window;
+import me.kalmemarq.minicraft.render.Framebuffer;
+import me.kalmemarq.minicraft.render.NativeImage;
+import me.kalmemarq.minicraft.render.ShaderProgram;
+import me.kalmemarq.minicraft.sound.SoundManager;
+import me.kalmemarq.minicraft.render.Texture;
+import me.kalmemarq.minicraft.render.VertexBuffer;
+import me.kalmemarq.minicraft.render.VertexLayout;
+import me.kalmemarq.minicraft.sound.Window;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joml.Matrix4f;
@@ -314,11 +314,11 @@ public class Game implements Runnable, Window.WindowEventHandler {
 		this.tickCount++;
 
 		boolean hasFocus = SHOW_JFRAME ? this.canvas.hasFocus() || GLFW.glfwGetWindowAttrib(this.window.getHandle(), GLFW.GLFW_FOCUSED) == GLFW.GLFW_TRUE : GLFW.glfwGetWindowAttrib(this.window.getHandle(), GLFW.GLFW_FOCUSED) == GLFW.GLFW_TRUE;
+		this.soundManager.tick();
 
 		if (!hasFocus) {
 			this.input.releaseAll();
 		} else {
-			this.soundManager.tick();
 			if (!this.player.removed && !this.hasWon) this.gameTime++;
 
 			this.input.tick();

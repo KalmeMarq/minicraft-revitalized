@@ -8,6 +8,9 @@ import com.mojang.ld22.entity.Slime;
 import com.mojang.ld22.entity.Zombie;
 import com.mojang.ld22.gfx.Screen;
 import com.mojang.ld22.level.levelgen.LevelGen;
+import com.mojang.ld22.level.levelgen.SkyMapGenerator;
+import com.mojang.ld22.level.levelgen.TopMapGenerator;
+import com.mojang.ld22.level.levelgen.UndergroundMapGenerator;
 import com.mojang.ld22.level.tile.Tile;
 
 import java.util.ArrayList;
@@ -43,17 +46,19 @@ public class Level {
 		this.h = h;
 		byte[][] maps;
 
+		long seed = this.random.nextLong();
+
 		if (level == 1) {
             this.dirtColor = 444;
 		}
 		if (level == 0)
-			maps = LevelGen.createAndValidateTopMap(w, h);
+			maps = new TopMapGenerator(this.w, this.h, seed).generateAndValidate();
 		else if (level < 0) {
-			maps = LevelGen.createAndValidateUndergroundMap(w, h, -level);
-            this.monsterDensity = 4;
+            maps = new UndergroundMapGenerator(this.w, this.h, -level, seed).generateAndValidate();
+			this.monsterDensity = 4;
 		} else {
-			maps = LevelGen.createAndValidateSkyMap(w, h); // Sky level
-            this.monsterDensity = 4;
+            maps = new SkyMapGenerator(this.w, this.h, seed).generateAndValidate();
+			this.monsterDensity = 4;
 		}
 
         this.tiles = maps[0];

@@ -1,4 +1,4 @@
-package me.kalmemarq.minicraft;
+package me.kalmemarq.minicraft.render;
 
 import org.lwjgl.opengl.GL33;
 import org.lwjgl.system.MemoryStack;
