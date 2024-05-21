@@ -1,0 +1,12 @@
+{
+  "for": "workbench",
+  "cost": [
+    {
+      "item": "iron_ingot",
+      "count": 5
+    }
+  ],
+  "result": {
+    "item": "anvil"
+  }
+}

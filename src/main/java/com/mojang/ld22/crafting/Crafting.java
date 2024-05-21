@@ -1,63 +1,78 @@
 package com.mojang.ld22.crafting;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.mojang.ld22.item.Item;
+import me.kalmemarq.minicraft.IOUtils;
 import me.kalmemarq.minicraft.ItemStack;
 import me.kalmemarq.minicraft.Items;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Stream;
 
-// TODO: Data-driven/dynamic registry
+// TODO: Use dynamic registry
 public class Crafting {
 	public static final List<Recipe> anvilRecipes = new ArrayList<>();
 	public static final List<Recipe> ovenRecipes = new ArrayList<>();
 	public static final List<Recipe> furnaceRecipes = new ArrayList<>();
 	public static final List<Recipe> workbenchRecipes = new ArrayList<>();
 
-	static {
-		workbenchRecipes.add(new Recipe(new ItemStack(Items.LANTERN))
-			.addCost(new ItemStack(Items.WOOD, 5))
-			.addCost(new ItemStack(Items.SLIME, 10))
-			.addCost(new ItemStack(Items.GLASS, 4)));
+	public static void load() {
+		for (Path path : listRecipeFiles()) {
+			try {
+				loadRecipe(IOUtils.getResourcesPath().relativize(path), (ObjectNode) IOUtils.JSON_OBJECT_MAPPER.readTree(Files.newBufferedReader(path)));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
-		workbenchRecipes.add(new Recipe(new ItemStack(Items.OVEN)).addCost(new ItemStack(Items.STONE, 15)));
-		workbenchRecipes.add(new Recipe(new ItemStack(Items.FURNACE)).addCost(new ItemStack(Items.STONE, 20)));
-		workbenchRecipes.add(new Recipe(new ItemStack(Items.WORKBENCH)).addCost(new ItemStack(Items.WOOD, 20)));
-		workbenchRecipes.add(new Recipe(new ItemStack(Items.CHEST)).addCost(new ItemStack(Items.WOOD, 20)));
-		workbenchRecipes.add(new Recipe(new ItemStack(Items.ANVIL)).addCost(new ItemStack(Items.IRON_INGOT, 5)));
+	private static void loadRecipe(Path name, ObjectNode node) {
+		String forStation = node.get("for").textValue();
+		ArrayNode ingredients = (ArrayNode) node.get("cost");
+		ObjectNode result = (ObjectNode) node.get("result");
 
-		workbenchRecipes.add(new Recipe(new ItemStack(Items.WOOD_SWORD)).addCost(new ItemStack(Items.WOOD, 5)));
-		workbenchRecipes.add(new Recipe(new ItemStack(Items.WOOD_AXE)).addCost(new ItemStack(Items.WOOD, 5)));
-		workbenchRecipes.add(new Recipe(new ItemStack(Items.WOOD_HOE)).addCost(new ItemStack(Items.WOOD, 5)));
-		workbenchRecipes.add(new Recipe(new ItemStack(Items.WOOD_PICKAXE)).addCost(new ItemStack(Items.WOOD, 5)));
-		workbenchRecipes.add(new Recipe(new ItemStack(Items.WOOD_SHOVEL)).addCost(new ItemStack(Items.WOOD, 5)));
-		workbenchRecipes.add(new Recipe(new ItemStack(Items.ROCK_SWORD)).addCost(new ItemStack(Items.WOOD, 5)).addCost(new ItemStack(Items.STONE, 5)));
-		workbenchRecipes.add(new Recipe(new ItemStack(Items.ROCK_AXE)).addCost(new ItemStack(Items.WOOD, 5)).addCost(new ItemStack(Items.STONE, 5)));
-		workbenchRecipes.add(new Recipe(new ItemStack(Items.ROCK_HOE)).addCost(new ItemStack(Items.WOOD, 5)).addCost(new ItemStack(Items.STONE, 5)));
-		workbenchRecipes.add(new Recipe(new ItemStack(Items.ROCK_PICKAXE)).addCost(new ItemStack(Items.WOOD, 5)).addCost(new ItemStack(Items.STONE, 5)));
-		workbenchRecipes.add(new Recipe(new ItemStack(Items.ROCK_SHOVEL)).addCost(new ItemStack(Items.WOOD, 5)).addCost(new ItemStack(Items.STONE, 5)));
+		Item resItem = Items.getByStringId(result.get("item").textValue());
+		if (resItem == null) throw new RuntimeException("resItem is null: " + name);
+		ItemStack output = new ItemStack(resItem, result.has("count") ? result.get("count").shortValue() : 1);
+		Recipe recipe = new Recipe(output);
 
-		anvilRecipes.add(new Recipe(new ItemStack(Items.IRON_SWORD)).addCost(new ItemStack(Items.WOOD, 5)).addCost(new ItemStack(Items.IRON_INGOT, 5)));
-		anvilRecipes.add(new Recipe(new ItemStack(Items.IRON_AXE)).addCost(new ItemStack(Items.WOOD, 5)).addCost(new ItemStack(Items.IRON_INGOT, 5)));
-		anvilRecipes.add(new Recipe(new ItemStack(Items.IRON_HOE)).addCost(new ItemStack(Items.WOOD, 5)).addCost(new ItemStack(Items.IRON_INGOT, 5)));
-		anvilRecipes.add(new Recipe(new ItemStack(Items.IRON_PICKAXE)).addCost(new ItemStack(Items.WOOD, 5)).addCost(new ItemStack(Items.IRON_INGOT, 5)));
-		anvilRecipes.add(new Recipe(new ItemStack(Items.IRON_SHOVEL)).addCost(new ItemStack(Items.WOOD, 5)).addCost(new ItemStack(Items.IRON_INGOT, 5)));
+		for (JsonNode item : ingredients) {
+			ObjectNode obj = (ObjectNode) item;
+			Item cItem = Items.getByStringId(obj.get("item").textValue());
+			if (cItem == null) throw new RuntimeException("cItem is null: " + name);
+			recipe.addCost(new ItemStack(cItem, obj.has("count") ? obj.get("count").shortValue() : 1));
+		}
 
-		anvilRecipes.add(new Recipe(new ItemStack(Items.GOLD_SWORD)).addCost(new ItemStack(Items.WOOD, 5)).addCost(new ItemStack(Items.GOLD_INGOT, 5)));
-		anvilRecipes.add(new Recipe(new ItemStack(Items.GOLD_AXE)).addCost(new ItemStack(Items.WOOD, 5)).addCost(new ItemStack(Items.GOLD_INGOT, 5)));
-		anvilRecipes.add(new Recipe(new ItemStack(Items.GOLD_HOE)).addCost(new ItemStack(Items.WOOD, 5)).addCost(new ItemStack(Items.GOLD_INGOT, 5)));
-		anvilRecipes.add(new Recipe(new ItemStack(Items.GOLD_PICKAXE)).addCost(new ItemStack(Items.WOOD, 5)).addCost(new ItemStack(Items.GOLD_INGOT, 5)));
-		anvilRecipes.add(new Recipe(new ItemStack(Items.GOLD_SHOVEL)).addCost(new ItemStack(Items.WOOD, 5)).addCost(new ItemStack(Items.GOLD_INGOT, 5)));
+		switch (forStation) {
+			case "workbench" -> workbenchRecipes.add(recipe);
+			case "oven" -> ovenRecipes.add(recipe);
+			case "anvil" -> anvilRecipes.add(recipe);
+			case "furnace" -> furnaceRecipes.add(recipe);
+		}
+	}
 
-		anvilRecipes.add(new Recipe(new ItemStack(Items.GEM_SWORD)).addCost(new ItemStack(Items.WOOD, 5)).addCost(new ItemStack(Items.GEM, 50)));
-		anvilRecipes.add(new Recipe(new ItemStack(Items.GEM_AXE)).addCost(new ItemStack(Items.WOOD, 5)).addCost(new ItemStack(Items.GEM, 50)));
-		anvilRecipes.add(new Recipe(new ItemStack(Items.GEM_HOE)).addCost(new ItemStack(Items.WOOD, 5)).addCost(new ItemStack(Items.GEM, 50)));
-		anvilRecipes.add(new Recipe(new ItemStack(Items.GEM_PICKAXE)).addCost(new ItemStack(Items.WOOD, 5)).addCost(new ItemStack(Items.GEM, 50)));
-		anvilRecipes.add(new Recipe(new ItemStack(Items.GEM_SHOVEL)).addCost(new ItemStack(Items.WOOD, 5)).addCost(new ItemStack(Items.GEM, 50)));
+	private static List<Path> listRecipeFiles() {
+		List<Path> files = new ArrayList<>();
 
-		furnaceRecipes.add(new Recipe(new ItemStack(Items.IRON_INGOT)).addCost(new ItemStack(Items.IRON_ORE, 4)).addCost(new ItemStack(Items.COAL, 1)));
-		furnaceRecipes.add(new Recipe(new ItemStack(Items.GOLD_INGOT)).addCost(new ItemStack(Items.GOLD_ORE, 4)).addCost(new ItemStack(Items.COAL, 1)));
-		furnaceRecipes.add(new Recipe(new ItemStack(Items.GLASS)).addCost(new ItemStack(Items.SAND, 4)).addCost(new ItemStack(Items.COAL, 1)));
+		try (Stream<Path> paths = Files.walk(IOUtils.getResourcesPath().resolve("recipes"))) {
+			for (Iterator<Path> it = paths.iterator(); it.hasNext(); ) {
+				Path path = it.next();
+				if (!Files.isDirectory(path) && path.toString().endsWith(".json")) {
+					files.add(path);
+				}
+			}
 
-		ovenRecipes.add(new Recipe(new ItemStack(Items.BREAD)).addCost(new ItemStack(Items.WHEAT, 4)));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return files;
 	}
 }

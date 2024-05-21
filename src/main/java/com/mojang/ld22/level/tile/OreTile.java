@@ -12,26 +12,23 @@ import com.mojang.ld22.item.Item;
 import com.mojang.ld22.item.ResourceItem;
 import com.mojang.ld22.item.ToolItem;
 import com.mojang.ld22.item.ToolType;
-import com.mojang.ld22.item.resource.Resource;
 import com.mojang.ld22.level.Level;
 import me.kalmemarq.minicraft.ItemStack;
 
 public class OreTile extends Tile {
 	private final ItemStack toDrop;
-	private int color;
 
 	public OreTile(int id, ItemStack toDrop) {
 		super(id);
 		this.toDrop = toDrop;
-		this.color = ((ResourceItem) toDrop.getItem()).resource.color & 0xffff00;
 	}
 
 	public void render(Screen screen, Level level, int x, int y) {
-        this.color = (((ResourceItem) this.toDrop.getItem()).resource.color & 0xffffff00) + Color.get(level.dirtColor);
-		screen.render(x * 16, y * 16, 17 + 32, this.color, 0);
-		screen.render(x * 16 + 8, y * 16, 18 + 32, this.color, 0);
-		screen.render(x * 16, y * 16 + 8, 17 + 2 * 32, this.color, 0);
-		screen.render(x * 16 + 8, y * 16 + 8, 18 + 2 * 32, this.color, 0);
+		int color = (((ResourceItem) this.toDrop.getItem()).resource.color & 0xffffff00) + Color.get(level.dirtColor);
+		screen.render(x * 16, y * 16, 17 + 32, color, 0);
+		screen.render(x * 16 + 8, y * 16, 18 + 32, color, 0);
+		screen.render(x * 16, y * 16 + 8, 17 + 2 * 32, color, 0);
+		screen.render(x * 16 + 8, y * 16 + 8, 18 + 2 * 32, color, 0);
 	}
 
 	public boolean mayPass(Level level, int x, int y, Entity e) {

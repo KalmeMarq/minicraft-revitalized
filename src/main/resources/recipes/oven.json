@@ -1,0 +1,12 @@
+{
+  "for": "workbench",
+  "cost": [
+    {
+      "item": "stone",
+      "count": 15
+    }
+  ],
+  "result": {
+    "item": "oven"
+  }
+}

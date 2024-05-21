@@ -1,5 +1,6 @@
 package com.mojang.ld22;
 
+import com.mojang.ld22.crafting.Crafting;
 import com.mojang.ld22.entity.Player;
 import com.mojang.ld22.gfx.Color;
 import com.mojang.ld22.gfx.Font;
@@ -8,6 +9,7 @@ import com.mojang.ld22.gfx.SpriteSheet;
 import com.mojang.ld22.level.Level;
 import com.mojang.ld22.level.tile.Tile;
 import com.mojang.ld22.screen.DeadMenu;
+import com.mojang.ld22.screen.GameMenu;
 import com.mojang.ld22.screen.LevelTransitionMenu;
 import com.mojang.ld22.screen.Menu;
 import com.mojang.ld22.screen.TitleMenu;
@@ -260,6 +262,7 @@ public class Game implements Runnable, Window.WindowEventHandler {
 		this.init();
 		this.setupGl();
 		this.soundManager = new SoundManager();
+		Crafting.load();
 		this.window.show();
 
 		while (this.running) {
@@ -339,7 +342,11 @@ public class Game implements Runnable, Window.WindowEventHandler {
 			this.input.tick();
 			if (this.menu != null) {
 				this.menu.tick();
-			} else {
+			} else if (this.level != null) {
+				if (this.input.back.clicked) {
+					this.setMenu(new GameMenu());
+				}
+
 				if (this.player.removed) {
 					this.playerDeadTime++;
 					if (this.playerDeadTime > 60) {

@@ -48,6 +48,8 @@ public class InputHandler implements KeyListener {
 	public Key attack = new Key();
 	public Key menu = new Key();
 
+	public Key back = new Key();
+
 	public void releaseAll() {
 		for (Key key : this.keys) {
 			key.down = false;
@@ -126,6 +128,8 @@ public class InputHandler implements KeyListener {
 
 		if (ke == KeyEvent.VK_X) this.menu.toggle(pressed);
 		if (ke == KeyEvent.VK_C) this.attack.toggle(pressed);
+
+		if (ke == KeyEvent.VK_ESCAPE) this.back.toggle(pressed);
 	}
 
 	public void keyTyped(KeyEvent ke) {
@@ -156,5 +160,6 @@ public class InputHandler implements KeyListener {
 		keyCodes.put(GLFW.GLFW_KEY_ENTER, KeyEvent.VK_ENTER);
 		keyCodes.put(GLFW.GLFW_KEY_X, KeyEvent.VK_X);
 		keyCodes.put(GLFW.GLFW_KEY_C, KeyEvent.VK_C);
+		keyCodes.put(GLFW.GLFW_KEY_ESCAPE, KeyEvent.VK_ESCAPE);
 	}
 }

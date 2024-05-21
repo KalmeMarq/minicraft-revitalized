@@ -1,0 +1,12 @@
+{
+  "for": "oven",
+  "cost": [
+    {
+      "item": "wheat",
+      "count": 4
+    }
+  ],
+  "result": {
+    "item": "bread"
+  }
+}
