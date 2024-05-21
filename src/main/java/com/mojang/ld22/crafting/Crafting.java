@@ -38,14 +38,14 @@ public class Crafting {
 		ArrayNode ingredients = (ArrayNode) node.get("cost");
 		ObjectNode result = (ObjectNode) node.get("result");
 
-		Item resItem = Items.getByStringId(result.get("item").textValue());
+		Item resItem = Items.REGISTRY.getByStringId(result.get("item").textValue());
 		if (resItem == null) throw new RuntimeException("resItem is null: " + name);
 		ItemStack output = new ItemStack(resItem, result.has("count") ? result.get("count").shortValue() : 1);
 		Recipe recipe = new Recipe(output);
 
 		for (JsonNode item : ingredients) {
 			ObjectNode obj = (ObjectNode) item;
-			Item cItem = Items.getByStringId(obj.get("item").textValue());
+			Item cItem = Items.REGISTRY.getByStringId(obj.get("item").textValue());
 			if (cItem == null) throw new RuntimeException("cItem is null: " + name);
 			recipe.addCost(new ItemStack(cItem, obj.has("count") ? obj.get("count").shortValue() : 1));
 		}

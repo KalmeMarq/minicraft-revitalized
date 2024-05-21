@@ -13,6 +13,9 @@ val lwjglNatives = lwjglNatives()
 val jomlVersion: String by project
 val fastUtilVersion: String by project
 val log4jVersion: String by project
+val nettyVersion: String by project
+val jacksonVersion: String by project
+val jorbisVersion: String by project
 
 repositories {
     mavenCentral()
@@ -27,13 +30,17 @@ dependencies {
 //      }
     }
 
+    arrayOf("netty-buffer", "netty-codec", "netty-common", "netty-handler", "netty-resolver", "netty-transport").forEach {
+        implementation("io.netty:${it}:$nettyVersion")
+    }
+
     implementation("org.apache.logging.log4j:log4j-api:$log4jVersion")
     implementation("org.apache.logging.log4j:log4j-core:$log4jVersion")
     implementation("org.joml", "joml", jomlVersion)
     implementation("it.unimi.dsi:fastutil:$fastUtilVersion")
-    implementation("org.jcraft:jorbis:0.0.17")
+    implementation("org.jcraft:jorbis:$jorbisVersion")
 
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.17.1")
+    implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
 }
 
 tasks {

@@ -93,7 +93,7 @@ public class ItemStack {
 	}
 
 	public BsoMapTag write(BsoMapTag obj) {
-		obj.put("id", Items.getNumericId(this.item));
+		obj.put("id", Items.REGISTRY.getNumericId(this.item));
 		obj.put("count", (short) this.count);
 		if (this.data != null) obj.put("data", this.data);
 		return obj;

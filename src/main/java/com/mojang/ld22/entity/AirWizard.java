@@ -151,6 +151,7 @@ public class AirWizard extends Mob {
             this.level.player.score += 1000;
             this.level.player.gameWon();
 		}
-		Game.instance.soundManager.play(Sound.bossdeath);
+		if (Game.USE_OPENAL) Game.instance.soundManager.play("/sounds/bossdeath.ogg", 1.0f, 1.0f);
+		else Game.instance.soundManager.play(Sound.bossdeath);
 	}
 }

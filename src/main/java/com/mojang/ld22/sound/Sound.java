@@ -1,7 +1,5 @@
 package com.mojang.ld22.sound;
 
-import com.mojang.ld22.Game;
-
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;

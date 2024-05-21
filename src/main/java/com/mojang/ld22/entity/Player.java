@@ -89,6 +89,7 @@ public class Player extends Mob {
                 this.stamina--;
 			} else {
                 this.hurt(this, 1, this.dir ^ 1);
+				System.out.println("hurted: " + this.health);
 			}
 		}
 
@@ -109,7 +110,6 @@ public class Player extends Mob {
 			}
 		}
 		if (this.attackTime > 0) this.attackTime--;
-
 	}
 
 	private boolean use() {
@@ -354,7 +354,8 @@ public class Player extends Mob {
 
 	protected void die() {
 		super.die();
-		this.game.soundManager.play(Sound.playerDeath);
+		if (Game.USE_OPENAL) this.game.soundManager.play("/sounds/death.ogg", 1.0f, 1.0f);
+		else this.game.soundManager.play(Sound.playerDeath);
 	}
 
 	protected void touchedBy(Entity entity) {

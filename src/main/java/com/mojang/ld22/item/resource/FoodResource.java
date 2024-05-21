@@ -8,8 +8,8 @@ public class FoodResource extends Resource {
 	private final int heal;
 	private final int staminaCost;
 
-	public FoodResource(String name, int sprite, int color, int heal, int staminaCost) {
-		super(name, sprite, color);
+	public FoodResource(int sprite, int color, int heal, int staminaCost) {
+		super(sprite, color);
 		this.heal = heal;
 		this.staminaCost = staminaCost;
 	}

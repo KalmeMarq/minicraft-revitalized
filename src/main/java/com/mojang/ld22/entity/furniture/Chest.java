@@ -23,7 +23,7 @@ public class Chest extends Furniture {
 		if (list != null) {
 			for (BsoTag item : list) {
 				BsoMapTag obj = (BsoMapTag) item;
-				this.inventory.itemStacks.add(new ItemStack(Items.getByNumericId(obj.getInt("id")), obj.getShort("count")));
+				this.inventory.itemStacks.add(new ItemStack(Items.REGISTRY.getByNumericId(obj.getInt("id")), obj.getShort("count")));
 			}
 		}
 	}

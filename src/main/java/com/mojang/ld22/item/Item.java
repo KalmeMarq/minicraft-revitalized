@@ -15,12 +15,12 @@ public class Item implements ListItem {
 	private String stringId;
 
 	public int getNumericId() {
-		if (this.numericId == -1) this.numericId = Items.getNumericId(this);
+		if (this.numericId == -1) this.numericId = Items.REGISTRY.getNumericId(this);
 		return this.numericId;
 	}
 
 	public String getStringId() {
-		if (this.stringId == null) this.stringId = Items.getStringId(this);
+		if (this.stringId == null) this.stringId = Items.REGISTRY.getStringId(this);
 		return this.stringId;
 	}
 

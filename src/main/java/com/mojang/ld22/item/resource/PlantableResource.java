@@ -11,12 +11,12 @@ public class PlantableResource extends Resource {
 	private final List<Tile> sourceTiles;
 	private final Tile targetTile;
 
-	public PlantableResource(String name, int sprite, int color, Tile targetTile, Tile... sourceTiles1) {
-		this(name, sprite, color, targetTile, Arrays.asList(sourceTiles1));
+	public PlantableResource( int sprite, int color, Tile targetTile, Tile... sourceTiles1) {
+		this( sprite, color, targetTile, Arrays.asList(sourceTiles1));
 	}
 
-	public PlantableResource(String name, int sprite, int color, Tile targetTile, List<Tile> sourceTiles) {
-		super(name, sprite, color);
+	public PlantableResource(int sprite, int color, Tile targetTile, List<Tile> sourceTiles) {
+		super(sprite, color);
 		this.sourceTiles = sourceTiles;
 		this.targetTile = targetTile;
 	}
