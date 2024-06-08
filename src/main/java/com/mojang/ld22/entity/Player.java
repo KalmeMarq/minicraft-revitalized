@@ -1,26 +1,20 @@
 package com.mojang.ld22.entity;
 
-import com.mojang.ld22.Game;
 import com.mojang.ld22.InputHandler;
-import com.mojang.ld22.entity.furniture.Furniture;
 import com.mojang.ld22.entity.particle.TextParticle;
 import com.mojang.ld22.gfx.Color;
-import com.mojang.ld22.gfx.Screen;
 import com.mojang.ld22.item.FurnitureItem;
 import com.mojang.ld22.level.Level;
 import com.mojang.ld22.level.tile.Tile;
-import com.mojang.ld22.screen.InventoryMenu;
-import com.mojang.ld22.sound.Sound;
 import me.kalmemarq.minicraft.ItemStack;
 import me.kalmemarq.minicraft.Items;
 
 import java.util.List;
 
 public class Player extends Mob {
-	private final InputHandler input;
-	private int attackTime, attackDir;
-
-	public Game game;
+	protected boolean isClient;
+	protected final InputHandler input;
+	protected int attackTime, attackDir;
 	public Inventory inventory = new Inventory();
 	public ItemStack attackItem;
 	public ItemStack activeItem;
@@ -29,11 +23,10 @@ public class Player extends Mob {
 	public int staminaRechargeDelay;
 	public int score;
 	public int maxStamina = 10;
-	private int onStairDelay;
+	protected int onStairDelay;
 	public int invulnerableTime = 0;
 
-	public Player(Game game, InputHandler input) {
-		this.game = game;
+	public Player(InputHandler input) {
 		this.input = input;
         this.x = 24;
         this.y = 24;
@@ -78,23 +71,25 @@ public class Player extends Mob {
 			}
 		}
 
-		int xa = 0;
-		int ya = 0;
-		if (this.input.up.down) ya--;
-		if (this.input.down.down) ya++;
-		if (this.input.left.down) xa--;
-		if (this.input.right.down) xa++;
-		if (this.isSwimming() && this.tickTime % 60 == 0) {
-			if (this.stamina > 0) {
-                this.stamina--;
-			} else {
-                this.hurt(this, 1, this.dir ^ 1);
-				System.out.println("hurted: " + this.health);
+		if (this.isClient) {
+			int xa = 0;
+			int ya = 0;
+			if (this.input.up.down) ya--;
+			if (this.input.down.down) ya++;
+			if (this.input.left.down) xa--;
+			if (this.input.right.down) xa++;
+			if (this.isSwimming() && this.tickTime % 60 == 0) {
+				if (this.stamina > 0) {
+					this.stamina--;
+				} else {
+					this.hurt(this, 1, this.dir ^ 1);
+					System.out.println("hurted: " + this.health);
+				}
 			}
-		}
 
-		if (this.staminaRechargeDelay % 2 == 0) {
-            this.move(xa, ya);
+			if (this.staminaRechargeDelay % 2 == 0) {
+				this.move(xa, ya);
+			}
 		}
 
 		if (this.input.attack.clicked) {
@@ -106,7 +101,7 @@ public class Player extends Mob {
 		}
 		if (this.input.menu.clicked) {
 			if (!this.use()) {
-                this.game.setMenu(new InventoryMenu(this));
+//                this.game.setMenu(new InventoryMenu(this));
 			}
 		}
 		if (this.attackTime > 0) this.attackTime--;
@@ -229,86 +224,6 @@ public class Player extends Mob {
 		return dmg;
 	}
 
-	public void render(Screen screen) {
-		int xt = 0;
-		int yt = 14;
-
-		int flip1 = (this.walkDist >> 3) & 1;
-		int flip2 = (this.walkDist >> 3) & 1;
-
-		if (this.dir == 1) {
-			xt += 2;
-		}
-		if (this.dir > 1) {
-			flip1 = 0;
-			flip2 = ((this.walkDist >> 4) & 1);
-			if (this.dir == 2) {
-				flip1 = 1;
-			}
-			xt += 4 + ((this.walkDist >> 3) & 1) * 2;
-		}
-
-		int xo = this.x - 8;
-		int yo = this.y - 11;
-		if (this.isSwimming()) {
-			yo += 4;
-			int waterColor = Color.get(-1, -1, 115, 335);
-			if (this.tickTime / 8 % 2 == 0) {
-				waterColor = Color.get(-1, 335, 5, 115);
-			}
-			screen.render(xo, yo + 3, 5 + 13 * 32, waterColor, 0);
-			screen.render(xo + 8, yo + 3, 5 + 13 * 32, waterColor, 1);
-		}
-
-		if (this.attackTime > 0 && this.attackDir == 1) {
-			screen.render(xo, yo - 4, 6 + 13 * 32, Color.get(-1, 555, 555, 555), 0);
-			screen.render(xo + 8, yo - 4, 6 + 13 * 32, Color.get(-1, 555, 555, 555), 1);
-			if (this.attackItem != null) {
-                this.attackItem.renderIcon(screen, xo + 4, yo - 4);
-			}
-		}
-		int col = Color.get(-1, 100, 220, 532);
-		if (this.hurtTime > 0) {
-			col = Color.get(-1, 555, 555, 555);
-		}
-
-		if (this.activeItem != null && this.activeItem.getItem() instanceof FurnitureItem) {
-			yt += 2;
-		}
-		screen.render(xo + 8 * flip1, yo, xt + yt * 32, col, flip1);
-		screen.render(xo + 8 - 8 * flip1, yo, xt + 1 + yt * 32, col, flip1);
-		if (!this.isSwimming()) {
-			screen.render(xo + 8 * flip2, yo + 8, xt + (yt + 1) * 32, col, flip2);
-			screen.render(xo + 8 - 8 * flip2, yo + 8, xt + 1 + (yt + 1) * 32, col, flip2);
-		}
-
-		if (this.attackTime > 0 && this.attackDir == 2) {
-			screen.render(xo - 4, yo, 7 + 13 * 32, Color.get(-1, 555, 555, 555), 1);
-			screen.render(xo - 4, yo + 8, 7 + 13 * 32, Color.get(-1, 555, 555, 555), 3);
-			if (this.attackItem != null) {
-                this.attackItem.renderIcon(screen, xo - 4, yo + 4);
-			}
-		}
-		if (this.attackTime > 0 && this.attackDir == 3) {
-			screen.render(xo + 8 + 4, yo, 7 + 13 * 32, Color.get(-1, 555, 555, 555), 0);
-			screen.render(xo + 8 + 4, yo + 8, 7 + 13 * 32, Color.get(-1, 555, 555, 555), 2);
-			if (this.attackItem != null) {
-                this.attackItem.renderIcon(screen, xo + 8 + 4, yo + 4);
-			}
-		}
-		if (this.attackTime > 0 && this.attackDir == 0) {
-			screen.render(xo, yo + 8 + 4, 6 + 13 * 32, Color.get(-1, 555, 555, 555), 2);
-			screen.render(xo + 8, yo + 8 + 4, 6 + 13 * 32, Color.get(-1, 555, 555, 555), 3);
-			if (this.attackItem != null) {
-                this.attackItem.renderIcon(screen, xo + 4, yo + 8 + 4);
-			}
-		}
-
-		if (this.activeItem != null && this.activeItem.getItem() instanceof FurnitureItem furnitureItem) {
-			furnitureItem.furniture.render(screen, this.x, yo);
-		}
-	}
-
 	public void touchItem(ItemEntity itemEntity) {
 		itemEntity.take(this);
         if (itemEntity.stack == null) this.inventory.add(itemEntity.stack);
@@ -338,7 +253,7 @@ public class Player extends Mob {
 	}
 
 	public void changeLevel(int dir) {
-        this.game.scheduleLevelChange(dir);
+//        this.game.scheduleLevelChange(dir);
 	}
 
 	public int getLightRadius() {
@@ -354,8 +269,8 @@ public class Player extends Mob {
 
 	protected void die() {
 		super.die();
-		if (Game.USE_OPENAL) this.game.soundManager.play("/sounds/death.ogg", 1.0f, 1.0f);
-		else this.game.soundManager.play(Sound.playerDeath);
+//		if (Game.USE_OPENAL) this.game.soundManager.play("/sounds/death.ogg", 1.0f, 1.0f);
+//		else this.game.soundManager.play(Sound.playerDeath);
 	}
 
 	protected void touchedBy(Entity entity) {
@@ -367,7 +282,7 @@ public class Player extends Mob {
 	protected void doHurt(int damage, int attackDir) {
 		if (this.hurtTime > 0 || this.invulnerableTime > 0) return;
 
-		this.game.soundManager.play(Sound.playerHurt);
+//		this.game.soundManager.play(Sound.playerHurt);
         this.level.add(new TextParticle("" + damage, this.x, this.y, Color.get(-1, 504, 504, 504)));
         this.health -= damage;
 		if (attackDir == 0) this.yKnockback = +6;
@@ -380,6 +295,6 @@ public class Player extends Mob {
 
 	public void gameWon() {
         this.level.player.invulnerableTime = 60 * 5;
-        this.game.won();
+//        this.game.won();
 	}
 }

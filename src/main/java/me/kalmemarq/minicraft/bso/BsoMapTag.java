@@ -83,6 +83,30 @@ public class BsoMapTag implements BsoTag {
 		this.map.put(key, new BsoStringTag(value));
 	}
 
+	public void put(String key, byte[] values) {
+		this.map.put(key, new BsoByteArrayTag(values));
+	}
+
+	public void put(String key, short[] values) {
+		this.map.put(key, new BsoShortArrayTag(values));
+	}
+
+	public void put(String key, int[] values) {
+		this.map.put(key, new BsoIntArrayTag(values));
+	}
+
+	public void put(String key, long[] values) {
+		this.map.put(key, new BsoLongArrayTag(values));
+	}
+
+	public void put(String key, float[] values) {
+		this.map.put(key, new BsoFloatArrayTag(values));
+	}
+
+	public void put(String key, double[] values) {
+		this.map.put(key, new BsoDoubleArrayTag(values));
+	}
+
 	public byte getByte(String key) {
 		BsoTag tag = this.map.get(key);
 		if (tag instanceof BsoByteTag byteTag) {
@@ -157,6 +181,62 @@ public class BsoMapTag implements BsoTag {
 			return listTag;
 		}
 		return new BsoListTag();
+	}
+
+	public BsoArrayTag getArray(String key) {
+		BsoTag tag = this.map.get(key);
+		if (tag instanceof BsoArrayTag arrayTag) {
+			return arrayTag;
+		}
+		return new BsoArrayTag();
+	}
+
+	public byte[] getByteArray(String key) {
+		BsoTag tag = this.map.get(key);
+		if (tag instanceof BsoByteArrayTag arrayTag) {
+			return arrayTag.getArray();
+		}
+		return new byte[0];
+	}
+
+	public short[] getShortArray(String key) {
+		BsoTag tag = this.map.get(key);
+		if (tag instanceof BsoShortArrayTag arrayTag) {
+			return arrayTag.getArray();
+		}
+		return new short[0];
+	}
+
+	public int[] getIntArray(String key) {
+		BsoTag tag = this.map.get(key);
+		if (tag instanceof BsoIntArrayTag arrayTag) {
+			return arrayTag.getArray();
+		}
+		return new int[0];
+	}
+
+	public long[] getLongArray(String key) {
+		BsoTag tag = this.map.get(key);
+		if (tag instanceof BsoLongArrayTag arrayTag) {
+			return arrayTag.getArray();
+		}
+		return new long[0];
+	}
+
+	public float[] getFloatArray(String key) {
+		BsoTag tag = this.map.get(key);
+		if (tag instanceof BsoFloatArrayTag arrayTag) {
+			return arrayTag.getArray();
+		}
+		return new float[0];
+	}
+
+	public double[] getDoubleArray(String key) {
+		BsoTag tag = this.map.get(key);
+		if (tag instanceof BsoDoubleArrayTag arrayTag) {
+			return arrayTag.getArray();
+		}
+		return new double[0];
 	}
 
 	public BsoTag remove(String key) {

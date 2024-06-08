@@ -193,6 +193,26 @@ public class Screen {
 		Game.instance.overlayShader.setUniform("uLightSampler", 1);
 		Game.instance.overlayShader.setUniform("uDitherSampler", 2);
 
+		// TODO: Do a blue and orange tint in the morning anf afternoon
+		float alpha = 0;
+		if (Game.instance.currentLevel >= 3) {
+			int dayLength = 3600 * 5;
+			int gameTime = Game.instance.gameTime % dayLength;
+			int transTime = dayLength / 4;
+			float relTime = (Game.instance.gameTime % transTime) * 1.0f / transTime;
+			if (gameTime >= dayLength / 4 * 3) {
+				alpha = 170;
+			} else if (gameTime >= dayLength / 4 * 2) {
+				alpha = relTime * 170;
+			} else if (gameTime >= dayLength / 4 * 1) {
+				alpha = 0;
+			} else if (gameTime >= 0) {
+				alpha = Game.instance.gameTime / dayLength == 0 ? 0 : (1 - relTime) * 170;
+			}
+		}
+
+		Game.instance.overlayShader.setUniform("uDarknessOverlayAlpha", alpha / 255.0f);
+
 		GL33.glDrawElements(GL33.GL_TRIANGLES, 6, GL33.GL_UNSIGNED_INT, 0L);
 
 		if (Game.SHOW_JFRAME) {

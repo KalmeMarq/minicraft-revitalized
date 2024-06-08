@@ -8,7 +8,6 @@ import com.jcraft.jorbis.Block;
 import com.jcraft.jorbis.Comment;
 import com.jcraft.jorbis.DspState;
 import com.jcraft.jorbis.Info;
-import it.unimi.dsi.fastutil.floats.FloatConsumer;
 import me.kalmemarq.minicraft.IOUtils;
 import org.lwjgl.openal.AL11;
 import org.lwjgl.stb.STBVorbis;
@@ -22,8 +21,6 @@ import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.nio.ShortBuffer;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.List;
 
 public final class OggFile {
 	private OggFile() {
@@ -227,5 +224,9 @@ public final class OggFile {
 		public void close() throws IOException {
 			this.inputStream.close();
 		}
+	}
+
+	interface FloatConsumer {
+		void accept(float value);
 	}
 }

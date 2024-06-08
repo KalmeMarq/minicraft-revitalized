@@ -14,14 +14,18 @@ import com.mojang.ld22.screen.LevelTransitionMenu;
 import com.mojang.ld22.screen.Menu;
 import com.mojang.ld22.screen.TitleMenu;
 import com.mojang.ld22.screen.WonMenu;
+import io.netty.channel.EventLoopGroup;
+import me.kalmemarq.minicraft.ThreadExecutor;
 import me.kalmemarq.minicraft.Translation;
+import me.kalmemarq.minicraft.network.ClientPlayNetworkHandler;
+import me.kalmemarq.minicraft.network.NetworkConnection;
 import me.kalmemarq.minicraft.render.Framebuffer;
 import me.kalmemarq.minicraft.render.NativeImage;
 import me.kalmemarq.minicraft.render.ShaderProgram;
-import me.kalmemarq.minicraft.sound.SoundManager;
 import me.kalmemarq.minicraft.render.Texture;
 import me.kalmemarq.minicraft.render.VertexBuffer;
 import me.kalmemarq.minicraft.render.VertexLayout;
+import me.kalmemarq.minicraft.sound.SoundManager;
 import me.kalmemarq.minicraft.sound.Window;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -44,9 +48,8 @@ import java.awt.image.DataBufferInt;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Objects;
-import java.util.Random;
 
-public class Game implements Runnable, Window.WindowEventHandler {
+public class Game extends ThreadExecutor implements Runnable, Window.WindowEventHandler {
 	public static final Logger LOGGER = LogManager.getLogger(Game.class);
 	public static boolean DEBUG_KEYS = false;
 	public static boolean SHOW_JFRAME = false;
@@ -66,14 +69,14 @@ public class Game implements Runnable, Window.WindowEventHandler {
 	public boolean running = false;
 	public Screen screen;
 	private Screen lightScreen;
-	private final InputHandler input = new InputHandler(this);
+	public final InputHandler input = new InputHandler(this);
 
 	private int tickCount = 0;
 	public int gameTime = 0;
 
 	public Level level;
-	private Level[] levels = new Level[5];
-	private int currentLevel = 3;
+	public Level[] levels = new Level[5];
+	public int currentLevel = 3;
 	public Player player;
 
 	public Menu menu;
@@ -100,7 +103,11 @@ public class Game implements Runnable, Window.WindowEventHandler {
 
 	public boolean screenshotRequested;
 
+	public EventLoopGroup eventLoopGroup;
+
 	private long seed;
+	private  Thread thread;
+	public ClientPlayNetworkHandler playNetworkHandler;
 
 	public Game(JFrame frame) {
 		instance = this;
@@ -126,6 +133,13 @@ public class Game implements Runnable, Window.WindowEventHandler {
 		this.resetGame(true);
 	}
 
+	@Override
+	public Thread getThread() {
+		return this.thread;
+	}
+
+	private NetworkConnection connection;
+
 	public void resetGame(boolean generate) {
 		this.playerDeadTime = 0;
 		this.wonTimer = 0;
@@ -139,23 +153,23 @@ public class Game implements Runnable, Window.WindowEventHandler {
 			return;
 		}
 
-		this.seed = new Random().nextLong();
+//		this.seed = new Random().nextLong();
+//
+//		this.levels[3] = new Level(128, 128, this.seed, 0, this.levels[4]);
+//		this.levels[2] = new Level(128, 128, this.seed, -1, this.levels[3]);
+//		this.levels[1] = new Level(128, 128, this.seed, -2, this.levels[2]);
+//		this.levels[4] = new Level(128, 128, this.seed, 1, null);
+//		this.levels[0] = new Level(128, 128, this.seed, -3, this.levels[1]);
+//
+//		this.level = this.levels[this.currentLevel];
+//		this.player = new Player(this, this.input);
+//		this.player.findStartPos(this.level);
 
-		this.levels[3] = new Level(128, 128, this.seed, 0, this.levels[4]);
-		this.levels[2] = new Level(128, 128, this.seed, -1, this.levels[3]);
-		this.levels[1] = new Level(128, 128, this.seed, -2, this.levels[2]);
-		this.levels[4] = new Level(128, 128, this.seed, 1, null);
-		this.levels[0] = new Level(128, 128, this.seed, -3, this.levels[1]);
+//		this.level.add(this.player);
 
-		this.level = this.levels[this.currentLevel];
-		this.player = new Player(this, this.input);
-		this.player.findStartPos(this.level);
-
-		this.level.add(this.player);
-
-		for (int i = 0; i < 5; i++) {
-			this.levels[i].trySpawn(5000);
-		}
+//		for (int i = 0; i < 5; i++) {
+//			this.levels[i].trySpawn(5000);
+//		}
 	}
 
 	@Override
@@ -245,6 +259,7 @@ public class Game implements Runnable, Window.WindowEventHandler {
 	}
 
 	public void run() {
+		this.thread = Thread.currentThread();
 		this.window = new Window(WIDTH * SCALE, HEIGHT * SCALE, NAME);
 
 		LOGGER.info("Lwjgl {}", Version.getVersion());
@@ -323,6 +338,9 @@ public class Game implements Runnable, Window.WindowEventHandler {
 
 		System.out.println("Closing");
 		this.clearGl();
+		if (this.eventLoopGroup != null) {
+			this.eventLoopGroup.shutdownGracefully();
+		}
 		this.soundManager.close();
 		this.window.close();
 		if (SHOW_JFRAME) this.frame.dispose();
@@ -330,6 +348,8 @@ public class Game implements Runnable, Window.WindowEventHandler {
 
 	public void tick() {
 		this.tickCount++;
+
+		this.runAllTasks();
 
 		boolean hasFocus = SHOW_JFRAME ? this.canvas.hasFocus() || GLFW.glfwGetWindowAttrib(this.window.getHandle(), GLFW.GLFW_FOCUSED) == GLFW.GLFW_TRUE : GLFW.glfwGetWindowAttrib(this.window.getHandle(), GLFW.GLFW_FOCUSED) == GLFW.GLFW_TRUE;
 		this.soundManager.tick();
@@ -363,6 +383,7 @@ public class Game implements Runnable, Window.WindowEventHandler {
 						this.setMenu(new WonMenu());
 					}
 				}
+				this.player.tick();
 				this.level.tick();
 				Tile.tickCount++;
 			}
@@ -405,11 +426,11 @@ public class Game implements Runnable, Window.WindowEventHandler {
 			this.level.renderBackground(this.screen, xScroll, yScroll);
 			this.level.renderSprites(this.screen, xScroll, yScroll);
 
-			if (this.currentLevel < 3) {
+			 if (this.currentLevel < 3) {
 				this.lightScreen.clear(0);
 				this.level.renderLight(this.lightScreen, xScroll, yScroll);
 				this.screen.overlay(this.lightScreen, xScroll, yScroll);
-			}
+			 }
 		}
 
 		this.renderGui();

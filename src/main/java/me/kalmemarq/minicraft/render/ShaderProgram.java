@@ -1,7 +1,5 @@
 package me.kalmemarq.minicraft.render;
 
-import it.unimi.dsi.fastutil.objects.Object2IntMap;
-import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import me.kalmemarq.minicraft.StringUtils;
 import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL33;
@@ -9,12 +7,17 @@ import org.lwjgl.system.MemoryStack;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 public class ShaderProgram {
+	private static final Pattern INCLUDE_PATTERN = Pattern.compile("#include\s+\"(?<file>[a-zA-Z0-9.]+)\"");
+
 	private static int currentProgram = -1;
 
 	private final int id;
-	private final Object2IntMap<String> uniformLocations = new Object2IntOpenHashMap<>();
+	private final Map<String, Integer> uniformLocations = new HashMap<>();
 
 	public ShaderProgram(String name) {
 		String vertexSource = StringUtils.readAllLines(ShaderProgram.class.getResourceAsStream("/shaders/" + name + ".vsh"));
@@ -31,7 +34,7 @@ public class ShaderProgram {
 		}
 
 		int fragment = GL33.glCreateShader(GL33.GL_FRAGMENT_SHADER);
-		GL33.glShaderSource(fragment, fixFragmentSourceCode(fragmentSource));
+		GL33.glShaderSource(fragment, process(fixFragmentSourceCode(fragmentSource)));
 		GL33.glCompileShader(fragment);
 
 		if (GL33.glGetShaderi(fragment, GL33.GL_COMPILE_STATUS) == GL33.GL_FALSE) {
@@ -51,6 +54,19 @@ public class ShaderProgram {
 	// It is what it is
 	private static String fixFragmentSourceCode(String source) {
 		return source.replaceFirst("vec4\\s+main\\s*\\(", "out vec4 outputColor;\nvec4 main_func(") + "\n" + "void main() { outputColor = main_func(); }";
+	}
+
+	private static String process(String source) {
+		StringBuilder builder = new StringBuilder();
+
+		var matcher = INCLUDE_PATTERN.matcher(source);
+		while (matcher.find()) {
+			String file = matcher.group("file");
+			matcher.appendReplacement(builder, StringUtils.readAllLines(ShaderProgram.class.getResourceAsStream("/shaders/" + file)));
+		}
+
+		matcher.appendTail(builder);
+		return builder.toString();
 	}
 
 	public int getUniformLocation(String name) {

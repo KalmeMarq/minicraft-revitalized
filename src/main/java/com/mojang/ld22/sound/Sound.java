@@ -18,13 +18,6 @@ public class Sound {
 
 	private Sound(String name) {
 		this.path = name;
-		try {
-			this.clip = AudioSystem.getClip();
-			AudioInputStream inputStream = AudioSystem.getAudioInputStream(Sound.class.getResource(name));
-			this.clip.open(inputStream);
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
 	}
 
 	public String getPath() {
@@ -32,6 +25,16 @@ public class Sound {
 	}
 
 	public void play() {
+		if (this.clip == null) {
+			try {
+				this.clip = AudioSystem.getClip();
+				AudioInputStream inputStream = AudioSystem.getAudioInputStream(Sound.class.getResource(this.path));
+				this.clip.open(inputStream);
+			} catch (Throwable e) {
+				e.printStackTrace();
+			}
+		}
+
 		try {
 			new Thread(() -> {
 				Sound.this.clip.stop();

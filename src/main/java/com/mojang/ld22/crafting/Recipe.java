@@ -1,14 +1,18 @@
 package com.mojang.ld22.crafting;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.mojang.ld22.entity.Player;
 import com.mojang.ld22.gfx.Color;
 import com.mojang.ld22.gfx.Font;
 import com.mojang.ld22.gfx.Screen;
 import com.mojang.ld22.screen.ListItem;
-import me.kalmemarq.minicraft.ItemStack;
 
-import java.util.ArrayList;
-import java.util.List;
+import me.kalmemarq.minicraft.ItemStack;
 
 public class Recipe implements ListItem {
 	public List<ItemStack> costs = new ArrayList<>();
@@ -48,5 +52,18 @@ public class Recipe implements ListItem {
         for (ItemStack item : this.costs) {
 			player.inventory.remove(item);
         }
+	}
+
+	public static Recipe fromJson(ObjectNode node) {
+		ArrayNode cost = (ArrayNode) node.get("cost");
+		ObjectNode result = (ObjectNode) node.get("result");
+
+		Recipe recipe = new Recipe(ItemStack.fromJson(result));
+
+		for (JsonNode item : cost) {
+			recipe.addCost(ItemStack.fromJson((ObjectNode) item));
+		}
+
+		return recipe;
 	}
 }

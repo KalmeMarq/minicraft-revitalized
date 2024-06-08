@@ -10,6 +10,9 @@ import java.util.List;
 import java.util.Random;
 
 public class Entity {
+	private static int id = 1;
+
+	public int entityId = id++;
 	protected final Random random = new Random();
 	public int x, y;
 	public int xr = 6;

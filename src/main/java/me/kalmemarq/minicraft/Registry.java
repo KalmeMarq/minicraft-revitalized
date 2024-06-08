@@ -1,17 +1,14 @@
 package me.kalmemarq.minicraft;
 
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import it.unimi.dsi.fastutil.objects.ObjectList;
-import it.unimi.dsi.fastutil.objects.Reference2IntMap;
-import it.unimi.dsi.fastutil.objects.Reference2IntOpenHashMap;
-
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Registry<T> {
-	private final ObjectList<T> list = new ObjectArrayList<>();
-	private final Reference2IntMap<T> valueToNumericId = new Reference2IntOpenHashMap<>();
+	private final List<T> list = new ArrayList<>();
+	private final Map<T, Integer> valueToNumericId = new IdentityHashMap<>();
 	private final Map<String, T> stringIdToValue = new HashMap<>();
 	private final Map<T, String> valueToStringId = new IdentityHashMap<>();
 
@@ -36,6 +33,6 @@ public class Registry<T> {
 	}
 
 	public int getNumericId(T item) {
-		return this.valueToNumericId.getInt(item);
+		return this.valueToNumericId.get(item);
 	}
 }

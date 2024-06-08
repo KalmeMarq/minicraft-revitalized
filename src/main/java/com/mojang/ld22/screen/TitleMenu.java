@@ -40,8 +40,7 @@ public class TitleMenu extends Menu {
 		if (this.input.attack.clicked || this.input.menu.clicked) {
 			if (this.selected == 0) {
 				Game.instance.soundManager.play(Sound.test);
-                this.game.resetGame();
-                this.game.setMenu(null);
+                this.game.setMenu(new ConnectMenu());
 			}
 			if (this.selected == 1) this.game.setMenu(new InstructionsMenu(this));
 			if (this.selected == 2) this.game.setMenu(new AboutMenu(this));

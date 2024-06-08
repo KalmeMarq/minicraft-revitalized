@@ -1,5 +1,6 @@
 package me.kalmemarq.minicraft;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.mojang.ld22.entity.Entity;
 import com.mojang.ld22.entity.Player;
 import com.mojang.ld22.gfx.Screen;
@@ -97,6 +98,11 @@ public class ItemStack {
 		obj.put("count", (short) this.count);
 		if (this.data != null) obj.put("data", this.data);
 		return obj;
+	}
+
+	public static ItemStack fromJson(ObjectNode node) {
+		Item resItem = Items.REGISTRY.getByStringId(node.get("item").textValue());
+		return new ItemStack(resItem, node.has("count") ? node.get("count").shortValue() : 1);
 	}
 
 	public boolean isOfSame(ItemStack other) {

@@ -12,14 +12,6 @@ import com.mojang.ld22.item.resource.FoodResource;
 import com.mojang.ld22.item.resource.PlantableResource;
 import com.mojang.ld22.item.resource.Resource;
 import com.mojang.ld22.level.tile.Tile;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import it.unimi.dsi.fastutil.objects.ObjectList;
-import it.unimi.dsi.fastutil.objects.Reference2IntMap;
-import it.unimi.dsi.fastutil.objects.Reference2IntOpenHashMap;
-
-import java.util.HashMap;
-import java.util.IdentityHashMap;
-import java.util.Map;
 
 // TODO: Use dynamic registry
 public final class Items {

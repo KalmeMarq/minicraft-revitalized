@@ -2,6 +2,7 @@ package me.kalmemarq.minicraft;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mojang.ld22.crafting.Crafting;
+import org.jetbrains.annotations.Nullable;
 import org.lwjgl.system.MemoryUtil;
 
 import java.io.IOException;
@@ -52,6 +53,7 @@ public final class IOUtils {
 		return resourcesPath;
 	}
 
+	@Nullable
 	public static ByteBuffer readInputStreamToByteBuffer(InputStream inputStream) {
 		ByteBuffer buffer = null;
 

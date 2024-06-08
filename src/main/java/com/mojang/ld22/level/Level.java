@@ -21,6 +21,7 @@ import java.util.Random;
 public class Level {
 	private final Random random = new Random();
 
+	private boolean isClient;
 	public int w, h;
 
 	public byte[] tiles;
@@ -37,9 +38,30 @@ public class Level {
 	private final Comparator<Entity> spriteSorter = Comparator.comparingInt(e0 -> e0.y);
 
 	@SuppressWarnings("unchecked")
+	public Level(int w, int h, int level, byte[] data) {
+		if (level < 0) {
+			this.dirtColor = 222;
+		}
+		this.isClient = true;
+		this.w = w;
+		this.h = h;
+		this.depth = level;
+		this.tiles = data;
+		this.data = new byte[this.w * this.h];
+
+		this.entitiesInTiles = new ArrayList[w * h];
+		for (int i = 0; i < w * h; i++) {
+			this.entitiesInTiles[i] = new ArrayList<>();
+		}
+	}
+
+	@SuppressWarnings("unchecked")
 	public Level(int w, int h, long seed, int level, Level parentLevel) {
 		if (level < 0) {
             this.dirtColor = 222;
+		}
+		if (level == 1) {
+			this.dirtColor = 444;
 		}
 		this.depth = level;
 		this.w = w;
@@ -269,7 +291,8 @@ public class Level {
 	}
 
 	public void tick() {
-        this.trySpawn(1);
+        if (this.isClient) return;
+		this.trySpawn(1);
 
 		for (int i = 0; i < this.w * this.h / 50; i++) {
 			int xt = this.random.nextInt(this.w);

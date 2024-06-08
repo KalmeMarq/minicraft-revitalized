@@ -10,9 +10,7 @@ uniform bool uTextured;
 
 in vec2 vUV;
 
-vec3 getRGBFromPalette(int index) {
-    return texture(uPaletteSampler, vec2((index % 16) / 16.0f, index / 16 / 16.0f));
-}
+#include "palette.glsl"
 
 vec4 main() {
     if (!uTextured) {
@@ -36,11 +34,11 @@ vec4 main() {
     fUV *= 8;
     fUV /= textureSize(uIconsSampler, 0);
 
-    int colorIndex = (uTileColors >> (int(texture(uIconsSampler, fUV) / 64.0 * 255.0) * 8)) & 0xFF;
+    int colorIndex = calculatePaletteIndex(uIconsSampler, fUV, uTileColors);
 
     if (colorIndex > 216) {
         discard;
     }
 
-    return uColor * vec4(getRGBFromPalette(colorIndex), 1.0);
+    return uColor * vec4(getRGBFromPalette(uPaletteSampler, colorIndex), 1.0);
 }

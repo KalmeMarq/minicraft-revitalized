@@ -7,7 +7,7 @@ uniform int uRadius;
 in vec2 vUV;
 
 vec4 main() {
-    // Credits: https://github.com/zandgall/minicraft-plus-revived/blob/lwjgl/src/client/resources/assets/shaders/lighting.shader
+    // Credits: https://github.com/zandgall/minicraft-plus-revived/blob/lwjgl2/src/client/resources/assets/shaders/lighting.fs
     vec2 p = (vUV - vec2(0.5)) * (uRectangle.zw - uRectangle.xy);
     float dist = p.x * p.x + p.y * p.y;
     float br = 1 - dist / (uRadius * uRadius);

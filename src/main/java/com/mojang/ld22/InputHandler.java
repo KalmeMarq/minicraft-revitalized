@@ -1,7 +1,5 @@
 package com.mojang.ld22;
 
-import it.unimi.dsi.fastutil.ints.Int2IntMap;
-import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 import me.kalmemarq.minicraft.render.NativeImage;
 import org.lwjgl.glfw.GLFW;
 
@@ -9,7 +7,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class InputHandler implements KeyListener {
 	public class Key {
@@ -135,7 +135,7 @@ public class InputHandler implements KeyListener {
 	public void keyTyped(KeyEvent ke) {
 	}
 
-	public static Int2IntMap keyCodes = new Int2IntOpenHashMap();
+	public static Map<Integer, Integer> keyCodes = new HashMap<>();
 
 	static {
 		keyCodes.put(GLFW.GLFW_KEY_KP_8, KeyEvent.VK_W);

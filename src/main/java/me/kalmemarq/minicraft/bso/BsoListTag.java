@@ -12,6 +12,16 @@ public class BsoListTag implements BsoTag, Iterable<BsoTag> {
 		return 0x9;
 	}
 
+	@Override
+	public int getAdditionalData() {
+		if (this.list.size() <= (Byte.MAX_VALUE * 2) + 1) {
+			return 0x2;
+		} else if (this.list.size() <= (Short.MAX_VALUE * 2) + 1) {
+			return 0x1;
+		}
+		return 0x0;
+	}
+
 	public void clear() {
 		this.list.clear();
 	}

@@ -36,7 +36,9 @@ public class GameMenu extends Menu {
 			}
 
 			if (this.selected == 4) {
+				this.game.playNetworkHandler.getConnection().disconnect("Quit this shithole");
 				this.game.resetGame(false);
+				this.game.playNetworkHandler = null;
 				this.game.setMenu(new TitleMenu());
 			}
 		}
