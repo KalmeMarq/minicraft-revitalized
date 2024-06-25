@@ -1,0 +1,8 @@
+for: anvil
+cost:
+  - item: wood
+    count: 5
+  - item: iron_ingot
+    count: 5
+result:
+  item: iron_sword

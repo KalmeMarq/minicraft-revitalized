@@ -1,0 +1,8 @@
+for: workbench
+cost:
+  - item: wood
+    count: 5
+  - item: stone
+    count: 5
+result:
+  item: rock_axe

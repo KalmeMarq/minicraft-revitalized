@@ -1,0 +1,8 @@
+- code: en_us
+  metadata:
+    name: English
+    region: US
+- code: pt_pt
+  metadata:
+    name: Português
+    region: Portugal

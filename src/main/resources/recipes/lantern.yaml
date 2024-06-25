@@ -1,0 +1,10 @@
+for: workbench
+cost:
+  - item: wood
+    count: 5
+  - item: slime
+    count: 10
+  - item: glass
+    count: 4
+result:
+  item: lantern

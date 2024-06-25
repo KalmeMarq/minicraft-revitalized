@@ -1,0 +1,68 @@
+- id: apple
+  food:
+    heal: 1
+    stamina_cost: 5
+- id: bread
+  food:
+    heal: 2
+    stamina_cost: 5
+- id: potato
+  food:
+    heal: 1
+    stamina_cost: 5
+- id: baked_potato
+  food:
+    heal: 2
+    stamina_cost: 5
+- id: wood
+  resource: {}
+- id: stone
+  resource: {}
+- id: wheat
+  resource: {}
+- id: coal
+  resource: {}
+- id: iron_ore
+  resource: {}
+- id: gold_ore
+  resource: {}
+- id: iron_ingot
+  resource: {}
+- id: gold_ingot
+  resource: {}
+- id: slime
+  resource: {}
+- id: glass
+  resource: {}
+- id: cloth
+  resource: {}
+- id: gem
+  resource: {}
+- id: flower
+  plantable:
+    target: flower
+    sources: grass
+- id: acorn
+  plantable:
+    target: tree_sapling
+    sources: grass
+- id: dirt
+  plantable:
+    target: dirt
+    sources: [hole, water, lava]
+- id: sand
+  plantable:
+    target: sand
+    sources: [grass, dirt]
+- id: cactus_flower
+  plantable:
+    target: cactus_sapling
+    sources: sand
+- id: seeds
+  plantable:
+    target: wheat
+    sources: farmland
+- id: cloud
+  plantable:
+    target: cloud
+    sources: infinite_fall

@@ -1,0 +1,7 @@
+server_ip = "localhost"
+server_port = 8080
+max_players = 8
+
+[world]
+name = "world"
+seed = "UNSET"

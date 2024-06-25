@@ -1,12 +1,33 @@
+/*
+ * Minicraft Revitalized.
+ * Copyright (C) 2024 KalmeMarq
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses/.
+ */
+
 package me.kalmemarq.minicraft.bso;
 
+import java.io.BufferedOutputStream;
+import java.io.DataInput;
 import java.io.DataInputStream;
+import java.io.DataOutput;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 import java.util.Map;
+import java.util.zip.GZIPOutputStream;
 
 public final class BsoUtils {
 	public static void write(Path path, BsoTag tag) {
@@ -18,7 +39,16 @@ public final class BsoUtils {
 		}
 	}
 
-	private static void write(DataOutputStream outputStream, BsoTag tag, boolean allowsAdditionalData) throws IOException {
+	public static void writeCompressed(Path path, BsoTag tag) {
+		try (DataOutputStream outputStream = new DataOutputStream(new BufferedOutputStream(new GZIPOutputStream(Files.newOutputStream(path))))) {
+			outputStream.writeByte(tag.getId() | tag.getAdditionalData() << 4);
+			write(outputStream, tag, true);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static void write(DataOutput outputStream, BsoTag tag, boolean allowsAdditionalData) throws IOException {
 		switch (tag) {
 			case BsoByteTag byteTag -> outputStream.writeByte(byteTag.value());
 			case BsoShortTag shortTag -> {
@@ -177,6 +207,18 @@ public final class BsoUtils {
 		}
 	}
 
+	public static void write(DataOutput output, BsoTag tag) throws IOException {
+		output.writeByte(tag.getId() | tag.getAdditionalData() << 4);
+		write(output, tag, true);
+	}
+
+	public static BsoTag read(DataInput input) throws IOException {
+		int id = input.readByte();
+		int ad = id >> 4;
+		id = id & 0xF;
+		return read(input, id, ad);
+	}
+
 	public static BsoTag read(Path path) {
 		try (DataInputStream inputStream = new DataInputStream(Files.newInputStream(path))) {
 			int id = inputStream.readByte();
@@ -190,7 +232,7 @@ public final class BsoUtils {
 		return null;
 	}
 
-	private static BsoTag read(DataInputStream inputStream, int id, int ad) throws IOException {
+	private static BsoTag read(DataInput inputStream, int id, int ad) throws IOException {
 		return switch (id) {
 			case 0x1 -> new BsoByteTag(inputStream.readByte());
 			case 0x2 -> ad == 0x0 ? new BsoShortTag(inputStream.readShort()) : new BsoShortTag(inputStream.readByte());
@@ -437,8 +479,5 @@ public final class BsoUtils {
 			}
 			default -> throw new RuntimeException("Unknown tag");
 		};
-	}
-
-	public static void main(String[] args) {
 	}
 }

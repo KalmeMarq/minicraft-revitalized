@@ -1,10 +1,14 @@
-run
-
 .gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
+.idea
+
+run
+scripts/**/*
+!scripts/*.py
+!scripts/*.ts
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
@@ -17,7 +21,6 @@ build/
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
-.idea
 
 ### Eclipse ###
 .apt_generated

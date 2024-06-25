@@ -1,0 +1,6 @@
+for: workbench
+cost:
+  - item: wood
+    count: 5
+result:
+  item: wood_hoe

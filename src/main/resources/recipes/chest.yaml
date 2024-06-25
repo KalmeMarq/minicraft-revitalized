@@ -1,0 +1,6 @@
+for: workbench
+cost:
+  - item: wood
+    count: 20
+result:
+  item: chest
