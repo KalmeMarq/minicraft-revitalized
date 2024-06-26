@@ -18,6 +18,7 @@
 package me.kalmemarq.minicraft.client.network;
 
 import me.kalmemarq.minicraft.client.Client;
+import me.kalmemarq.minicraft.client.menu.DisconnectMenu;
 import me.kalmemarq.minicraft.network.NetworkConnection;
 import me.kalmemarq.minicraft.network.Packet;
 import me.kalmemarq.minicraft.network.PacketListener;
@@ -60,5 +61,6 @@ public class ClientHandshakeNetworkHandler implements PacketListener {
     public void onDisconnected(String reason) {
         this.client.connection = null;
         System.out.println("Disconnected: " + reason);
+		this.client.setMenu(new DisconnectMenu(reason));
     }
 }

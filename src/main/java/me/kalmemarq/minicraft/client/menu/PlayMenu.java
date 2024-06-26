@@ -17,11 +17,12 @@
 
 package me.kalmemarq.minicraft.client.menu;
 
+import me.kalmemarq.minicraft.client.util.Translation;
 import org.lwjgl.glfw.GLFW;
 
 public class PlayMenu extends Menu {
     private int selected = 0;
-    private String[] options = {"Singleplayer", "Multiplayer"};
+    private String[] options = {"minicraft.menu.singleplayer", "minicraft.menu.multiplayer"};
     private final Menu parent;
 
     public PlayMenu(Menu parent) {
@@ -50,7 +51,7 @@ public class PlayMenu extends Menu {
     @Override
     public void render() {
         for (int i = 0; i < this.options.length; i++) {
-            String msg = this.options[i];
+            String msg = Translation.translate(this.options[i]);
             int col = 0x808080;
             if (i == this.selected) {
                 msg = "> " + msg + " <";

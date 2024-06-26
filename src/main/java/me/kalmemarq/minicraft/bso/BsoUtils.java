@@ -365,7 +365,7 @@ public final class BsoUtils {
 					if (indent > 0) builder.append('\n');
 				}
 
-				if (indent > 0) builder.append(" ".repeat(level * indent));
+				if (indent > 0 && mapTag.size() > 0) builder.append(" ".repeat(level * indent));
 				builder.append('}');
 				yield builder.toString();
 			}

@@ -1,4 +1,18 @@
 minicraft.menu.play: Start Game
+minicraft.menu.singleplayer: Singleplayer
+minicraft.menu.multiplayer: Multiplayer
+minicraft.menu.load_world: Load World
+minicraft.menu.create_world: Create World
+minicraft.menu.select_menu: Select Menu
+minicraft.menu.enter_to_confirm: Enter to Confirm
+minicraft.menu.escape_to_return: Escape to Return
+minicraft.menu.shift_d_to_delete: Shift-D to Delete
+minicraft.menu.world_gen_options: World Gen Options
+minicraft.menu.join_game: Join Game
+minicraft.menu.connect: Connect
+minicraft.menu.name: 'Name: '
+minicraft.menu.server_ip: 'IP: '
+minicraft.menu.server_port: 'Porta: '
 minicraft.menu.how_to_play: How to Play
 minicraft.menu.how_to_play.message: |-
   Move your character with the arrow keys press C to attack and X to open the inventory and to use items.
@@ -10,6 +24,9 @@ minicraft.menu.about.message: |-
   It is dedicated to my father. <3
 minicraft.menu.language: Language
 minicraft.menu.quit: Quit
+minicraft.menu.continue: Continue
+minicraft.menu.host_world: Host World
+minicraft.menu.disconnected: Disconnected
 minicraft.menu.inventory: Inventory
 minicraft.menu.crafting: Crafting
 minicraft.menu.crafting.have: Have

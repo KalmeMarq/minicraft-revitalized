@@ -17,6 +17,7 @@
 
 package me.kalmemarq.minicraft.client.menu;
 
+import me.kalmemarq.minicraft.client.util.Translation;
 import org.lwjgl.glfw.GLFW;
 
 public class MultiplayerMenu extends Menu {
@@ -24,7 +25,7 @@ public class MultiplayerMenu extends Menu {
     private String[] options = {
             "",
             "",
-            "Connect"
+            "minicraft.menu.connect"
     };
     private final Menu parent;
 
@@ -68,17 +69,19 @@ public class MultiplayerMenu extends Menu {
 
     @Override
     public void render() {
-        String title = "Join Game";
+        String title = Translation.translate("minicraft.menu.join_game");
         this.client.font.draw(title, (this.getWidth() - (title.length() * 8)) / 2, 8, 0xFFFFFF);
 
         for (int i = 0; i < this.options.length; i++) {
             String msg = this.options[i];
 
             if (i == 0) {
-                msg = "IP: " + msg;
+                msg = Translation.translate("minicraft.menu.server_ip") + msg;
             } else if (i == 1) {
-                msg = "Port: " + msg;
-            }
+                msg = Translation.translate("minicraft.menu.server_port") + msg;
+            } else {
+				msg = Translation.translate(msg);
+			}
 
             int col = 0x808080;
             if (i == this.selected) {

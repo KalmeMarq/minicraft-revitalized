@@ -18,7 +18,6 @@
 package me.kalmemarq.minicraft.server.network;
 
 import me.kalmemarq.minicraft.level.entity.Entity;
-import me.kalmemarq.minicraft.level.entity.PlayerEntity;
 import me.kalmemarq.minicraft.level.entity.SlimeEntity;
 import me.kalmemarq.minicraft.level.entity.ZombieEntity;
 import me.kalmemarq.minicraft.network.NetworkConnection;
@@ -38,6 +37,7 @@ import me.kalmemarq.minicraft.server.ServerPlayerEntity;
 public class ServerLoginNetworkHandler implements PacketListener {
     private final Server server;
     private final NetworkConnection connection;
+	private String username;
 
     public ServerLoginNetworkHandler(Server server, NetworkConnection connection) {
         this.server = server;
@@ -46,16 +46,23 @@ public class ServerLoginNetworkHandler implements PacketListener {
 
     @Override
     public void onPacket(Packet packet) {
-        if (packet instanceof LoginRequestPacket) {
+        if (packet instanceof LoginRequestPacket loginRequestPacket) {
             if (this.server.playConnections.size() + 1 > this.server.maxPlayers) {
                 this.connection.sendPacket(new DisconnectPacket("Server is full!"));
                 this.connection.disconnect();
             } else {
+				this.username = loginRequestPacket.getUsername();
+				if (!this.server.players.stream().filter(p -> p.username.equals(this.username)).toList().isEmpty()) {
+					this.connection.sendPacket(new DisconnectPacket("Already logged in!"));
+					this.connection.disconnect();
+					return;
+				}
                 this.connection.send(new ReadyPacket());
             }
         } else if (packet instanceof ReadyPacket) {
             ServerPlayerEntity entity1 = new ServerPlayerEntity(this.server.level);
             entity1.findStartPos(this.server.level);
+			entity1.username = this.username;
             ServerPlayNetworkHandler networkHandler = new ServerPlayNetworkHandler(this.server, entity1, this.connection);
             entity1.networkHandler = networkHandler;
             this.server.level.insertEntity(entity1.x >> 4, entity1.y >> 4, entity1);

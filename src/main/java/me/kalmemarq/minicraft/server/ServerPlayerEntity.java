@@ -27,6 +27,7 @@ import me.kalmemarq.minicraft.server.network.ServerPlayNetworkHandler;
 
 public class ServerPlayerEntity extends PlayerEntity {
     public ServerPlayNetworkHandler networkHandler;
+	public String username;
     private int syncHealth = -1;
     private int syncStamina = -1;
 

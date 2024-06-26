@@ -19,14 +19,14 @@ package me.kalmemarq.minicraft.server;
 
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.nio.NioEventLoopGroup;
+import me.kalmemarq.minicraft.bso.BsoArrayTag;
 import me.kalmemarq.minicraft.bso.BsoMapTag;
 import me.kalmemarq.minicraft.bso.BsoUtils;
 import me.kalmemarq.minicraft.level.entity.Entity;
-import me.kalmemarq.minicraft.level.entity.PlayerEntity;
-import me.kalmemarq.minicraft.util.ThreadExecutor;
 import me.kalmemarq.minicraft.network.NetworkConnection;
 import me.kalmemarq.minicraft.network.Packet;
 import me.kalmemarq.minicraft.server.level.ServerLevel;
+import me.kalmemarq.minicraft.util.ThreadExecutor;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -45,7 +45,7 @@ public abstract class Server extends ThreadExecutor {
 
     public List<Entity> entities = new ArrayList<>();
     public List<EntityTracker> entityTrackers = new ArrayList<>();
-    public List<PlayerEntity> players = new ArrayList<>();
+    public List<ServerPlayerEntity> players = new ArrayList<>();
     public ServerLevel level = new ServerLevel(this);
     public int maxPlayers = 8;
 
@@ -167,6 +167,14 @@ public abstract class Server extends ThreadExecutor {
             map.put("data", this.level.data);
 
             BsoUtils.writeCompressed(this.getSavePath().resolve("level0.bso"), map);
+
+			BsoArrayTag m = new BsoArrayTag();
+			for (Entity entity : this.entities) {
+				BsoMapTag o = new BsoMapTag();
+				entity.write(o);
+				m.add(o);
+			}
+			BsoUtils.writeCompressed(this.getSavePath().resolve("level0_entities.bso"), m);
         } catch (IOException e) {
             e.printStackTrace();
         }

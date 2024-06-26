@@ -18,25 +18,19 @@
 package me.kalmemarq.minicraft.client.menu;
 
 import me.kalmemarq.minicraft.client.Client;
+import me.kalmemarq.minicraft.client.util.Translation;
 import org.lwjgl.glfw.GLFW;
 
 public class WorldGenMenu extends Menu {
     private int selected;
     private final String[] options = {
             "",
-            "Create World"
+            "minicraft.menu.create_world"
     };
     private final Menu parent;
 
     public WorldGenMenu(Menu parent) {
         this.parent = parent;
-    }
-
-    @Override
-    public void init(Client client) {
-        super.init(client);
-//        this.client.setMenu(null);
-//        this.client.connectLocal();
     }
 
     @Override
@@ -76,14 +70,16 @@ public class WorldGenMenu extends Menu {
 
     @Override
     public void render() {
-        this.client.font.draw("World Gen Options", (this.getWidth() - 17 * 8) / 2, 8, 0xFFFFFF);
+        this.client.font.draw(Translation.translate("minicraft.menu.world_gen_options"), this.getWidth() / 2, 8, 0xFFFFFF, 0, Font.TextAlignment.CENTER);
 
         for (int i = 0; i < this.options.length; i++) {
             String msg = this.options[i];
 
             if (i == 0) {
-                msg = "Name: " + msg;
-            }
+                msg = Translation.translate("minicraft.menu.name") + msg;
+            } else {
+				msg = Translation.translate(msg);
+			}
 
             int col = 0x808080;
             if (i == this.selected) {

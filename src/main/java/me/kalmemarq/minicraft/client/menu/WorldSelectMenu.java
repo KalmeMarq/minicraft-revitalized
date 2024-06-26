@@ -18,6 +18,7 @@
 package me.kalmemarq.minicraft.client.menu;
 
 import me.kalmemarq.minicraft.client.Client;
+import me.kalmemarq.minicraft.client.util.Translation;
 import org.lwjgl.glfw.GLFW;
 
 import java.io.File;
@@ -85,10 +86,10 @@ public class WorldSelectMenu extends Menu {
 
     @Override
     public void render() {
-        this.client.font.draw("Select Menu", (this.getWidth() - 88) / 2, 8, 0xFFFFFF);
-        this.client.font.draw("Enter to Confirm", (this.getWidth() - 16 * 8) / 2, this.getHeight() - 32 + 1, 0x707070);
-        this.client.font.draw("Escape to Return", (this.getWidth() - 16 * 8) / 2, this.getHeight() - 24 + 2, 0x707070);
-        this.client.font.draw("Shift-D to Delete", (this.getWidth() - 17 * 8) / 2, this.getHeight() - 16 + 3, 0x702020);
+        this.client.font.draw(Translation.translate("minicraft.menu.select_menu"), this.getWidth() / 2, 8, 0xFFFFFF, 0, Font.TextAlignment.CENTER);
+        this.client.font.draw(Translation.translate("minicraft.menu.enter_to_confirm"), this.getWidth() / 2, this.getHeight() - 32 + 1, 0x707070, 0, Font.TextAlignment.CENTER);
+        this.client.font.draw(Translation.translate("minicraft.menu.escape_to_return"), this.getWidth() / 2, this.getHeight() - 24 + 2, 0x707070, 0, Font.TextAlignment.CENTER);
+        this.client.font.draw(Translation.translate("minicraft.menu.shift_d_to_delete"), this.getWidth() / 2, this.getHeight() - 16 + 3, 0x702020, 0, Font.TextAlignment.CENTER);
 
         for (int i = 0; i < this.worlds.size(); i++) {
             String msg = this.worlds.get(i);

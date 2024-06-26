@@ -19,8 +19,6 @@ package me.kalmemarq.minicraft.client.menu;
 
 import me.kalmemarq.minicraft.client.Client;
 import me.kalmemarq.minicraft.client.util.Translation;
-import me.kalmemarq.minicraft.level.item.Item;
-import me.kalmemarq.minicraft.level.item.Items;
 import org.lwjgl.glfw.GLFW;
 
 public class TitleMenu extends Menu {
@@ -76,13 +74,5 @@ public class TitleMenu extends Menu {
         }
 
         this.client.font.draw("(Arrow keys,X and C)", 0, this.getHeight() - 8, 0x404040);
-
-//        int i = 0;
-//        for (Item item : Items.REGISTRY.getAll()) {
-//            int c = i / (this.getWidth() / 8);
-//            int r = i % (this.getWidth() / 8);
-//            this.client.renderer.renderItem(item, c * 8, r * 8);
-//            ++i;
-//        }
     }
 }

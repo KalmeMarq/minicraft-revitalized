@@ -17,6 +17,7 @@
 
 package me.kalmemarq.minicraft.client.menu;
 
+import me.kalmemarq.minicraft.client.util.Translation;
 import org.lwjgl.glfw.GLFW;
 
 public class InstructionsMenu extends Menu {
@@ -41,7 +42,7 @@ public class InstructionsMenu extends Menu {
             this.client.renderer.renderSpriteNineslice("ui", "frame.png", 0, 20, this.getWidth(), this.getHeight() - 20, 8, 8, 8, 8);
         }
 
-        this.client.font.draw("How to Play", 4 * 8 + 4, 8, 0xFFFFFF);
-        this.client.font.drawWithMaxWidth("Move your character with the arrow keys press C to attack and X to open the inventory and to use items. Select an item in the inventory to equip it. Kill the air wizard to win the game!", 4, 3 * 8, 0x808080, 19);
+        this.client.font.draw(Translation.translate("minicraft.menu.how_to_play"), 4 * 8 + 4, 8, 0xFFFFFF);
+        this.client.font.drawWithMaxWidth(Translation.translate("minicraft.menu.how_to_play.message"), 4, 3 * 8, 0x808080, 19);
     }
 }

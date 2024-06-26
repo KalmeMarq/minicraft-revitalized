@@ -29,6 +29,7 @@ libraries = [
     "com.fasterxml.jackson.core:jackson-core:2.17.1",
     "org.yaml:snakeyaml:2.2",
     "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.17.1",
+    "com.fasterxml.jackson.dataformat:jackson-dataformat-toml:2.17.1",
     "com.github.KalmeMarq:arg-option-parser:e8a468fef5",
     "io.netty:netty-buffer:4.1.110.Final",
     "io.netty:netty-codec:4.1.110.Final",
@@ -91,8 +92,8 @@ def main():
                 with open(lib_classifier_jar_path, "wb") as f:
                     f.write(resp.content)
 
-    os.chdir(Path(__file__).parent.parent / "run")
-    subprocess.run(["java", "-Xmx64m", "-cp", f"{";".join(cp)};../build/libs/minicraft-revitalized-1.0.0.jar", "me.kalmemarq.minicraft.client.Main", "--savedir", "."])
+    os.chdir(Path(__file__).parent.parent / "run" / "client")
+    subprocess.run(["java", "-Xmx64m", "-cp", f"{";".join(cp)};../../build/libs/minicraft-revitalized-1.0.0-pg.jar", "me.kalmemarq.minicraft.client.Main", "--savedir", "."])
 
 
 if __name__ == '__main__':

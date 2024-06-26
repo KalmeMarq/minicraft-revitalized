@@ -17,6 +17,9 @@
 
 package me.kalmemarq.minicraft.level.entity;
 
+import me.kalmemarq.minicraft.bso.BsoArrayTag;
+import me.kalmemarq.minicraft.bso.BsoListTag;
+import me.kalmemarq.minicraft.bso.BsoMapTag;
 import me.kalmemarq.minicraft.level.Level;
 import me.kalmemarq.minicraft.level.item.Inventory;
 import me.kalmemarq.minicraft.level.item.ItemStack;
@@ -45,7 +48,28 @@ public class PlayerEntity extends MobEntity {
         }
     }
 
-    @Override
+	@Override
+	public void write(BsoMapTag map) {
+		super.write(map);
+		map.put("score", this.score);
+		map.put("maxStamina", this.maxStamina);
+		map.put("stamina", this.stamina);
+		map.put("staminaRecharge", this.staminaRecharge);
+		map.put("staminaRechargeDelay", this.staminaRechargeDelay);
+		if (this.attackItem != null) map.put("attackItem", this.attackItem.write(new BsoMapTag()));
+		if (this.activeItem != null) map.put("activeItem", this.activeItem.write(new BsoMapTag()));
+		map.put("attackTime", this.attackTime);
+		map.put("attackDir", this.attackDir);
+
+		BsoArrayTag m = new BsoArrayTag();
+		for (ItemStack stack : this.inventory.itemStacks) {
+			m.add(stack.write(new BsoMapTag()));
+		}
+
+		map.put("inventory", m);
+	}
+
+	@Override
     public boolean canSwim() {
         return true;
     }

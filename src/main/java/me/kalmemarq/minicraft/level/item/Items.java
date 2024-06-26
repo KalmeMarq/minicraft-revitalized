@@ -78,36 +78,39 @@ public class Items {
     public static Item POTATO = REGISTRY.register("potato", new FoodItem(2, 5));
     public static Item BAKED_POTATO = REGISTRY.register("baked_potato", new FoodItem(2, 5));
 
+	public static boolean LOAD_FROM_FILE = false;
     static {
-        try {
-            ArrayNode node = (ArrayNode) IOUtils.YAML_OBJECT_MAPPER.readTree(Items.class.getResourceAsStream("/items.yaml"));
+		if (LOAD_FROM_FILE) {
+			try {
+				ArrayNode node = (ArrayNode) IOUtils.YAML_OBJECT_MAPPER.readTree(Items.class.getResourceAsStream("/items.yaml"));
 
-            for (JsonNode item : node) {
-                String id = item.get("id").textValue();
-                if (item.has("food")) {
-                    JsonNode foodComponent = item.get("food");
-                    REGISTRY.register(id, new FoodItem(foodComponent.get("heal").asInt(), foodComponent.get("stamina_cost").asInt()));
-                } else if (item.has("plantable")) {
-                    JsonNode plantableComponent = item.get("plantable");
-                    String target = plantableComponent.get("target").textValue();
-                    if (plantableComponent.get("sources").isArray()) {
-                        Tile[] tiles = new Tile[plantableComponent.get("sources").size()];
-                        int i = 0;
-                        for (JsonNode i1 : plantableComponent.get("sources")) {
-                            tiles[i] = Tiles.REGISTRY.getByStringId(i1.textValue());
-                            ++i;
-                        }
-                        REGISTRY.register(id, new PlantableItem(Tiles.REGISTRY.getByStringId(target), tiles));
-                    } else {
-                        String source = plantableComponent.get("sources").textValue();
-                        REGISTRY.register(id, new PlantableItem(Tiles.REGISTRY.getByStringId(target), Tiles.REGISTRY.getByStringId(source)));
-                    }
-                } else if (item.has("resource")) {
-                    REGISTRY.register(id, new ResourceItem());
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+				for (JsonNode item : node) {
+					String id = item.get("id").textValue();
+					if (item.has("food")) {
+						JsonNode foodComponent = item.get("food");
+						REGISTRY.register(id, new FoodItem(foodComponent.get("heal").asInt(), foodComponent.get("stamina_cost").asInt()));
+					} else if (item.has("plantable")) {
+						JsonNode plantableComponent = item.get("plantable");
+						String target = plantableComponent.get("target").textValue();
+						if (plantableComponent.get("sources").isArray()) {
+							Tile[] tiles = new Tile[plantableComponent.get("sources").size()];
+							int i = 0;
+							for (JsonNode i1 : plantableComponent.get("sources")) {
+								tiles[i] = Tiles.REGISTRY.getByStringId(i1.textValue());
+								++i;
+							}
+							REGISTRY.register(id, new PlantableItem(Tiles.REGISTRY.getByStringId(target), tiles));
+						} else {
+							String source = plantableComponent.get("sources").textValue();
+							REGISTRY.register(id, new PlantableItem(Tiles.REGISTRY.getByStringId(target), Tiles.REGISTRY.getByStringId(source)));
+						}
+					} else if (item.has("resource")) {
+						REGISTRY.register(id, new ResourceItem());
+					}
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
     }
 }

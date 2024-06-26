@@ -17,6 +17,7 @@
 
 package me.kalmemarq.minicraft.level.entity;
 
+import me.kalmemarq.minicraft.bso.BsoMapTag;
 import me.kalmemarq.minicraft.level.Level;
 import me.kalmemarq.minicraft.level.item.ItemStack;
 import me.kalmemarq.minicraft.level.tile.Tile;
@@ -158,6 +159,22 @@ public class Entity {
     public boolean use(PlayerEntity player, int attackDir) {
         return false;
     }
+
+	public void write(BsoMapTag map) {
+		map.put("x", this.x);
+		map.put("y", this.y);
+		map.put("dir", this.dir);
+		map.put("xr", this.xr);
+		map.put("yr", this.yr);
+		map.put("removed", this.removed);
+
+		BsoMapTag data = new BsoMapTag();
+		for (Map.Entry<String, Integer> entry : this.data.entrySet()) {
+			data.put(entry.getKey(), entry.getValue());
+		}
+
+		map.put("data", data);
+	}
 
     public int getLightRadius() {
         return 0;

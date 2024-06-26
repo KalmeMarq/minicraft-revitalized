@@ -17,11 +17,12 @@
 
 package me.kalmemarq.minicraft.client.menu;
 
+import me.kalmemarq.minicraft.client.util.Translation;
 import org.lwjgl.glfw.GLFW;
 
 public class SingleplayerMenu extends Menu {
     private int selected = 0;
-    private final String[] options = {"Load World", "Create World"};
+    private final String[] options = {"minicraft.menu.load_world", "minicraft.menu.create_world"};
     private final Menu parent;
 
     public SingleplayerMenu(Menu parent) {
@@ -50,7 +51,7 @@ public class SingleplayerMenu extends Menu {
     @Override
     public void render() {
         for (int i = 0; i < this.options.length; i++) {
-            String msg = this.options[i];
+            String msg = Translation.translate(this.options[i]);
             int col = 0x808080;
             if (i == this.selected) {
                 msg = "> " + msg + " <";

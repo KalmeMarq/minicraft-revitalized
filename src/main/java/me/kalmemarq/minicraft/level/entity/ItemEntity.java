@@ -22,10 +22,8 @@ import me.kalmemarq.minicraft.level.item.ItemStack;
 
 public class ItemEntity extends Entity {
     private final int lifeTime;
-    protected int walkDist = 0;
     protected int dir = 0;
     public int hurtTime = 0;
-    protected int xKnockback, yKnockback;
     public double xa, ya, za;
     public double xx, yy, zz;
     public ItemStack stack;

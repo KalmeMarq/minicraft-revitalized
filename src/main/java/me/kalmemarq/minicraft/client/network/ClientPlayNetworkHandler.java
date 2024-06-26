@@ -18,6 +18,7 @@
 package me.kalmemarq.minicraft.client.network;
 
 import me.kalmemarq.minicraft.client.ClientPlayerEntity;
+import me.kalmemarq.minicraft.client.menu.DisconnectMenu;
 import me.kalmemarq.minicraft.client.menu.InventoryMenu;
 import me.kalmemarq.minicraft.level.entity.Entity;
 import me.kalmemarq.minicraft.level.entity.ItemEntity;
@@ -140,5 +141,6 @@ public class ClientPlayNetworkHandler implements PacketListener {
     public void onDisconnected(String reason) {
         this.client.connection = null;
         System.out.println("Disconnected: " + reason);
-    }
+		this.client.setMenu(new DisconnectMenu(reason));
+	}
 }

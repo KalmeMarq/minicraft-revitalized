@@ -80,6 +80,7 @@ public class Client extends ThreadExecutor implements GameWindow.WindowEventHand
     public boolean showDebug;
     public final Path saveDir;
     public InputHandler inputHandler = new InputHandler();
+	public String username = "Player" + (System.currentTimeMillis() % 1000);
 
     public Client(Path saveDir) {
         this.saveDir = saveDir;
@@ -126,7 +127,7 @@ public class Client extends ThreadExecutor implements GameWindow.WindowEventHand
             try {
                 bootstrap.connect(address).syncUninterruptibly();
                 connection.send(new HandshakePacket(1, HandshakePacket.Intent.LOGIN));
-                connection.send(new LoginRequestPacket("KalmeMarq"));
+                connection.send(new LoginRequestPacket(this.username));
             } catch (Exception e) {
                 System.out.println(e.getMessage());
 //                this.execute(() -> this.connection = null);
@@ -163,7 +164,7 @@ public class Client extends ThreadExecutor implements GameWindow.WindowEventHand
             try {
                 bootstrap.connect(InetAddress.getByName(ip), port).syncUninterruptibly();
                 connection.send(new HandshakePacket(1, HandshakePacket.Intent.LOGIN));
-                connection.send(new LoginRequestPacket("KalmeMarq"));
+                connection.send(new LoginRequestPacket(this.username));
             } catch (Exception e) {
                 System.out.println(e.getMessage());
 //                this.execute(() -> this.connection = null);
@@ -323,6 +324,10 @@ public class Client extends ThreadExecutor implements GameWindow.WindowEventHand
                 if (node.has("language") && node.get("language").isTextual()) {
                     Translation.currentCode = node.get("language").asText();
                 }
+
+				if (node.has("username") && node.get("username").isTextual() && node.get("username").asText().length() > 3) {
+					this.username = node.get("username").asText();
+				}
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -335,6 +340,7 @@ public class Client extends ThreadExecutor implements GameWindow.WindowEventHand
             System.out.println("Saving settings");
             ObjectNode node = IOUtils.TOML_OBJECT_MAPPER.createObjectNode();
             node.put("language", Translation.currentCode);
+            node.put("username", this.username);
             Files.writeString(optionsPath, IOUtils.TOML_OBJECT_MAPPER.writeValueAsString(node));
         } catch (IOException e) {
             e.printStackTrace();

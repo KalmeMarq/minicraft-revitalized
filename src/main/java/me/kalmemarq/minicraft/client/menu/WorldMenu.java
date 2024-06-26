@@ -18,6 +18,7 @@
 package me.kalmemarq.minicraft.client.menu;
 
 import me.kalmemarq.minicraft.client.Client;
+import me.kalmemarq.minicraft.client.util.Translation;
 import org.lwjgl.glfw.GLFW;
 
 public class WorldMenu extends Menu {
@@ -29,12 +30,12 @@ public class WorldMenu extends Menu {
     public void init(Client client) {
         super.init(client);
         this.options = new String[]{
-                "Continue",
-                "How to Play",
-                "About",
-                "Host World",
-                "Language",
-                "Quit"
+                "minicraft.menu.continue",
+                "minicraft.menu.how_to_play",
+                "minicraft.menu.about",
+                "minicraft.menu.host_world",
+                "minicraft.menu.language",
+                "minicraft.menu.quit"
         };
     }
 
@@ -82,7 +83,7 @@ public class WorldMenu extends Menu {
         this.client.renderer.renderSpriteNineslice("ui", "frame.png", 16, 56, this.getWidth() - 32, (this.options.length + 2) * 8, 8, 8, 8, 8);
 
         for (int i = 0; i < this.options.length; i++) {
-            String msg = this.options[i];
+            String msg = Translation.translate(this.options[i]);
             int col = 0x808080;
             if (i == this.selected) {
                 msg = "> " + msg + " <";

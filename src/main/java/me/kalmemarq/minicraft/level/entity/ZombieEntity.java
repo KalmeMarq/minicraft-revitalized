@@ -17,6 +17,7 @@
 
 package me.kalmemarq.minicraft.level.entity;
 
+import me.kalmemarq.minicraft.bso.BsoMapTag;
 import me.kalmemarq.minicraft.level.Level;
 
 public class ZombieEntity extends MobEntity {
@@ -28,7 +29,13 @@ public class ZombieEntity extends MobEntity {
         this.dataDirty = true;
     }
 
-    @Override
+	@Override
+	public void write(BsoMapTag map) {
+		super.write(map);
+		map.put("randomWalkTime", this.randomWalkTime);
+	}
+
+	@Override
     public void tickAi() {
         super.tickAi();
 

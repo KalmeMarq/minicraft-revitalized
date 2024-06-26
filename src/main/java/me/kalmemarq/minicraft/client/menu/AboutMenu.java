@@ -17,6 +17,7 @@
 
 package me.kalmemarq.minicraft.client.menu;
 
+import me.kalmemarq.minicraft.client.util.Translation;
 import org.lwjgl.glfw.GLFW;
 
 public class AboutMenu extends Menu {
@@ -41,7 +42,7 @@ public class AboutMenu extends Menu {
             this.client.renderer.renderSpriteNineslice("ui", "frame.png", 0, 20, this.getWidth(), this.getHeight() - 20, 8, 8, 8, 8);
         }
 
-        this.client.font.draw("About Minicraft", 2 * 8 + 4, 8, 0xFFFFFF);
-        this.client.font.drawWithMaxWidth("Minicraft was made by Markus Persson for the 22'nd ludum dare competition in december 2011.\nIt is dedicated to my father. <3", 4, 4 * 8, 0x808080, 20);
+        this.client.font.draw(Translation.translate("minicraft.menu.about.title"), 2 * 8 + 4, 8, 0xFFFFFF);
+        this.client.font.drawWithMaxWidth(Translation.translate("minicraft.menu.about.message"), 4, 4 * 8, 0x808080, 20);
     }
 }

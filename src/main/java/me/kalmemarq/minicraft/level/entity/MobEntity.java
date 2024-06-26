@@ -17,6 +17,7 @@
 
 package me.kalmemarq.minicraft.level.entity;
 
+import me.kalmemarq.minicraft.bso.BsoMapTag;
 import me.kalmemarq.minicraft.level.Level;
 import me.kalmemarq.minicraft.level.entity.particle.TextParticle;
 import me.kalmemarq.minicraft.level.tile.Tile;
@@ -36,7 +37,17 @@ public class MobEntity extends Entity {
         this.yr = 3;
     }
 
-    @Override
+	@Override
+	public void write(BsoMapTag map) {
+		super.write(map);
+		map.put("maxHealth", this.maxHealth);
+		map.put("health", this.health);
+		map.put("hurtTime", this.hurtTime);
+		map.put("swimTimer", this.swimTimer);
+		map.put("walkDist", this.walkDist);
+	}
+
+	@Override
     public void tick() {
         super.tick();
 
