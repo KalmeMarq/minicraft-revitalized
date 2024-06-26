@@ -1,0 +1,30 @@
+{
+  "namespace": "disconnect",
+
+  "title": {
+    "type": "label",
+    "text": "minicraft.menu.disconnected",
+    "offset": [20, 16]
+  },
+
+  "reason": {
+    "type": "label",
+    "text": "#disconnect_reason",
+    "offset": [20, 32],
+    "wrap": 15,
+    "color": [128, 128, 128],
+    "bindings": [
+      {
+        "binding_name": "#disconnect_reason"
+      }
+    ]
+  },
+
+  "disconnect_screen": {
+    "type": "screen",
+    "controls": [
+      { "title@title": {} },
+      { "reason@reason": {} }
+    ]
+  }
+}

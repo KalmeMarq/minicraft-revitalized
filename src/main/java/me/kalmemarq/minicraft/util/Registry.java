@@ -22,6 +22,8 @@ import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
+import java.util.regex.Pattern;
 
 public class Registry<T> {
     private final List<T> list = new ArrayList<>();
@@ -56,5 +58,35 @@ public class Registry<T> {
     public int getNumericId(T item) {
         return this.valueToNumericId.get(item);
     }
+
+	public record Identifier(String namespace, String path) {
+		private static final Predicate<String> NAMESPACE_VALIDATOR = Pattern.compile("[a-zA-Z0-9_]+").asMatchPredicate();
+		private static final Predicate<String> PATH_VALIDATOR = Pattern.compile("[a-zA-Z0-9_/.-]+").asMatchPredicate();
+
+		public Identifier(String identifier) {
+			this(decompose(identifier));
+		}
+
+		private Identifier(String... identifier) {
+			this(identifier[0], identifier[1]);
+		}
+
+		public Identifier {
+			if (!NAMESPACE_VALIDATOR.test(namespace)) {
+				throw new IllegalArgumentException("Namespace can only be [a-z0-9_]+");
+			}
+			if (!PATH_VALIDATOR.test(path)) {
+				throw new IllegalArgumentException("Path can only be [a-z0-9_/.-]+");
+			}
+		}
+
+		private static String[] decompose(String identifier) {
+			if (identifier.indexOf(":") > 0) {
+				return new String[] { identifier.substring(0, identifier.indexOf(":")), identifier.substring(identifier.indexOf(":") + 1) };
+			} else {
+				return new String[] { "minicraft", identifier };
+			}
+		}
+	}
 }
 

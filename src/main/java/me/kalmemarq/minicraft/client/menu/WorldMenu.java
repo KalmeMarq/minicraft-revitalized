@@ -34,7 +34,7 @@ public class WorldMenu extends Menu {
                 "minicraft.menu.how_to_play",
                 "minicraft.menu.about",
                 "minicraft.menu.host_world",
-                "minicraft.menu.language",
+                "minicraft.menu.options",
                 "minicraft.menu.quit"
         };
     }
@@ -43,9 +43,11 @@ public class WorldMenu extends Menu {
     public void keyPressed(int key) {
         if (key == GLFW.GLFW_KEY_W || key == GLFW.GLFW_KEY_UP) {
             this.selected--;
+			this.client.soundManager.play("/sounds/test.wav", 1.0f, 1.0f);
         }
         if (key == GLFW.GLFW_KEY_S || key == GLFW.GLFW_KEY_DOWN) {
             this.selected++;
+			this.client.soundManager.play("/sounds/test.wav", 1.0f, 1.0f);
         }
 
         int len = this.options.length;
@@ -53,12 +55,14 @@ public class WorldMenu extends Menu {
         if (this.selected >= len) this.selected -= len;
 
         if (key == GLFW.GLFW_KEY_ENTER || key == GLFW.GLFW_KEY_C || key == GLFW.GLFW_KEY_SPACE) {
-            if (this.selected == 0) {
+            boolean clicked = true;
+
+			if (this.selected == 0) {
                 this.client.setMenu(null);
             }
-            if (this.selected == 1)  this.client.setMenu(new InstructionsMenu(this));
-            if (this.selected == 2) this.client.setMenu(new AboutMenu(this));
-            if (this.selected == 3 && this.optionsEnabled[3]) {
+            else if (this.selected == 1)  this.client.setMenu(new InstructionsMenu(this));
+            else if (this.selected == 2) this.client.setMenu(new AboutMenu(this));
+            else if (this.selected == 3 && this.optionsEnabled[3]) {
                 if (this.client.integratedServer != null) {
                     int port = this.client.integratedServer.getAvailablePort();
                     this.options[3] = "Port:" + port;
@@ -66,13 +70,15 @@ public class WorldMenu extends Menu {
                     this.client.integratedServer.openToLan(port);
                 }
             }
-            if (this.selected == 4) {
-                this.client.setMenu(new LanguageMenu(this));
+            else if (this.selected == 4) {
+                this.client.setMenu(new OptionsMenu(this));
             }
-            if (this.selected == 5) {
+            else if (this.selected == 5) {
                 this.client.disconnect();
                 this.client.setMenu(new TitleMenu());
-            }
+            } else clicked = false;
+
+			if (clicked) this.client.soundManager.play("/sounds/craft.wav", 1.0f, 1.0f);
         }
     }
 

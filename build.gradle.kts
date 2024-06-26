@@ -11,6 +11,7 @@ val nettyVersion = "4.1.110.Final"
 val argOptionParserVersion = "e8a468fef5"
 val jacksonVersion = "2.17.1"
 val jetbrainAnnotationsVersion = "24.1.0"
+val log4jVersion = "2.23.1"
 
 repositories {
     mavenCentral()
@@ -21,7 +22,7 @@ repositories {
 
 dependencies {
     implementation(platform("org.lwjgl:lwjgl-bom:$lwjglVersion"))
-    arrayOf("lwjgl", "lwjgl-glfw", "lwjgl-opengl", "lwjgl-jemalloc", "lwjgl-stb").forEach {
+    arrayOf("lwjgl", "lwjgl-glfw", "lwjgl-opengl", "lwjgl-openal", "lwjgl-jemalloc", "lwjgl-stb").forEach {
         implementation("org.lwjgl", it)
         runtimeOnly("org.lwjgl", it, classifier = "natives-windows")
     }
@@ -34,6 +35,9 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$jacksonVersion")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-toml:$jacksonVersion")
+
+    implementation("org.apache.logging.log4j:log4j-api:$log4jVersion")
+    implementation("org.apache.logging.log4j:log4j-core:$log4jVersion")
     compileOnly("org.jetbrains:annotations:$jetbrainAnnotationsVersion")
 }
 

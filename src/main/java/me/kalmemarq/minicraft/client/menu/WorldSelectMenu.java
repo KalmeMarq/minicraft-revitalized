@@ -57,10 +57,17 @@ public class WorldSelectMenu extends Menu {
     public void keyPressed(int key) {
         if (key == GLFW.GLFW_KEY_ESCAPE) {
             this.client.setMenu(this.parent);
+			this.client.soundManager.play("/sounds/craft.wav", 1.0f, 1.0f);
         }
 
-        if (key == GLFW.GLFW_KEY_W || key == GLFW.GLFW_KEY_UP) this.selected--;
-        if (key == GLFW.GLFW_KEY_S || key == GLFW.GLFW_KEY_DOWN) this.selected++;
+		if (key == GLFW.GLFW_KEY_W || key == GLFW.GLFW_KEY_UP) {
+			this.selected--;
+			this.client.soundManager.play("/sounds/test.wav", 1.0f, 1.0f);
+		}
+		if (key == GLFW.GLFW_KEY_S || key == GLFW.GLFW_KEY_DOWN) {
+			this.selected++;
+			this.client.soundManager.play("/sounds/test.wav", 1.0f, 1.0f);
+		}
 
         int len = this.worlds.size();
         if (this.selected < 0) this.selected += len;

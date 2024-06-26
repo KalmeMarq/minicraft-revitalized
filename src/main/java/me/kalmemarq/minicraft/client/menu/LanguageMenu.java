@@ -29,7 +29,7 @@ public class LanguageMenu extends Menu {
 
     public LanguageMenu(Menu parent) {
         this.parent = parent;
-        this.isInGame = parent instanceof WorldMenu;
+        this.isInGame = parent instanceof WorldMenu || (parent instanceof OptionsMenu optionsMenu && optionsMenu.isInGame);
     }
 
     @Override
@@ -49,10 +49,17 @@ public class LanguageMenu extends Menu {
     public void keyPressed(int key) {
         if (key == GLFW.GLFW_KEY_ESCAPE || key == GLFW.GLFW_KEY_ENTER || key == GLFW.GLFW_KEY_C || key == GLFW.GLFW_KEY_SPACE) {
             this.client.setMenu(this.parent);
+			this.client.soundManager.play("/sounds/craft.wav", 1.0f, 1.0f);
         }
 
-        if (key == GLFW.GLFW_KEY_W || key == GLFW.GLFW_KEY_UP) this.selected--;
-        if (key == GLFW.GLFW_KEY_S || key == GLFW.GLFW_KEY_DOWN) this.selected++;
+		if (key == GLFW.GLFW_KEY_W || key == GLFW.GLFW_KEY_UP) {
+			this.selected--;
+			this.client.soundManager.play("/sounds/test.wav", 1.0f, 1.0f);
+		}
+		if (key == GLFW.GLFW_KEY_S || key == GLFW.GLFW_KEY_DOWN) {
+			this.selected++;
+			this.client.soundManager.play("/sounds/test.wav", 1.0f, 1.0f);
+		}
 
         int len = Translation.metadata.size();
         if (this.selected < 0) this.selected += len;
@@ -68,6 +75,7 @@ public class LanguageMenu extends Menu {
                 if (this.selected == i) {
                     Translation.load(code);
                     this.client.setMenu(this.parent);
+					this.client.soundManager.play("/sounds/craft.wav", 1.0f, 1.0f);
                     break;
                 }
                 ++i;

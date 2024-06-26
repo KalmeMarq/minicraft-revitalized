@@ -894,56 +894,6 @@ public class Renderer {
     }
 
     public void renderItem(Item item, int x, int y) {
-        switch (item.getNumericId()) {
-            case 0 -> this.renderSprite("textures/items", "wood_shovel.png", x, y, 8, 8, 0);
-            case 1 -> this.renderSprite("textures/items", "rock_shovel.png", x, y, 8, 8, 0);
-            case 2 -> this.renderSprite("textures/items", "iron_shovel.png", x, y, 8, 8, 0);
-            case 3 -> this.renderSprite("textures/items", "gold_shovel.png", x, y, 8, 8, 0);
-            case 4 -> this.renderSprite("textures/items", "gem_shovel.png", x, y, 8, 8, 0);
-            case 5 -> this.renderSprite("textures/items", "wood_hoe.png", x, y, 8, 8, 0);
-            case 6 -> this.renderSprite("textures/items", "rock_hoe.png", x, y, 8, 8, 0);
-            case 7 -> this.renderSprite("textures/items", "iron_hoe.png", x, y, 8, 8, 0);
-            case 8 -> this.renderSprite("textures/items", "gold_hoe.png", x, y, 8, 8, 0);
-            case 9 -> this.renderSprite("textures/items", "gem_hoe.png", x, y, 8, 8, 0);
-            case 10 -> this.renderSprite("textures/items", "wood_pickaxe.png", x, y, 8, 8, 0);
-            case 11 -> this.renderSprite("textures/items", "rock_pickaxe.png", x, y, 8, 8, 0);
-            case 12 -> this.renderSprite("textures/items", "iron_pickaxe.png", x, y, 8, 8, 0);
-            case 13 -> this.renderSprite("textures/items", "gold_pickaxe.png", x, y, 8, 8, 0);
-            case 14 -> this.renderSprite("textures/items", "gem_pickaxe.png", x, y, 8, 8, 0);
-            case 15 -> this.renderSprite("textures/items", "wood_axe.png", x, y, 8, 8, 0);
-            case 16 -> this.renderSprite("textures/items", "rock_axe.png", x, y, 8, 8, 0);
-            case 17 -> this.renderSprite("textures/items", "iron_axe.png", x, y, 8, 8, 0);
-            case 18 -> this.renderSprite("textures/items", "gold_axe.png", x, y, 8, 8, 0);
-            case 19 -> this.renderSprite("textures/items", "gem_axe.png", x, y, 8, 8, 0);
-            case 20 -> this.renderSprite("textures/items", "wood_sword.png", x, y, 8, 8, 0);
-            case 21 -> this.renderSprite("textures/items", "rock_sword.png", x, y, 8, 8, 0);
-            case 22 -> this.renderSprite("textures/items", "iron_sword.png", x, y, 8, 8, 0);
-            case 23 -> this.renderSprite("textures/items", "gold_sword.png", x, y, 8, 8, 0);
-            case 24 -> this.renderSprite("textures/items", "gem_sword.png", x, y, 8, 8, 0);
-            case 25 -> this.renderSprite("textures/items", "power_glove.png", x, y, 8, 8, 0);
-            case 26 -> this.renderSprite("textures/items", "wood.png", x, y, 8, 8, 0);
-            case 27 -> this.renderSprite("textures/items", "stone.png", x, y, 8, 8, 0);
-            case 28 -> this.renderSprite("textures/items", "flower.png", x, y, 8, 8, 0);
-            case 29 -> this.renderSprite("textures/items", "acorn.png", x, y, 8, 8, 0);
-            case 30 -> this.renderSprite("textures/items", "dirt.png", x, y, 8, 8, 0);
-            case 31 -> this.renderSprite("textures/items", "sand.png", x, y, 8, 8, 0);
-            case 32 -> this.renderSprite("textures/items", "cactus_flower.png", x, y, 8, 8, 0);
-            case 33 -> this.renderSprite("textures/items", "seeds.png", x, y, 8, 8, 0);
-            case 34 -> this.renderSprite("textures/items", "wheat.png", x, y, 8, 8, 0);
-            case 35 -> this.renderSprite("textures/items", "bread.png", x, y, 8, 8, 0);
-            case 36 -> this.renderSprite("textures/items", "apple.png", x, y, 8, 8, 0);
-            case 37 -> this.renderSprite("textures/items", "coal.png", x, y, 8, 8, 0);
-            case 38 -> this.renderSprite("textures/items", "iron_ore.png", x, y, 8, 8, 0);
-            case 39 -> this.renderSprite("textures/items", "gold_ore.png", x, y, 8, 8, 0);
-            case 40 -> this.renderSprite("textures/items", "iron_ingot.png", x, y, 8, 8, 0);
-            case 41 -> this.renderSprite("textures/items", "gold_ingot.png", x, y, 8, 8, 0);
-            case 42 -> this.renderSprite("textures/items", "slime.png", x, y, 8, 8, 0);
-            case 43 -> this.renderSprite("textures/items", "glass.png", x, y, 8, 8, 0);
-            case 44 -> this.renderSprite("textures/items", "cloth.png", x, y, 8, 8, 0);
-            case 45 -> this.renderSprite("textures/items", "cloud.png", x, y, 8, 8, 0);
-            case 46 -> this.renderSprite("textures/items", "gem.png", x, y, 8, 8, 0);
-            case 47 -> this.renderSprite("textures/items", "potato.png", x, y, 8, 8, 0);
-            case 48 -> this.renderSprite("textures/items", "baked_potato.png", x, y, 8, 8, 0);
-        }
+		this.renderSprite("textures/items", item.getStringId() + ".png", x, y, 8, 8, 0);
     }
 }

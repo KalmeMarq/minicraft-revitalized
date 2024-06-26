@@ -39,7 +39,7 @@ public class LanServerPinger extends Thread {
 
             while (!this.isInterrupted()) {
                 InetAddress inetAddress = InetAddress.getByName("230.0.0.1");
-                DatagramPacket datagramPacket = new DatagramPacket(buf, buf.length, inetAddress, 5000);
+                DatagramPacket datagramPacket = new DatagramPacket(this.buf, this.buf.length, inetAddress, 5000);
                 this.socket.send(datagramPacket);
 
                 try {

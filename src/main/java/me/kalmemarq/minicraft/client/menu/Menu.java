@@ -18,9 +18,16 @@
 package me.kalmemarq.minicraft.client.menu;
 
 import me.kalmemarq.minicraft.client.Client;
+import me.kalmemarq.minicraft.client.menu.ui.UIElement;
+import me.kalmemarq.minicraft.client.util.IOUtils;
+
+import java.io.IOException;
+import java.util.Map;
 
 public class Menu {
     protected Client client;
+	protected Map<String, Object> bindings;
+	protected UIElement element;
 
     public void init(Client client) {
         this.client = client;
@@ -45,4 +52,12 @@ public class Menu {
 
     public void render() {
     }
+
+	protected void loadScreen(String path, String name) {
+		try {
+			this.element = UIElement.load(client, this.bindings, name, IOUtils.JSON_OBJECT_MAPPER.readTree(AboutMenu.class.getResourceAsStream(path)));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }

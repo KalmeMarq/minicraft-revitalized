@@ -1,0 +1,30 @@
+{
+  "namespace": "title",
+
+  "title": {
+    "type": "image",
+    "texture": "textures/ui#title.png",
+    "offset": [20, 24],
+    "size": [120, 16]
+  },
+
+  "menu": {
+    "type": "selection_stack"
+  },
+
+  "info": {
+    "type": "label",
+    "text": "(Arrow keys,X and C)",
+    "offset": [0, 112],
+    "color": [64, 64, 64]
+  },
+
+  "title_screen": {
+    "type": "screen",
+    "controls": [
+      { "title@title": {} },
+      { "menu@menu": {} },
+      { "info@info": {} }
+    ]
+  }
+}

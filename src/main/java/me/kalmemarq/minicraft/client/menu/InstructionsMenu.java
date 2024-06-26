@@ -33,6 +33,7 @@ public class InstructionsMenu extends Menu {
     public void keyPressed(int key) {
         if (key == GLFW.GLFW_KEY_ESCAPE || key == GLFW.GLFW_KEY_ENTER || key == GLFW.GLFW_KEY_C || key == GLFW.GLFW_KEY_SPACE) {
             this.client.setMenu(this.parent);
+			this.client.soundManager.play("/sounds/craft.wav", 1.0f, 1.0f);
         }
     }
 

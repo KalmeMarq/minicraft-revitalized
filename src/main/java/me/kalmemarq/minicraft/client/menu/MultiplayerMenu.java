@@ -35,8 +35,14 @@ public class MultiplayerMenu extends Menu {
 
     @Override
     public void keyPressed(int key) {
-        if ((this.selected >= 2 && key == GLFW.GLFW_KEY_W) || key == GLFW.GLFW_KEY_UP) this.selected--;
-        if ((this.selected >= 2 && key == GLFW.GLFW_KEY_S) || key == GLFW.GLFW_KEY_DOWN) this.selected++;
+		if (key == GLFW.GLFW_KEY_UP) {
+			this.selected--;
+			this.client.soundManager.play("/sounds/test.wav", 1.0f, 1.0f);
+		}
+		if (key == GLFW.GLFW_KEY_DOWN) {
+			this.selected++;
+			this.client.soundManager.play("/sounds/test.wav", 1.0f, 1.0f);
+		}
 
         int len = this.options.length;
         if (this.selected < 0) this.selected += len;
@@ -44,12 +50,14 @@ public class MultiplayerMenu extends Menu {
 
         if (key == GLFW.GLFW_KEY_ESCAPE) {
             this.client.setMenu(this.parent);
+			this.client.soundManager.play("/sounds/craft.wav", 1.0f, 1.0f);
         }
 
         if (key == GLFW.GLFW_KEY_ENTER || key == GLFW.GLFW_KEY_C || key == GLFW.GLFW_KEY_SPACE) {
             if (this.selected == 2) {
                 this.client.setMenu(null);
                 this.client.connect(this.options[0], Integer.parseInt(this.options[1]));
+				this.client.soundManager.play("/sounds/craft.wav", 1.0f, 1.0f);
             }
         }
 

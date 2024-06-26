@@ -85,7 +85,7 @@ public class NetworkConnection extends SimpleChannelInboundHandler<Packet> {
         }
     }
 
-    public void tick() {
+	public void tick() {
         if (this.listener != null) {
             this.listener.tick();
         }

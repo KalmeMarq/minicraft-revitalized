@@ -1,6 +1,7 @@
 - Go back to OpenGL 4.5
-- Readd sounds
+- Readd sound streaming
 - Resource packs
 - Save/load worlds
 - Readd sky and underground levels
 - Data mods
+- Fix item pickup

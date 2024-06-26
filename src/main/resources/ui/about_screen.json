@@ -1,4 +1,6 @@
 {
+  "namespace": "about",
+
   "title_bg": {
     "type": "image",
     "texture": "textures/ui#frame.png",
@@ -31,7 +33,6 @@
     "type": "label",
     "text": "#title",
     "offset": [20, 8],
-    "color": [255, 255, 255],
     "bindings": [
       {
         "binding_name": "#title"

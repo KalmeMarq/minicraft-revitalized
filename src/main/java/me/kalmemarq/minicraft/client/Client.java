@@ -27,6 +27,7 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.local.LocalChannel;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import me.kalmemarq.minicraft.client.sound.SoundManager;
 import me.kalmemarq.minicraft.client.util.IOUtils;
 import me.kalmemarq.minicraft.client.util.Translation;
 import me.kalmemarq.minicraft.util.ThreadExecutor;
@@ -79,8 +80,11 @@ public class Client extends ThreadExecutor implements GameWindow.WindowEventHand
     public Renderer renderer = new Renderer(this);
     public boolean showDebug;
     public final Path saveDir;
+	public boolean vsync = true;
+	public boolean sound = true;
     public InputHandler inputHandler = new InputHandler();
 	public String username = "Player" + (System.currentTimeMillis() % 1000);
+	public SoundManager soundManager;
 
     public Client(Path saveDir) {
         this.saveDir = saveDir;
@@ -273,8 +277,9 @@ public class Client extends ThreadExecutor implements GameWindow.WindowEventHand
         this.textureManager.addAtlases();
         GL11.glEnable(GL11.GL_TEXTURE_2D);
 
-
         this.loadSettings();
+
+		this.soundManager = new SoundManager(this);
 
         Translation.load(Translation.currentCode);
         this.setMenu(new TitleMenu());
@@ -341,6 +346,8 @@ public class Client extends ThreadExecutor implements GameWindow.WindowEventHand
             ObjectNode node = IOUtils.TOML_OBJECT_MAPPER.createObjectNode();
             node.put("language", Translation.currentCode);
             node.put("username", this.username);
+            node.put("sound", this.sound);
+            node.put("vsync", this.vsync);
             Files.writeString(optionsPath, IOUtils.TOML_OBJECT_MAPPER.writeValueAsString(node));
         } catch (IOException e) {
             e.printStackTrace();
@@ -349,8 +356,8 @@ public class Client extends ThreadExecutor implements GameWindow.WindowEventHand
 
     private void close() {
         this.textureManager.close();
-
         this.window.close();
+		this.soundManager.close();
 
         this.saveSettings();
 

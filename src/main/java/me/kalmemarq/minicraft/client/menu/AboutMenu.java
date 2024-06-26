@@ -19,18 +19,13 @@ package me.kalmemarq.minicraft.client.menu;
 
 import me.kalmemarq.minicraft.client.Client;
 import me.kalmemarq.minicraft.client.menu.ui.UIElement;
-import me.kalmemarq.minicraft.client.util.IOUtils;
 import org.lwjgl.glfw.GLFW;
 
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.Map;
 
 public class AboutMenu extends Menu {
     private final Menu parent;
     private final boolean isInGame;
-	private final Map<String, Object> bindings = new HashMap<>();
-	private UIElement element = new UIElement();
 
     public AboutMenu(Menu parent) {
         this.parent = parent;
@@ -40,21 +35,19 @@ public class AboutMenu extends Menu {
 	@Override
 	public void init(Client client) {
 		super.init(client);
+		this.bindings = new HashMap<>();
+		this.element = new UIElement();
 		this.bindings.put("#is_in_game", this.isInGame);
 		this.bindings.put("#title", "minicraft.menu.about.title");
 		this.bindings.put("#message_body", "minicraft.menu.about.message");
-
-		try {
-			this.element = UIElement.load(client, this.bindings, "about_screen", IOUtils.JSON_OBJECT_MAPPER.readTree(AboutMenu.class.getResourceAsStream("/ui/about_screen.json")));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		this.loadScreen("/ui/about_screen.json", "about_screen");
 	}
 
 	@Override
     public void keyPressed(int key) {
         if (key == GLFW.GLFW_KEY_ESCAPE || key == GLFW.GLFW_KEY_ENTER || key == GLFW.GLFW_KEY_C || key == GLFW.GLFW_KEY_SPACE) {
             this.client.setMenu(this.parent);
+			this.client.soundManager.play("/sounds/craft.wav", 1.0f, 1.0f);
         }
     }
 

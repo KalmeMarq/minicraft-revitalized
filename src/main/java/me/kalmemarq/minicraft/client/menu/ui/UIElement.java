@@ -1,3 +1,20 @@
+/*
+ * Minicraft Revitalized.
+ * Copyright (C) 2024 KalmeMarq
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses/.
+ */
+
 package me.kalmemarq.minicraft.client.menu.ui;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -73,7 +90,14 @@ public class UIElement {
 	private static UIElement loadControl(Client client, Map<String, Object> menuBindings, JsonNode node, JsonNode root) {
 		String type = node.get("type").asText();
 
-		UIElement element = type.equals("label") ? new UILabel() : type.equals("image") ? new UIImage() : type.equals("selection_stack") ? new UISelectionStack() : new UIElement();
+		UIElement element = switch (type) {
+			case "label" -> new UILabel();
+			case "image" -> new UIImage();
+			case "selection_stack" -> new UISelectionStack();
+			case "gradient" -> new UIGradient();
+			default -> new UIElement();
+		};
+
 		if (node.has("controls")) {
 			for (JsonNode n : node.get("controls")) {
 				for (Iterator<Map.Entry<String, JsonNode>> it = n.fields(); it.hasNext(); ) {
@@ -88,12 +112,12 @@ public class UIElement {
 
 						for (Iterator<Map.Entry<String, JsonNode>> iter = root.get(superName).fields(); iter.hasNext(); ) {
 							var km = iter.next();
-							nn.put(km.getKey(), km.getValue());
+							nn.set(km.getKey(), km.getValue());
 						}
 
 						for (Iterator<Map.Entry<String, JsonNode>> iter = n0.getValue().fields(); iter.hasNext(); ) {
 							var km = iter.next();
-							nn.put(km.getKey(), km.getValue());
+							nn.set(km.getKey(), km.getValue());
 						}
 
 						element.controls.add(loadControl(client, menuBindings, nn, root));

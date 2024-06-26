@@ -1,18 +1,22 @@
 {
+  "namespace": "singleplayer",
+
   "selection_menu": {
     "type": "selection_stack",
     "controls": [
       {
-        "type": "label",
-        "text": "minicraft.menu.load_world",
-        "color": [255, 255, 255],
-        "button_id": "button.menu_load_world"
+        "load_world": {
+          "type": "label",
+          "text": "minicraft.menu.load_world",
+          "button_id": "button.menu_load_world"
+        }
       },
       {
-        "type": "label",
-        "text": "minicraft.menu.create_world",
-        "color": [255, 255, 255],
-        "button_id": "button.menu_create_world"
+        "create_world": {
+          "type": "label",
+          "text": "minicraft.menu.create_world",
+          "button_id": "button.menu_create_world"
+        }
       }
     ]
   },

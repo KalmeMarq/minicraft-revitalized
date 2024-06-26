@@ -239,7 +239,11 @@ public class GameWindow {
         return this.handle;
     }
 
-    public interface WindowEventHandler {
+	public void setVsync(boolean vsync) {
+		GLFW.glfwSwapInterval(vsync ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE);
+	}
+
+	public interface WindowEventHandler {
         void onResize();
     }
 

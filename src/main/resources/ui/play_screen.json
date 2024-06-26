@@ -1,18 +1,22 @@
 {
+  "namespace": "play",
+
   "selection_menu": {
     "type": "selection_stack",
     "controls": [
       {
-        "type": "label",
-        "text": "minicraft.menu.singleplayer",
-        "color": [255, 255, 255],
-        "button_id": "button.menu_singleplayer"
+        "singleplayer": {
+          "type": "label",
+          "text": "minicraft.menu.singleplayer",
+          "button_id": "button.menu_singleplayer"
+        }
       },
       {
-        "type": "label",
-        "text": "minicraft.menu.multiplayer",
-        "color": [255, 255, 255],
-        "button_id": "button.menu_multiplayer"
+        "multiplayer": {
+          "type": "label",
+          "text": "minicraft.menu.multiplayer",
+          "button_id": "button.menu_multiplayer"
+        }
       }
     ]
   },

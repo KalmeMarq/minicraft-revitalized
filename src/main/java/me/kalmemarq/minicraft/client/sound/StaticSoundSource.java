@@ -15,8 +15,12 @@
  * along with this program. If not, see http://www.gnu.org/licenses/.
  */
 
-package me.kalmemarq.minicraft.client.menu.ui;
+package me.kalmemarq.minicraft.client.sound;
 
-public class UISelectionStack extends UIElement {
-	private int selected;
+import org.lwjgl.openal.AL10;
+
+public class StaticSoundSource extends SoundSource {
+	public void setBuffer(int buffer) {
+		AL10.alSourcei(this.handle, AL10.AL_BUFFER, buffer);
+	}
 }

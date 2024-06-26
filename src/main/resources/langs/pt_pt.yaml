@@ -22,6 +22,7 @@ minicraft.menu.about.title: Sobre Minicraft
 minicraft.menu.about.message: |-
   Minicraft foi criado por Markus Persson para a 22ª competição ludum dare em dezembro de 2011.
   Dedicado ao meu pai. <3
+minicraft.menu.options: Definições
 minicraft.menu.language: Idioma
 minicraft.menu.quit: Sair
 minicraft.menu.continue: Continuar
