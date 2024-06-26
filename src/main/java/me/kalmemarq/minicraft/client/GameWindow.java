@@ -140,7 +140,7 @@ public class GameWindow {
     }
 
     private void setIcon() {
-        String[] icons = {"/icons/16x16.png", "/icons/32x32.png", "/icons/48x48.png", "/icons/64x64.png", "/icons/128x128.png", "/icons/256x256.png"};
+        String[] icons = {"/textures/icons/16x16.png", "/textures/icons/32x32.png", "/textures/icons/48x48.png", "/textures/icons/64x64.png", "/textures/icons/128x128.png", "/textures/icons/256x256.png"};
 
         try (MemoryStack stack = MemoryStack.stackPush()) {
             IntBuffer wP = stack.mallocInt(1);

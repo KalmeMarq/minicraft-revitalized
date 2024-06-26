@@ -75,26 +75,26 @@ public class TextureManager {
 
     public void addAtlases() {
         AtlasTexture tilesAtlas = new AtlasTexture();
-        tilesAtlas.load("tiles");
+        tilesAtlas.load("textures/tiles");
 
         AtlasTexture itemsAtlas = new AtlasTexture();
-        itemsAtlas.load("items");
+        itemsAtlas.load("textures/items");
 
         AtlasTexture entitiesAtlas = new AtlasTexture();
-        entitiesAtlas.load("entities");
+        entitiesAtlas.load("textures/entities");
 
         AtlasTexture uiAtlas = new AtlasTexture();
-        uiAtlas.load("ui");
+        uiAtlas.load("textures/ui");
 
-        this.textures.put("tiles", tilesAtlas);
-        this.textures.put("items", itemsAtlas);
-        this.textures.put("entities", entitiesAtlas);
-        this.textures.put("ui", uiAtlas);
+        this.textures.put("textures/tiles", tilesAtlas);
+        this.textures.put("textures/items", itemsAtlas);
+        this.textures.put("textures/entities", entitiesAtlas);
+        this.textures.put("textures/ui", uiAtlas);
 
-        this.atlasTextures.put("tiles", tilesAtlas);
-        this.atlasTextures.put("items", itemsAtlas);
-        this.atlasTextures.put("entities", entitiesAtlas);
-        this.atlasTextures.put("ui", uiAtlas);
+        this.atlasTextures.put("textures/tiles", tilesAtlas);
+        this.atlasTextures.put("textures/items", itemsAtlas);
+        this.atlasTextures.put("textures/entities", entitiesAtlas);
+        this.atlasTextures.put("textures/ui", uiAtlas);
 
         Path debugPath = this.client.saveDir.resolve("debug");
         try {

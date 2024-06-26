@@ -46,7 +46,7 @@ public class InventoryMenu extends Menu {
 
     @Override
     public void render() {
-        this.client.renderer.renderSpriteNineslice("ui", "frame.png", 8, 8, 12 * 8, 11 * 8, 8, 8, 8, 8);
+        this.client.renderer.renderSpriteNineslice("textures/ui", "frame.png", 8, 8, 12 * 8, 11 * 8, 8, 8, 8, 8);
         this.renderItemStackList(1, 1, 12, 11, this.client.player.inventory.itemStacks, this.selected);
     }
 

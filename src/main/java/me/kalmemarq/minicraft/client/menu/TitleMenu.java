@@ -61,7 +61,7 @@ public class TitleMenu extends Menu {
 
     @Override
     public void render() {
-        this.client.renderer.renderSprite("ui", "title.png", (this.getWidth() - 120) / 2, 24, 120, 16, false, false);
+        this.client.renderer.renderSprite("textures/ui", "title.png", (this.getWidth() - 120) / 2, 24, 120, 16, false, false);
 
         for (int i = 0; i < this.options.length; i++) {
             String msg = this.options[i];

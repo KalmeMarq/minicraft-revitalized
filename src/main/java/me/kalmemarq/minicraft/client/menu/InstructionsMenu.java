@@ -38,8 +38,8 @@ public class InstructionsMenu extends Menu {
 
     public void render() {
         if (this.isInGame) {
-            this.client.renderer.renderSpriteNineslice("ui", "frame.png", 8, 4, this.getWidth() - 16, 16, 8, 8, 8, 8);
-            this.client.renderer.renderSpriteNineslice("ui", "frame.png", 0, 20, this.getWidth(), this.getHeight() - 20, 8, 8, 8, 8);
+            this.client.renderer.renderSpriteNineslice("textures/ui", "frame.png", 8, 4, this.getWidth() - 16, 16, 8, 8, 8, 8);
+            this.client.renderer.renderSpriteNineslice("textures/ui", "frame.png", 0, 20, this.getWidth(), this.getHeight() - 20, 8, 8, 8, 8);
         }
 
         this.client.font.draw(Translation.translate("minicraft.menu.how_to_play"), 4 * 8 + 4, 8, 0xFFFFFF);

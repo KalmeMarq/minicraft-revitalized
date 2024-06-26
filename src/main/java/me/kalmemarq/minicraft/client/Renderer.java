@@ -73,7 +73,7 @@ public class Renderer {
                 int w = ((this.client.window.getWidth() / 3) + 15) >> 4;
                 int h = ((this.client.window.getHeight() / 3) + 15) >> 4;
 
-                AtlasTexture texture = this.client.textureManager.getAtlas("tiles");
+                AtlasTexture texture = this.client.textureManager.getAtlas("textures/tiles");
                 texture.bind();
 
                 GL11.glEnable(GL11.GL_BLEND);
@@ -131,14 +131,14 @@ public class Renderer {
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             for (int i = 0; i < this.client.player.maxHealth; ++i) {
-                this.renderSprite("ui", i >= this.client.player.health ? "heart_empty.png" : "heart.png", i * 8, (int) ((this.client.window.getHeight() / 3f) - 16), 8, 8, false, false);
+                this.renderSprite("textures/ui", i >= this.client.player.health ? "heart_empty.png" : "heart.png", i * 8, (int) ((this.client.window.getHeight() / 3f) - 16), 8, 8, false, false);
             }
             for (int i = 0; i < this.client.player.maxStamina; ++i) {
                 String sprite = i >= this.client.player.stamina ? "stamina_empty.png" : "stamina.png";
                 if (this.client.player.staminaRechargeDelay > 0 && this.client.player.staminaRechargeDelay / 4 % 2 == 0) {
                     sprite = "stamina_empty_blinking.png";
                 }
-                this.renderSprite("ui", sprite, i * 8, (int) ((this.client.window.getHeight() / 3f) - 8), 8, 8, false, false);
+                this.renderSprite("textures/ui", sprite, i * 8, (int) ((this.client.window.getHeight() / 3f) - 8), 8, 8, false, false);
             }
         }
 
@@ -182,7 +182,7 @@ public class Renderer {
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-        this.renderSpriteNineslice("ui", "frame.png", xx - 8, yy - 8, w * 8 + 16, 24, 8, 8, 8, 8);
+        this.renderSpriteNineslice("textures/ui", "frame.png", xx - 8, yy - 8, w * 8 + 16, 24, 8, 8, 8, 8);
 
         this.client.font.draw(msg, xx, yy, (this.client.tickCount / 20) % 2 == 0 ? 0x777777 : 0xFFFFFF);
     }
@@ -500,19 +500,19 @@ public class Renderer {
 
         if (entity.isSwimming()) {
             if (entity.isSwimmingInLava()) {
-                this.renderSprite("ui", this.client.tickCount / 8 % 2 == 0 ? "lava_overlay_1.png" : "lava_overlay_0.png", x, y + 3, 8, 8, false, false);
-                this.renderSprite("ui", this.client.tickCount / 8 % 2 == 0 ? "lava_overlay_1.png" : "lava_overlay_0.png", x + 8, y + 3, 8, 8, true, false);
+                this.renderSprite("textures/ui", this.client.tickCount / 8 % 2 == 0 ? "lava_overlay_1.png" : "lava_overlay_0.png", x, y + 3, 8, 8, false, false);
+                this.renderSprite("textures/ui", this.client.tickCount / 8 % 2 == 0 ? "lava_overlay_1.png" : "lava_overlay_0.png", x + 8, y + 3, 8, 8, true, false);
             } else {
-                this.renderSprite("ui", this.client.tickCount / 8 % 2 == 0 ? "water_overlay_1.png" : "water_overlay_0.png", x, y + 3, 8, 8, false, false);
-                this.renderSprite("ui", this.client.tickCount / 8 % 2 == 0 ? "water_overlay_1.png" : "water_overlay_0.png", x + 8, y + 3, 8, 8, true, false);
+                this.renderSprite("textures/ui", this.client.tickCount / 8 % 2 == 0 ? "water_overlay_1.png" : "water_overlay_0.png", x, y + 3, 8, 8, false, false);
+                this.renderSprite("textures/ui", this.client.tickCount / 8 % 2 == 0 ? "water_overlay_1.png" : "water_overlay_0.png", x + 8, y + 3, 8, 8, true, false);
             }
         }
 
         String skin = entity.dir == 0 ? "zombie/level0/forward.png" : entity.dir == 1 ? "zombie/level0/backward.png" : flip2 == 1 ? "zombie/level0/side_moving.png" : "zombie/level0/side_still.png";
 
-        this.renderSprite("entities", skin, x, y, 16, 8, 0, 0, flip1);
+        this.renderSprite("textures/entities", skin, x, y, 16, 8, 0, 0, flip1);
         if (!entity.isSwimming()) {
-            this.renderSprite("entities", skin, x, y + 8, 16, 8, 0, 8, flip2);
+            this.renderSprite("textures/entities", skin, x, y + 8, 16, 8, 0, 8, flip2);
         }
     }
 
@@ -796,9 +796,9 @@ public class Renderer {
 
         if (jumpTime > 0) {
             y -= 4;
-            this.renderSprite("entities", "slime/level0/jumping.png", x, y, 16, 16, entity.dir == 3, false);
+            this.renderSprite("textures/entities", "slime/level0/jumping.png", x, y, 16, 16, entity.dir == 3, false);
         } else {
-            this.renderSprite("entities", "slime/level0/still.png", x, y, 16, 16, entity.dir == 3, false);
+            this.renderSprite("textures/entities", "slime/level0/still.png", x, y, 16, 16, entity.dir == 3, false);
         }
     }
 
@@ -836,19 +836,19 @@ public class Renderer {
 
         if (entity.isSwimming()) {
             if (entity.isSwimmingInLava()) {
-                this.renderSprite("ui", this.client.tickCount / 8 % 2 == 0 ? "lava_overlay_1.png" : "lava_overlay_0.png", x, y + 3, 8, 8, false, false);
-                this.renderSprite("ui", this.client.tickCount / 8 % 2 == 0 ? "lava_overlay_1.png" : "lava_overlay_0.png", x + 8, y + 3, 8, 8, true, false);
+                this.renderSprite("textures/ui", this.client.tickCount / 8 % 2 == 0 ? "lava_overlay_1.png" : "lava_overlay_0.png", x, y + 3, 8, 8, false, false);
+                this.renderSprite("textures/ui", this.client.tickCount / 8 % 2 == 0 ? "lava_overlay_1.png" : "lava_overlay_0.png", x + 8, y + 3, 8, 8, true, false);
             } else {
-                this.renderSprite("ui", this.client.tickCount / 8 % 2 == 0 ? "water_overlay_1.png" : "water_overlay_0.png", x, y + 3, 8, 8, false, false);
-                this.renderSprite("ui", this.client.tickCount / 8 % 2 == 0 ? "water_overlay_1.png" : "water_overlay_0.png", x + 8, y + 3, 8, 8, true, false);
+                this.renderSprite("textures/ui", this.client.tickCount / 8 % 2 == 0 ? "water_overlay_1.png" : "water_overlay_0.png", x, y + 3, 8, 8, false, false);
+                this.renderSprite("textures/ui", this.client.tickCount / 8 % 2 == 0 ? "water_overlay_1.png" : "water_overlay_0.png", x + 8, y + 3, 8, 8, true, false);
             }
         }
 
         String skin = entity.dir == 0 ? "player/forward.png" : entity.dir == 1 ? "player/backward.png" : flip2 == 1 ? "player/side_moving.png" : "player/side_still.png";
 
-        this.renderSprite("entities", skin, x, y, 16, 8, 0, 0, flip1);
+        this.renderSprite("textures/entities", skin, x, y, 16, 8, 0, 0, flip1);
         if (!entity.isSwimming()) {
-            this.renderSprite("entities", skin, x, y + 8, 16, 8, 0, 8, flip2);
+            this.renderSprite("textures/entities", skin, x, y + 8, 16, 8, 0, 8, flip2);
         }
     }
 
@@ -895,55 +895,55 @@ public class Renderer {
 
     public void renderItem(Item item, int x, int y) {
         switch (item.getNumericId()) {
-            case 0 -> this.renderSprite("items", "wood_shovel.png", x, y, 8, 8, 0);
-            case 1 -> this.renderSprite("items", "rock_shovel.png", x, y, 8, 8, 0);
-            case 2 -> this.renderSprite("items", "iron_shovel.png", x, y, 8, 8, 0);
-            case 3 -> this.renderSprite("items", "gold_shovel.png", x, y, 8, 8, 0);
-            case 4 -> this.renderSprite("items", "gem_shovel.png", x, y, 8, 8, 0);
-            case 5 -> this.renderSprite("items", "wood_hoe.png", x, y, 8, 8, 0);
-            case 6 -> this.renderSprite("items", "rock_hoe.png", x, y, 8, 8, 0);
-            case 7 -> this.renderSprite("items", "iron_hoe.png", x, y, 8, 8, 0);
-            case 8 -> this.renderSprite("items", "gold_hoe.png", x, y, 8, 8, 0);
-            case 9 -> this.renderSprite("items", "gem_hoe.png", x, y, 8, 8, 0);
-            case 10 -> this.renderSprite("items", "wood_pickaxe.png", x, y, 8, 8, 0);
-            case 11 -> this.renderSprite("items", "rock_pickaxe.png", x, y, 8, 8, 0);
-            case 12 -> this.renderSprite("items", "iron_pickaxe.png", x, y, 8, 8, 0);
-            case 13 -> this.renderSprite("items", "gold_pickaxe.png", x, y, 8, 8, 0);
-            case 14 -> this.renderSprite("items", "gem_pickaxe.png", x, y, 8, 8, 0);
-            case 15 -> this.renderSprite("items", "wood_axe.png", x, y, 8, 8, 0);
-            case 16 -> this.renderSprite("items", "rock_axe.png", x, y, 8, 8, 0);
-            case 17 -> this.renderSprite("items", "iron_axe.png", x, y, 8, 8, 0);
-            case 18 -> this.renderSprite("items", "gold_axe.png", x, y, 8, 8, 0);
-            case 19 -> this.renderSprite("items", "gem_axe.png", x, y, 8, 8, 0);
-            case 20 -> this.renderSprite("items", "wood_sword.png", x, y, 8, 8, 0);
-            case 21 -> this.renderSprite("items", "rock_sword.png", x, y, 8, 8, 0);
-            case 22 -> this.renderSprite("items", "iron_sword.png", x, y, 8, 8, 0);
-            case 23 -> this.renderSprite("items", "gold_sword.png", x, y, 8, 8, 0);
-            case 24 -> this.renderSprite("items", "gem_sword.png", x, y, 8, 8, 0);
-            case 25 -> this.renderSprite("items", "power_glove.png", x, y, 8, 8, 0);
-            case 26 -> this.renderSprite("items", "wood.png", x, y, 8, 8, 0);
-            case 27 -> this.renderSprite("items", "stone.png", x, y, 8, 8, 0);
-            case 28 -> this.renderSprite("items", "flower.png", x, y, 8, 8, 0);
-            case 29 -> this.renderSprite("items", "acorn.png", x, y, 8, 8, 0);
-            case 30 -> this.renderSprite("items", "dirt.png", x, y, 8, 8, 0);
-            case 31 -> this.renderSprite("items", "sand.png", x, y, 8, 8, 0);
-            case 32 -> this.renderSprite("items", "cactus_flower.png", x, y, 8, 8, 0);
-            case 33 -> this.renderSprite("items", "seeds.png", x, y, 8, 8, 0);
-            case 34 -> this.renderSprite("items", "wheat.png", x, y, 8, 8, 0);
-            case 35 -> this.renderSprite("items", "bread.png", x, y, 8, 8, 0);
-            case 36 -> this.renderSprite("items", "apple.png", x, y, 8, 8, 0);
-            case 37 -> this.renderSprite("items", "coal.png", x, y, 8, 8, 0);
-            case 38 -> this.renderSprite("items", "iron_ore.png", x, y, 8, 8, 0);
-            case 39 -> this.renderSprite("items", "gold_ore.png", x, y, 8, 8, 0);
-            case 40 -> this.renderSprite("items", "iron_ingot.png", x, y, 8, 8, 0);
-            case 41 -> this.renderSprite("items", "gold_ingot.png", x, y, 8, 8, 0);
-            case 42 -> this.renderSprite("items", "slime.png", x, y, 8, 8, 0);
-            case 43 -> this.renderSprite("items", "glass.png", x, y, 8, 8, 0);
-            case 44 -> this.renderSprite("items", "cloth.png", x, y, 8, 8, 0);
-            case 45 -> this.renderSprite("items", "cloud.png", x, y, 8, 8, 0);
-            case 46 -> this.renderSprite("items", "gem.png", x, y, 8, 8, 0);
-            case 47 -> this.renderSprite("items", "potato.png", x, y, 8, 8, 0);
-            case 48 -> this.renderSprite("items", "baked_potato.png", x, y, 8, 8, 0);
+            case 0 -> this.renderSprite("textures/items", "wood_shovel.png", x, y, 8, 8, 0);
+            case 1 -> this.renderSprite("textures/items", "rock_shovel.png", x, y, 8, 8, 0);
+            case 2 -> this.renderSprite("textures/items", "iron_shovel.png", x, y, 8, 8, 0);
+            case 3 -> this.renderSprite("textures/items", "gold_shovel.png", x, y, 8, 8, 0);
+            case 4 -> this.renderSprite("textures/items", "gem_shovel.png", x, y, 8, 8, 0);
+            case 5 -> this.renderSprite("textures/items", "wood_hoe.png", x, y, 8, 8, 0);
+            case 6 -> this.renderSprite("textures/items", "rock_hoe.png", x, y, 8, 8, 0);
+            case 7 -> this.renderSprite("textures/items", "iron_hoe.png", x, y, 8, 8, 0);
+            case 8 -> this.renderSprite("textures/items", "gold_hoe.png", x, y, 8, 8, 0);
+            case 9 -> this.renderSprite("textures/items", "gem_hoe.png", x, y, 8, 8, 0);
+            case 10 -> this.renderSprite("textures/items", "wood_pickaxe.png", x, y, 8, 8, 0);
+            case 11 -> this.renderSprite("textures/items", "rock_pickaxe.png", x, y, 8, 8, 0);
+            case 12 -> this.renderSprite("textures/items", "iron_pickaxe.png", x, y, 8, 8, 0);
+            case 13 -> this.renderSprite("textures/items", "gold_pickaxe.png", x, y, 8, 8, 0);
+            case 14 -> this.renderSprite("textures/items", "gem_pickaxe.png", x, y, 8, 8, 0);
+            case 15 -> this.renderSprite("textures/items", "wood_axe.png", x, y, 8, 8, 0);
+            case 16 -> this.renderSprite("textures/items", "rock_axe.png", x, y, 8, 8, 0);
+            case 17 -> this.renderSprite("textures/items", "iron_axe.png", x, y, 8, 8, 0);
+            case 18 -> this.renderSprite("textures/items", "gold_axe.png", x, y, 8, 8, 0);
+            case 19 -> this.renderSprite("textures/items", "gem_axe.png", x, y, 8, 8, 0);
+            case 20 -> this.renderSprite("textures/items", "wood_sword.png", x, y, 8, 8, 0);
+            case 21 -> this.renderSprite("textures/items", "rock_sword.png", x, y, 8, 8, 0);
+            case 22 -> this.renderSprite("textures/items", "iron_sword.png", x, y, 8, 8, 0);
+            case 23 -> this.renderSprite("textures/items", "gold_sword.png", x, y, 8, 8, 0);
+            case 24 -> this.renderSprite("textures/items", "gem_sword.png", x, y, 8, 8, 0);
+            case 25 -> this.renderSprite("textures/items", "power_glove.png", x, y, 8, 8, 0);
+            case 26 -> this.renderSprite("textures/items", "wood.png", x, y, 8, 8, 0);
+            case 27 -> this.renderSprite("textures/items", "stone.png", x, y, 8, 8, 0);
+            case 28 -> this.renderSprite("textures/items", "flower.png", x, y, 8, 8, 0);
+            case 29 -> this.renderSprite("textures/items", "acorn.png", x, y, 8, 8, 0);
+            case 30 -> this.renderSprite("textures/items", "dirt.png", x, y, 8, 8, 0);
+            case 31 -> this.renderSprite("textures/items", "sand.png", x, y, 8, 8, 0);
+            case 32 -> this.renderSprite("textures/items", "cactus_flower.png", x, y, 8, 8, 0);
+            case 33 -> this.renderSprite("textures/items", "seeds.png", x, y, 8, 8, 0);
+            case 34 -> this.renderSprite("textures/items", "wheat.png", x, y, 8, 8, 0);
+            case 35 -> this.renderSprite("textures/items", "bread.png", x, y, 8, 8, 0);
+            case 36 -> this.renderSprite("textures/items", "apple.png", x, y, 8, 8, 0);
+            case 37 -> this.renderSprite("textures/items", "coal.png", x, y, 8, 8, 0);
+            case 38 -> this.renderSprite("textures/items", "iron_ore.png", x, y, 8, 8, 0);
+            case 39 -> this.renderSprite("textures/items", "gold_ore.png", x, y, 8, 8, 0);
+            case 40 -> this.renderSprite("textures/items", "iron_ingot.png", x, y, 8, 8, 0);
+            case 41 -> this.renderSprite("textures/items", "gold_ingot.png", x, y, 8, 8, 0);
+            case 42 -> this.renderSprite("textures/items", "slime.png", x, y, 8, 8, 0);
+            case 43 -> this.renderSprite("textures/items", "glass.png", x, y, 8, 8, 0);
+            case 44 -> this.renderSprite("textures/items", "cloth.png", x, y, 8, 8, 0);
+            case 45 -> this.renderSprite("textures/items", "cloud.png", x, y, 8, 8, 0);
+            case 46 -> this.renderSprite("textures/items", "gem.png", x, y, 8, 8, 0);
+            case 47 -> this.renderSprite("textures/items", "potato.png", x, y, 8, 8, 0);
+            case 48 -> this.renderSprite("textures/items", "baked_potato.png", x, y, 8, 8, 0);
         }
     }
 }

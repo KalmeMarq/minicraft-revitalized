@@ -1,0 +1,64 @@
+{
+  "title_bg": {
+    "type": "image",
+    "texture": "textures/ui#frame.png",
+    "offset": [8, 4],
+    "size": [144, 16],
+    "nineslice_size": 8,
+    "bindings": [
+      {
+        "binding_name": "#is_in_game",
+        "binding_name_override": "#visible"
+      }
+    ]
+  },
+
+  "message_bg": {
+    "type": "image",
+    "texture": "textures/ui#frame.png",
+    "offset": [0, 20],
+    "size": [160, 100],
+    "nineslice_size": 8,
+    "bindings": [
+      {
+        "binding_name": "#is_in_game",
+        "binding_name_override": "#visible"
+      }
+    ]
+  },
+
+  "title": {
+    "type": "label",
+    "text": "#title",
+    "offset": [20, 8],
+    "color": [255, 255, 255],
+    "bindings": [
+      {
+        "binding_name": "#title"
+      }
+    ]
+  },
+
+  "message": {
+    "type": "label",
+    "text": "#message_body",
+    "wrap": 20,
+    "offset": [4, 32],
+    "color": [128, 128, 128],
+    "bindings": [
+      {
+        "binding_name": "#message_body"
+      }
+    ]
+  },
+
+  "about_screen": {
+    "type": "screen",
+    "controls": [
+      { "title_bg@title_bg": {} },
+      { "message_bg@message_bg": {} },
+      { "title@title": {} },
+      { "message@message": {} }
+    ]
+  }
+}

@@ -17,19 +17,41 @@
 
 package me.kalmemarq.minicraft.client.menu;
 
-import me.kalmemarq.minicraft.client.util.Translation;
+import me.kalmemarq.minicraft.client.Client;
+import me.kalmemarq.minicraft.client.menu.ui.UIElement;
+import me.kalmemarq.minicraft.client.util.IOUtils;
 import org.lwjgl.glfw.GLFW;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AboutMenu extends Menu {
     private final Menu parent;
     private final boolean isInGame;
+	private final Map<String, Object> bindings = new HashMap<>();
+	private UIElement element = new UIElement();
 
     public AboutMenu(Menu parent) {
         this.parent = parent;
         this.isInGame = parent instanceof WorldMenu;
     }
 
-    @Override
+	@Override
+	public void init(Client client) {
+		super.init(client);
+		this.bindings.put("#is_in_game", this.isInGame);
+		this.bindings.put("#title", "minicraft.menu.about.title");
+		this.bindings.put("#message_body", "minicraft.menu.about.message");
+
+		try {
+			this.element = UIElement.load(client, this.bindings, "about_screen", IOUtils.JSON_OBJECT_MAPPER.readTree(AboutMenu.class.getResourceAsStream("/ui/about_screen.json")));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
     public void keyPressed(int key) {
         if (key == GLFW.GLFW_KEY_ESCAPE || key == GLFW.GLFW_KEY_ENTER || key == GLFW.GLFW_KEY_C || key == GLFW.GLFW_KEY_SPACE) {
             this.client.setMenu(this.parent);
@@ -37,12 +59,6 @@ public class AboutMenu extends Menu {
     }
 
     public void render() {
-        if (this.isInGame) {
-            this.client.renderer.renderSpriteNineslice("ui", "frame.png", 8, 4, this.getWidth() - 16, 16, 8, 8, 8, 8);
-            this.client.renderer.renderSpriteNineslice("ui", "frame.png", 0, 20, this.getWidth(), this.getHeight() - 20, 8, 8, 8, 8);
-        }
-
-        this.client.font.draw(Translation.translate("minicraft.menu.about.title"), 2 * 8 + 4, 8, 0xFFFFFF);
-        this.client.font.drawWithMaxWidth(Translation.translate("minicraft.menu.about.message"), 4, 4 * 8, 0x808080, 20);
+		this.element.render();
     }
 }

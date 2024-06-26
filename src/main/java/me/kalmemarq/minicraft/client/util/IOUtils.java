@@ -40,6 +40,7 @@ import java.util.Objects;
 public final class IOUtils {
     public static final ObjectMapper YAML_OBJECT_MAPPER = new YAMLMapper();
     public static final ObjectMapper TOML_OBJECT_MAPPER = new TomlMapper();
+    public static final ObjectMapper JSON_OBJECT_MAPPER = new ObjectMapper();
 
     private IOUtils() {
     }
@@ -71,7 +72,7 @@ public final class IOUtils {
             URI uri;
 
             try {
-                uri = Objects.requireNonNull(IOUtils.class.getResource("/tiles")).toURI();
+                uri = Objects.requireNonNull(IOUtils.class.getResource("/langs")).toURI();
             }  catch (URISyntaxException e) {
                 throw new RuntimeException(e);
             }
@@ -81,7 +82,7 @@ public final class IOUtils {
             } catch (FileSystemNotFoundException e) {
                 try {
                     FileSystem fileSystem = FileSystems.newFileSystem(uri, Collections.emptyMap());
-                    path = fileSystem.getPath("/tiles").getParent();
+                    path = fileSystem.getPath("/textures/tiles").getParent();
                 } catch (IOException e1) {
                     throw new RuntimeException(e1);
                 }

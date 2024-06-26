@@ -35,7 +35,7 @@ public class Font {
     }
 
     public void drawOutlined(String message, int x, int y, int color, int linePadding) {
-        this.textureManager.bind("/font.png");
+        this.textureManager.bind("/textures/font.png");
         GL11.glBegin(GL11.GL_QUADS);
 
         this.draw(message, x - 1, y, 0x000000, linePadding, TextAlignment.LEFT, false);
@@ -62,7 +62,7 @@ public class Font {
 
     public void draw(String message, int x, int y, int color, int linePadding, TextAlignment alignment, boolean doBeginEnd) {
         if (doBeginEnd) {
-            this.textureManager.bind("/font.png");
+            this.textureManager.bind("/textures/font.png");
             GL11.glBegin(GL11.GL_QUADS);
         }
 
@@ -133,7 +133,7 @@ public class Font {
 
     // TODO: Fix this shit up. I don't want to calculate stuff and use vectors
     public void drawWithMaxWidth(String msg,  int x, int y, int col, int maxCharactersPerLine) {
-        this.textureManager.bind("/font.png");
+        this.textureManager.bind("/textures/font.png");
         float r = (col >> 16 & 0xFF) / 255.0f;
         float g = (col >> 8 & 0xFF) / 255.0f;
         float b = (col & 0xFF) / 255.0f;

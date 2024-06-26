@@ -163,7 +163,7 @@ public abstract class Server extends ThreadExecutor {
             BsoMapTag map = new BsoMapTag();
             map.put("width", this.level.width);
             map.put("height", this.level.height);
-            map.put("tiles", this.level.tiles);
+            map.put("textures/tiles", this.level.tiles);
             map.put("data", this.level.data);
 
             BsoUtils.writeCompressed(this.getSavePath().resolve("level0.bso"), map);
