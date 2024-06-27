@@ -82,7 +82,7 @@ public class Items {
     static {
 		if (LOAD_FROM_FILE) {
 			try {
-				ArrayNode node = (ArrayNode) IOUtils.YAML_OBJECT_MAPPER.readTree(Items.class.getResourceAsStream("/items.yaml"));
+				ArrayNode node = (ArrayNode) IOUtils.YAML_OBJECT_MAPPER.readTree(Items.class.getResourceAsStream("/test/items.yaml"));
 
 				for (JsonNode item : node) {
 					String id = item.get("id").textValue();

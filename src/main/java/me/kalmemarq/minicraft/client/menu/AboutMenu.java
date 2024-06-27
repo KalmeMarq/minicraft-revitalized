@@ -19,7 +19,6 @@ package me.kalmemarq.minicraft.client.menu;
 
 import me.kalmemarq.minicraft.client.Client;
 import me.kalmemarq.minicraft.client.menu.ui.UIElement;
-import org.lwjgl.glfw.GLFW;
 
 import java.util.HashMap;
 
@@ -52,7 +51,7 @@ public class AboutMenu extends Menu {
 			this.bindingsMap.get("#is_in_game").<Boolean>cast().set(this.isInGame);
 		});
 		this.buttonEvents.put("button.test_color_to_red", () -> this.bindingsMap.get("#message_color").<int[]>cast().set(new int[] { 255, 0, 0 }));
-		this.loadScreen("/ui/about_screen.json", "about_screen");
+		this.loadScreen("/test/ui/about_screen.json", "about_screen");
 	}
 
 	@Override
@@ -61,6 +60,9 @@ public class AboutMenu extends Menu {
     }
 
     public void render() {
+		if (this.element.dirty) {
+			this.element.relayout(this.getWidth(), this.getHeight(), 0, 0);
+		}
 		this.element.render();
     }
 }

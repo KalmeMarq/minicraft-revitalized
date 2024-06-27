@@ -4,8 +4,9 @@
   "title_bg": {
     "type": "image",
     "texture": "textures/ui#frame.png",
-    "offset": [8, 4],
-    "size": [144, 16],
+    "size": ["100% + 16px", 16],
+    "anchor_from": "center",
+    "anchor_to": "center",
     "nineslice_size": 8
   },
 
@@ -13,17 +14,38 @@
     "type": "image",
     "texture": "textures/ui#frame.png",
     "offset": [0, 20],
-    "size": [160, 100],
-    "nineslice_size": 8
+    "size": ["100%", 100],
+    "nineslice_size": 8,
+    "bindings": [
+      {
+        "binding_name": "#is_in_game",
+        "binding_name_override": "#visible"
+      }
+    ]
   },
 
   "title": {
     "type": "label",
     "text": "#title",
-    "offset": [20, 8],
+    "offset": [0, 8],
+    "anchor_from": "top_middle",
+    "anchor_to": "top_middle",
     "bindings": [
       {
         "binding_name": "#title"
+      }
+    ],
+    "controls": [
+      {
+        "bg@title_bg": {
+          "layer": -1,
+          "bindings": [
+            {
+              "binding_name": "#is_in_game",
+              "binding_name_override": "#visible"
+            }
+          ]
+        }
       }
     ]
   },
@@ -46,7 +68,7 @@
   },
 
   "about_screen": {
-    "type": "none",
+    "type": "screen",
     "button_mappings": [
       {
         "from_button_id": "button.menu_cancel",
@@ -70,21 +92,7 @@
       }
     ],
     "controls": [
-      {
-        "bg": {
-          "type": "none",
-          "controls": [
-            { "title_bg@title_bg": {} },
-            { "message_bg@message_bg": {} }
-          ],
-          "bindings": [
-            {
-              "binding_name": "#is_in_game",
-              "binding_name_override": "#visible"
-            }
-          ]
-        }
-      },
+      { "message_bg@message_bg": {} },
       { "title@title": {} },
       { "message@message": {} }
     ]

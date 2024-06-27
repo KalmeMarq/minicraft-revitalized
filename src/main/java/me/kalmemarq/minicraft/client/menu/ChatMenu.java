@@ -23,7 +23,7 @@ import org.lwjgl.glfw.GLFW;
 
 public class ChatMenu extends Menu {
 	private static final int MAX_VISIBLE_LINES = 8;
-	private static final int MIN_VISIBLE_LINES = 4;
+	private static final int MIN_VISIBLE_LINES = 2;
 	private String input = "";
 	private DumbStatus amIVeryDumbStatus = DumbStatus.NOT;
 

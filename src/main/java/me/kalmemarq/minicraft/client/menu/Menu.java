@@ -59,7 +59,9 @@ public class Menu {
 
 	protected void loadScreen(String path, String name) {
 		try {
-			this.element = UIElement.load(client, this.bindingsMap, name, IOUtils.JSON_OBJECT_MAPPER.readTree(AboutMenu.class.getResourceAsStream(path)));
+			this.element = UIElement.load(this.client, this.bindingsMap, name, IOUtils.JSON_OBJECT_MAPPER.readTree(AboutMenu.class.getResourceAsStream(path)));
+			this.element.root = true;
+			this.element.relayout(this.getWidth(), this.getHeight(), 0, 0);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -75,6 +77,12 @@ public class Menu {
 			} catch (IllegalAccessException e) {
 				e.printStackTrace();
 			}
+		}
+	}
+
+	public void resize() {
+		if (this.element != null) {
+			this.element.relayout(this.getWidth(), this.getHeight(), 0, 0);
 		}
 	}
 }

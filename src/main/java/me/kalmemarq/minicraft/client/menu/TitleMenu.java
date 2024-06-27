@@ -59,7 +59,7 @@ public class TitleMenu extends Menu {
         if (key == GLFW.GLFW_KEY_ENTER || key == GLFW.GLFW_KEY_C || key == GLFW.GLFW_KEY_SPACE) {
             boolean clicked = true;
 			if (this.selected == 0) {
-				this.client.setMenu(new PlayMenu(this));
+				this.client.setMenu(new DisconnectMenu("You suck"));
 			} else if (this.selected == 1) {
 				this.client.setMenu(new InstructionsMenu(this));
 			} else if (this.selected == 2) {
@@ -80,7 +80,7 @@ public class TitleMenu extends Menu {
 
     @Override
     public void render() {
-        this.client.renderer.renderSprite("textures/ui", "title.png", (this.getWidth() - 120) / 2, 24, 120, 16, false, false);
+        this.client.renderer.renderSprite("textures/ui", "title.png", (this.getWidth() - 120) / 2, 16, 120, 16, false, false);
 
         for (int i = 0; i < this.options.length; i++) {
             String msg = this.options[i];
@@ -89,7 +89,7 @@ public class TitleMenu extends Menu {
                 msg = "> " + msg + " <";
                 col = 0xFFFFFF;
             }
-            this.client.font.draw(msg, (this.getWidth() - msg.length() * 8) / 2, 8 * 8 + (i * 9), col);
+            this.client.font.draw(msg, (this.getWidth() - msg.length() * 8) / 2, this.getHeight() / 2 - 8 + (i * 10), col);
         }
 
         this.client.font.draw("(Arrow keys,X and C)", 0, this.getHeight() - 8, 0x404040);

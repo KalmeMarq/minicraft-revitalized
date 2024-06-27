@@ -19,6 +19,7 @@ package me.kalmemarq.minicraft.client.menu.ui;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import me.kalmemarq.minicraft.client.Client;
+import org.lwjgl.opengl.GL11;
 
 import java.util.Map;
 
@@ -73,14 +74,14 @@ public class UIImage extends UIElement {
 	public void render() {
 		if (!this.visible) return;
 
+		if (this.debug != 0) {
+			this.renderDebug();
+		}
+
 		if (this.nx0 != -1) {
 			this.client.renderer.renderSpriteNineslice(this.atlas, this.sprite, this.offsetX, this.offsetY, this.width, this.height, this.nx0, this.ny0, this.nx1, this.ny1);
 		} else {
 			this.client.renderer.renderSprite(this.atlas, this.sprite, this.offsetX, this.offsetY, this.width, this.height, 0);
-		}
-
-		for (UIElement element : this.controls) {
-			element.render();
 		}
 	}
 }

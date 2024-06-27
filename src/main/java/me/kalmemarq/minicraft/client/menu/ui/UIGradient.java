@@ -51,6 +51,10 @@ public class UIGradient extends UIElement {
 	public void render() {
 		if (!this.visible) return;
 
+		if (this.debug != 0) {
+			this.renderDebug();
+		}
+
 		float sa = (this.startColor >> 24 & 0xFF) / 255.0f;
 		float sr = (this.startColor >> 16 & 0xFF) / 255.0f;
 		float sg = (this.startColor >> 8 & 0xFF) / 255.0f;
@@ -93,9 +97,5 @@ public class UIGradient extends UIElement {
 		}
 		GL11.glEnd();
 		GL11.glColor4f(1f, 1f, 1f, 1f);
-
-		for (UIElement element : this.controls) {
-			element.render();
-		}
 	}
 }

@@ -48,6 +48,9 @@ public class SoundManager {
 	private final List<StaticSoundSource> sources = new ArrayList<>();
 	private final Client client;
 
+	public static int bufferHandles = 0;
+	public static int sourcesHandles = 0;
+
 	public SoundManager(Client client) {
 		this.client = client;
 		this.deviceHandle = ALC10.alcOpenDevice((ByteBuffer) null);
@@ -84,6 +87,7 @@ public class SoundManager {
 
 		if (!this.buffers.containsKey(filepath)) {
 			int buffer = AL11.alGenBuffers();
+			bufferHandles++;
 			try {
 				if (filepath.endsWith(".wav")) {
 					WavFile.loadAndSetBufferData(buffer, filepath);
@@ -138,6 +142,7 @@ public class SoundManager {
 		this.sources.clear();
 
 		for (int buffer : this.buffers.values()) {
+			bufferHandles--;
 			AL11.alDeleteBuffers(buffer);
 		}
 		this.buffers.clear();

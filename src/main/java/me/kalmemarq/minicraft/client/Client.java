@@ -188,6 +188,8 @@ public class Client extends ThreadExecutor implements GameWindow.WindowEventHand
     public void tick() {
         ++this.tickCount;
 
+		this.soundManager.tick();
+
         if (this.connection != null) {
             if (this.connection.isOpen()) {
                 this.connection.tick();
@@ -215,11 +217,15 @@ public class Client extends ThreadExecutor implements GameWindow.WindowEventHand
     @Override
     public void onResize() {
         GL11.glViewport(0, 0, this.window.getWidth(), this.window.getHeight());
+
+		if (this.menu != null) {
+			this.menu.resize();
+		}
     }
 
     public void run() {
         Configuration.DEBUG.set(true);
-        this.window = new GameWindow(160 * 3, 120 * 3, "Minicraft Revitalized");
+        this.window = new GameWindow(288 * 3, 192 * 3, "Minicraft Revitalized");
         System.out.println("GL_VENDOR: " + GL11.glGetString(GL11.GL_VENDOR));
         System.out.println("GL_RENDERER: " + GL11.glGetString(GL11.GL_RENDERER));
         System.out.println("GL_VERSION: " + GL11.glGetString(GL11.GL_VERSION));

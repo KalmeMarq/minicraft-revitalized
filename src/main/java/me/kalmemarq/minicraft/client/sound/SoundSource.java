@@ -24,6 +24,7 @@ public abstract class SoundSource {
 	protected int handle;
 
 	public SoundSource() {
+		SoundManager.sourcesHandles++;
 		this.handle = AL10.alGenSources();
 	}
 
@@ -73,6 +74,7 @@ public abstract class SoundSource {
 		if (this.handle != -1) {
 			AL10.alSourceStop(this.handle);
 			AL10.alDeleteSources(this.handle);
+			SoundManager.sourcesHandles--;
 			this.handle = -1;
 		}
 	}

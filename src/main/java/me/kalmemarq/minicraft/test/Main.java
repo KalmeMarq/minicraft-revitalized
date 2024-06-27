@@ -17,6 +17,8 @@
 
 package me.kalmemarq.minicraft.test;
 
+import me.kalmemarq.minicraft.client.menu.ui.UIElement;
+
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
@@ -24,6 +26,11 @@ public class Main {
 	public static final Predicate<String> PATTERN = Pattern.compile("[a-zA-Z0-9_]+").asMatchPredicate();
 
     public static void main(String[] args) {
+		System.out.println(UIElement.parseSizingInDumbWay("default", true).apply(1000, 600, 12, 0));
+		System.out.println(UIElement.parseSizingInDumbWay("100% * 2px", false).apply(1000, 600, 0, 0));
+		System.out.println(UIElement.parseSizingInDumbWay("50%", false).apply(1000, 600, 0, 0));
+		System.out.println(UIElement.parseSizingInDumbWay("50% + 10px", false).apply(1000, 600, 0, 0));
+
 //        try {
 //            var interf = NetworkInterface.getNetworkInterfaces();
 //
@@ -36,35 +43,35 @@ public class Main {
 //        }
 //		new Registry.Identifier("apple;");
 
-		{
-			long d = System.currentTimeMillis();
-			String namespace = "minicraft";
-			for (int i = 0; i < 10000; ++i) {
-				matches0(namespace);
-			}
-			long e = System.currentTimeMillis();
-			System.out.println(e - d);
-		}
-
-		{
-			long d = System.currentTimeMillis();
-			String namespace = "minicraft";
-			for (int i = 0; i < 10000; ++i) {
-				matches1(namespace);
-			}
-			long e = System.currentTimeMillis();
-			System.out.println(e - d);
-		}
-
-		{
-			long d = System.currentTimeMillis();
-			String namespace = "minicraft";
-			for (int i = 0; i < 10000; ++i) {
-				matches2(namespace);
-			}
-			long e = System.currentTimeMillis();
-			System.out.println(e - d);
-		}
+//		{
+//			long d = System.currentTimeMillis();
+//			String namespace = "minicraft";
+//			for (int i = 0; i < 10000; ++i) {
+//				matches0(namespace);
+//			}
+//			long e = System.currentTimeMillis();
+//			System.out.println(e - d);
+//		}
+//
+//		{
+//			long d = System.currentTimeMillis();
+//			String namespace = "minicraft";
+//			for (int i = 0; i < 10000; ++i) {
+//				matches1(namespace);
+//			}
+//			long e = System.currentTimeMillis();
+//			System.out.println(e - d);
+//		}
+//
+//		{
+//			long d = System.currentTimeMillis();
+//			String namespace = "minicraft";
+//			for (int i = 0; i < 10000; ++i) {
+//				matches2(namespace);
+//			}
+//			long e = System.currentTimeMillis();
+//			System.out.println(e - d);
+//		}
     }
 
 	private static boolean matches0(String namespace) {

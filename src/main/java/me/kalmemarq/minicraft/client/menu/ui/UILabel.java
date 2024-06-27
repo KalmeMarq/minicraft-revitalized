@@ -37,7 +37,10 @@ public class UILabel extends UIElement {
 
 			if (n.startsWith("#") && this.propertyBag.containsKey(n)) {
 				this.text = String.valueOf(this.propertyBag.get(n).get());
-				this.propertyBag.get(n).cast().observe((val) -> this.text = String.valueOf(val));
+				this.propertyBag.get(n).cast().observe((val) -> {
+					this.text = String.valueOf(val);
+					this.markDirty();
+				});
 			} else {
 				this.text = n;
 			}
@@ -64,11 +67,23 @@ public class UILabel extends UIElement {
 
 		this.width = Translation.translate(this.text).length() * 8;
 		this.height = 8;
+
+		if (this.widthSupplier == this.defaultWidthSupplier) {
+			this.widthSupplier = (w, h, dW, dH) -> Translation.translate(this.text).length() * 8;
+		}
+
+		if (this.heightSupplier == this.defaultHeightSupplier) {
+			this.heightSupplier = (w, h, dW, dH) -> Translation.translate(this.text).split("\n").length * 8;
+		}
 	}
 
 	@Override
 	public void render() {
 		if (!this.visible) return;
+
+		if (this.debug != 0) {
+			this.renderDebug();
+		}
 
 		if (this.wrap > 0) {
 			this.client.font.drawWithMaxWidth(Translation.translate(this.text), this.offsetX, this.offsetY, this.color, this.wrap);
@@ -76,8 +91,8 @@ public class UILabel extends UIElement {
 			this.client.font.draw(Translation.translate(this.text), this.offsetX, this.offsetY, this.color);
 		}
 
-		for (UIElement element : this.controls) {
-			element.render();
+		if (this.debug != 0) {
+			this.renderDebug();
 		}
 	}
 }

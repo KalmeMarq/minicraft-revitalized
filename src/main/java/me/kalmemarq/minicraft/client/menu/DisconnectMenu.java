@@ -19,7 +19,6 @@ package me.kalmemarq.minicraft.client.menu;
 
 import me.kalmemarq.minicraft.client.Client;
 import me.kalmemarq.minicraft.client.menu.ui.UIElement;
-import org.lwjgl.glfw.GLFW;
 
 import java.util.HashMap;
 
@@ -34,20 +33,26 @@ public class DisconnectMenu extends Menu {
 	public void init(Client client) {
 		super.init(client);
 		this.element = new UIElement();
+		this.bindingsMap = new HashMap<>();
+		this.buttonEvents = new HashMap<>();
 		this.bindingsMap.put("#disconnect_reason", UIElement.Observable.of(this.reason));
-		this.loadScreen("/ui/disconnect_screen.json", "disconnect_screen");
+		this.buttonEvents.put("button.menu_exit", () -> {
+			this.client.setMenu(new TitleMenu());
+			this.client.soundManager.play("/sounds/craft.wav", 1.0f, 1.0f);
+		});
+		this.loadScreen("/test/ui/disconnect_screen.json", "disconnect_screen");
 	}
 
 	@Override
 	public void keyPressed(int key) {
-		if (key == GLFW.GLFW_KEY_ESCAPE) {
-			this.client.setMenu(new TitleMenu());
-			this.client.soundManager.play("/sounds/craft.wav", 1.0f, 1.0f);
-		}
+		this.element.onKeyPress(key, this.buttonEvents);
 	}
 
 	@Override
 	public void render() {
+		if (this.element.dirty) {
+			this.element.relayout(this.getWidth(), this.getHeight(), 0, 0);
+		}
 		this.element.render();
 	}
 }

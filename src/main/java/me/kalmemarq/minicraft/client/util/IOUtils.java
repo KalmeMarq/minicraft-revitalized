@@ -17,6 +17,7 @@
 
 package me.kalmemarq.minicraft.client.util;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.toml.TomlMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
@@ -40,7 +41,7 @@ import java.util.Objects;
 public final class IOUtils {
     public static final ObjectMapper YAML_OBJECT_MAPPER = new YAMLMapper();
     public static final ObjectMapper TOML_OBJECT_MAPPER = new TomlMapper();
-    public static final ObjectMapper JSON_OBJECT_MAPPER = new ObjectMapper();
+    public static final ObjectMapper JSON_OBJECT_MAPPER = new ObjectMapper().configure(JsonParser.Feature.ALLOW_COMMENTS, true);
 
     private IOUtils() {
     }

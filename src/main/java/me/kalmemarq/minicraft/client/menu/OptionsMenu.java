@@ -77,7 +77,12 @@ public class OptionsMenu extends Menu {
 
 	@Override
 	public void render() {
-		if (this.isInGame) this.client.renderer.renderSpriteNineslice("textures/ui", "frame.png", 8, 48, this.getWidth() - 16, (this.options.length + 2) * 8 + 16, 8, 8, 8, 8);
+		if (this.isInGame) {
+			this.client.renderer.renderSpriteNineslice("textures/ui", "frame.png", 8, 4, this.getWidth() - 16, 16, 8, 8, 8, 8);
+			this.client.renderer.renderSpriteNineslice("textures/ui", "frame.png", 8, 34, this.getWidth() - 16, (this.options.length + 2) * 8 + 16, 8, 8, 8, 8);
+		}
+
+		this.client.font.draw(Translation.translate("minicraft.menu.options"), this.getWidth() / 2, 8, 0xFFFFFF, 0, Font.TextAlignment.CENTER);
 
 		for (int i = 0; i < this.options.length; i++) {
 			String msg = Translation.translate(this.options[i]);
@@ -95,7 +100,7 @@ public class OptionsMenu extends Menu {
 				msg = "> " + msg + " <";
 				col = 0xFFFFFF;
 			}
-			this.client.font.draw(msg, (this.getWidth() - msg.length() * 8) / 2, 8 * 8 + i * 12 - 8, col);
+			this.client.font.draw(msg, (this.getWidth() - msg.length() * 8) / 2, 8 * 8 + i * 12 - 20, col);
 		}
 	}
 }

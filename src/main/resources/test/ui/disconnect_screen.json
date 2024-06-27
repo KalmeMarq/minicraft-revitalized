@@ -4,13 +4,17 @@
   "title": {
     "type": "label",
     "text": "minicraft.menu.disconnected",
-    "offset": [20, 16]
+    "offset": [0, 16],
+    "anchor_from": "top_middle",
+    "anchor_to": "top_middle"
   },
 
   "reason": {
     "type": "label",
     "text": "#disconnect_reason",
-    "offset": [20, 32],
+    "offset": [0, "25% + 24px"],
+    "anchor_from": "top_middle",
+    "anchor_to": "top_middle",
     "wrap": 15,
     "color": [128, 128, 128],
     "bindings": [
@@ -22,6 +26,13 @@
 
   "disconnect_screen": {
     "type": "screen",
+    "button_mappings": [
+      {
+        "from_button_id": "button.menu_cancel",
+        "to_button_id": "button.menu_exit",
+        "mapping_type": "global"
+      }
+    ],
     "controls": [
       { "title@title": {} },
       { "reason@reason": {} }

@@ -93,7 +93,7 @@ public class WorldGenMenu extends Menu {
                 msg = "> " + msg + " <";
                 col = 0xFFFFFF;
             }
-            this.client.font.draw(msg, (this.getWidth() - msg.length() * 8) / 2, 8 * 8 + (i * 20), col);
+            this.client.font.draw(msg, (this.getWidth() - msg.length() * 8) / 2, this.getHeight() / 2 - 10 + (i * 20), col);
         }
     }
 }

@@ -17,6 +17,7 @@
 
 package me.kalmemarq.minicraft.client;
 
+import me.kalmemarq.minicraft.client.sound.SoundManager;
 import me.kalmemarq.minicraft.client.texture.AtlasTexture;
 import me.kalmemarq.minicraft.level.entity.Entity;
 import me.kalmemarq.minicraft.level.entity.ItemEntity;
@@ -28,17 +29,17 @@ import me.kalmemarq.minicraft.level.item.Item;
 import me.kalmemarq.minicraft.level.tile.*;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL20;
 
 import java.lang.management.GarbageCollectorMXBean;
 import java.lang.management.ManagementFactory;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 public class Renderer {
     public final Random wRandom = new Random();
     private final Client client;
-    private GCMemoryAllocationRateCalculator allocationRateCalculator;
+    private final GCMemoryAllocationRateCalculator allocationRateCalculator;
 
     public Renderer(Client client) {
         this.client = client;
@@ -46,15 +47,15 @@ public class Renderer {
     }
 
     public void render() {
-        int WIDTH = 160;
-        int HEIGHT = 120;
+        int WIDTH = this.client.window.getWidth() / 3;
+        int HEIGHT = this.client.window.getHeight() / 3;
 
         GL11.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glLoadIdentity();
-        GL11.glOrtho(0, 160, 120, 0, -1, 1);
+        GL11.glOrtho(0, this.client.window.getWidth() / 3f, this.client.window.getHeight() / 3f, 0, -1, 1);
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glLoadIdentity();
 
@@ -111,8 +112,12 @@ public class Renderer {
             }
         }
 
+		GL11.glMatrixMode(GL11.GL_PROJECTION);
+		GL11.glLoadIdentity();
+		GL11.glOrtho(0, this.client.window.getWidth() / 3f, this.client.window.getHeight() / 3f, 0, 1000, 3000);
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glLoadIdentity();
+		GL11.glTranslatef(0, 0, -2000);
 
         if (this.client.player != null) {
             this.client.textureManager.bind("White");
@@ -144,7 +149,7 @@ public class Renderer {
 
         if (this.client.menu != null) {
             GL11.glEnable(GL11.GL_BLEND);
-            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            GL20.glBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
             this.client.menu.render();
         }
 
@@ -163,6 +168,8 @@ public class Renderer {
             if (this.client.player != null) {
                 debug += "\nX: " + this.client.player.x + " Y: " + this.client.player.y + " D: " + this.client.player.dir;
             }
+
+			debug += "\nSBH: " + SoundManager.bufferHandles + " SSH: " + SoundManager.sourcesHandles;
 
             this.client.font.drawOutlined(debug, 1, 1, 0xFFFFFF, 2);
         }
