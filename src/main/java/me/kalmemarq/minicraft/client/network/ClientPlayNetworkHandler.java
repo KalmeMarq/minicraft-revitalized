@@ -38,6 +38,9 @@ public class ClientPlayNetworkHandler implements PacketListener {
     private final Client client;
     private ClientPlayerEntity playerEntity;
     private final NetworkConnection connection;
+	private int syncX = -1;
+	private int syncY = -1;
+	private int syncDir = -1;
 
     public ClientPlayNetworkHandler(Client client, NetworkConnection connection) {
         this.client = client;
@@ -110,17 +113,15 @@ public class ClientPlayNetworkHandler implements PacketListener {
         } else if (packet instanceof SetTilePacket setTilePacket && this.client.level.loaded) {
             this.client.level.setTile(setTilePacket.getX(), setTilePacket.getY(), setTilePacket.getTile(), setTilePacket.getData());
         } else if (packet instanceof InventoryPacket inventoryPacket) {
-            this.client.player.inventory.itemStacks.clear();
-            this.client.player.inventory.itemStacks.addAll(inventoryPacket.getContents());
-            System.out.println(this.client.player.inventory.itemStacks);
+			this.client.player.inventory.itemStacks.clear();
+			this.client.player.inventory.itemStacks.addAll(inventoryPacket.getContents());
+			System.out.println(this.client.player.inventory.itemStacks);
+		} else if (packet instanceof MessagePacket messagePacket) {
+			this.onMessage(messagePacket);
         } else {
             System.out.println("Unknown packet " + packet.getClass().getSimpleName());
         }
     }
-
-    private int syncX = -1;
-    private int syncY = -1;
-    private int syncDir = -1;
 
     @Override
     public void tick() {
@@ -136,6 +137,10 @@ public class ClientPlayNetworkHandler implements PacketListener {
             this.syncDir = this.playerEntity.dir;
         }
     }
+
+	private void onMessage(MessagePacket packet) {
+		this.client.messages.add(packet.getMessage());
+	}
 
     @Override
     public void onDisconnected(String reason) {

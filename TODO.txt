@@ -5,3 +5,15 @@
 - Readd sky and underground levels
 - Data mods
 - Fix item pickup
+- Infinite worlds
+- Ability to modify keybindings
+- Mouse support
+- Readd screenshots
+- Readd furniture menus
+- Multiplayer server list
+- Add lan server pinger
+- Custom skins
+- Armor
+- Maybe add all tiles and items from minicraft plus. Be able to load mpr worlds
+- Toasts
+- Tick pausing

@@ -15,33 +15,7 @@
  * along with this program. If not, see http://www.gnu.org/licenses/.
  */
 
-package me.kalmemarq.minicraft.network.packet;
+package me.kalmemarq.minicraft.client.menu;
 
-import io.netty.buffer.ByteBuf;
-import me.kalmemarq.minicraft.network.Packet;
-import me.kalmemarq.minicraft.network.PacketBufUtils;
-
-public class MessagePacket extends Packet {
-    private String message;
-
-    public MessagePacket() {
-    }
-
-    public MessagePacket(String message) {
-        this.message = message;
-    }
-
-    @Override
-    public void write(ByteBuf buffer) {
-        PacketBufUtils.writeString(buffer, this.message);
-    }
-
-    @Override
-    public void read(ByteBuf buffer) {
-        this.message = PacketBufUtils.readString(buffer);
-    }
-
-    public String getMessage() {
-        return this.message;
-    }
+public class CraftingMenu extends Menu {
 }

@@ -21,6 +21,7 @@ import me.kalmemarq.minicraft.network.NetworkConnection;
 import me.kalmemarq.minicraft.network.Packet;
 import me.kalmemarq.minicraft.network.PacketListener;
 import me.kalmemarq.minicraft.network.packet.GamePacket;
+import me.kalmemarq.minicraft.network.packet.MessagePacket;
 import me.kalmemarq.minicraft.network.packet.PlayerAttackPacket;
 import me.kalmemarq.minicraft.network.packet.PlayerUsePacket;
 import me.kalmemarq.minicraft.server.EntityTracker;
@@ -68,6 +69,8 @@ public class ServerPlayNetworkHandler implements PacketListener {
             this.player.doAttack();
         } else if (packet instanceof PlayerUsePacket) {
             this.player.doUse();
+		} else if (packet instanceof MessagePacket messagePacket) {
+			this.onMessage(messagePacket);
         } else {
             System.out.println("Unknown packet " + packet.getClass().getSimpleName());
         }
@@ -77,6 +80,10 @@ public class ServerPlayNetworkHandler implements PacketListener {
     public void tick() {
         this.player.netTick();
     }
+
+	private void onMessage(MessagePacket packet) {
+		this.server.broadcast(new MessagePacket("<" + this.player.username + "> " + packet.getMessage()));
+	}
 
     @Override
     public void onDisconnected(String reason) {

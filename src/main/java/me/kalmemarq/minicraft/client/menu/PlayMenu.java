@@ -22,7 +22,7 @@ import org.lwjgl.glfw.GLFW;
 
 public class PlayMenu extends Menu {
     private int selected = 0;
-    private String[] options = {"minicraft.menu.singleplayer", "minicraft.menu.multiplayer"};
+    private final String[] options = {"minicraft.menu.singleplayer", "minicraft.menu.multiplayer"};
     private final Menu parent;
 
     public PlayMenu(Menu parent) {

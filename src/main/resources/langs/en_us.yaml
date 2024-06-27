@@ -23,6 +23,8 @@ minicraft.menu.about.message: |-
   Minicraft was made by Markus Persson for the 22'nd ludum dare competition in december 2011.
   It is dedicated to my father. <3
 minicraft.menu.options: Options
+minicraft.menu.options.sound: 'Sound: '
+minicraft.menu.options.vsync: 'V-Sync: '
 minicraft.menu.language: Language
 minicraft.menu.quit: Quit
 minicraft.menu.continue: Continue

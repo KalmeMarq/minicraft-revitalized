@@ -24,7 +24,7 @@ import org.lwjgl.glfw.GLFW;
 public class WorldMenu extends Menu {
     private int selected = 0;
     private String[] options;
-    private boolean[] optionsEnabled = {true, true, true, true, true};
+    private final boolean[] optionsEnabled = {true, true, true, true, true};
 
     @Override
     public void init(Client client) {

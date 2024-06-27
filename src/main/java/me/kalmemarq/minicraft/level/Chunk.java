@@ -15,33 +15,35 @@
  * along with this program. If not, see http://www.gnu.org/licenses/.
  */
 
-package me.kalmemarq.minicraft.network.packet;
+package me.kalmemarq.minicraft.level;
 
-import io.netty.buffer.ByteBuf;
-import me.kalmemarq.minicraft.network.Packet;
-import me.kalmemarq.minicraft.network.PacketBufUtils;
+import me.kalmemarq.minicraft.level.tile.Tile;
 
-public class MessagePacket extends Packet {
-    private String message;
+public class Chunk {
+	private final int x;
+	private final int y;
+	private int[] tiles;
+	private int[] data;
 
-    public MessagePacket() {
-    }
+	public Chunk(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
 
-    public MessagePacket(String message) {
-        this.message = message;
-    }
+	public void setTile(int x, int y, Tile tile) {
+	}
 
-    @Override
-    public void write(ByteBuf buffer) {
-        PacketBufUtils.writeString(buffer, this.message);
-    }
+	public void setData(int x, int y, int data) {
+	}
 
-    @Override
-    public void read(ByteBuf buffer) {
-        this.message = PacketBufUtils.readString(buffer);
-    }
+	public void setTileAndData(int x, int y, Tile tile, int data) {
+	}
 
-    public String getMessage() {
-        return this.message;
-    }
+	public int getTile(int x, int y) {
+		return 0;
+	}
+
+	public int getData(int x, int y) {
+		return 0;
+	}
 }

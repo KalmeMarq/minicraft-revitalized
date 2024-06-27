@@ -109,15 +109,15 @@ public class GameWindow {
             }
         });
 
+		GLFW.glfwSetCharCallback(this.handle, (_w, codepoint) -> {
+			if (this.keyboardEventHandler != null) {
+				this.keyboardEventHandler.onCharTyped(codepoint);
+			}
+		});
+
         GLFW.glfwSetKeyCallback(this.handle, (_w, key, scancode, action, mods) -> {
             if (this.keyboardEventHandler != null) {
                 this.keyboardEventHandler.onKey(key, action);
-            }
-        });
-
-        GLFW.glfwSetCharCallback(this.handle, (_w, codepoint) -> {
-            if (this.keyboardEventHandler != null) {
-                this.keyboardEventHandler.onCharTyped(codepoint);
             }
         });
 

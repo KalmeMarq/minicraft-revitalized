@@ -23,7 +23,7 @@ import org.lwjgl.glfw.GLFW;
 public class OptionsMenu extends Menu {
 	private int selected = 0;
 	final boolean isInGame;
-	private String[] options = {
+	private final String[] options = {
 		"minicraft.menu.language",
 		"",
 		"",
@@ -85,9 +85,9 @@ public class OptionsMenu extends Menu {
 			if (i == 1) {
 				msg = "User: " + this.client.username;
 			} else if (i == 2) {
-				msg = "V-Sync: " + (this.client.vsync ? "ON" : "OFF");
+				msg = Translation.translate("minicraft.menu.options.vsync") + (this.client.vsync ? "ON" : "OFF");
 			} else if (i == 3) {
-				msg = "Sound: " + (this.client.sound ? "ON" : "OFF");
+				msg = Translation.translate("minicraft.menu.options.sound") + (this.client.sound ? "ON" : "OFF");
 			}
 
 			int col = 0x808080;

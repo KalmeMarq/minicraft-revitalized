@@ -33,7 +33,12 @@ public class ClientPlayerEntity extends PlayerEntity {
         this.networkHandler = networkHandler;
     }
 
-    @Override
+
+	public ClientPlayNetworkHandler getNetworkHandler() {
+		return this.networkHandler;
+	}
+
+	@Override
     public void tick() {
         super.tick();
 

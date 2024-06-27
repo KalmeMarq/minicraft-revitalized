@@ -27,6 +27,7 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.local.LocalChannel;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import me.kalmemarq.minicraft.client.menu.ChatMenu;
 import me.kalmemarq.minicraft.client.sound.SoundManager;
 import me.kalmemarq.minicraft.client.util.IOUtils;
 import me.kalmemarq.minicraft.client.util.Translation;
@@ -85,6 +86,7 @@ public class Client extends ThreadExecutor implements GameWindow.WindowEventHand
     public InputHandler inputHandler = new InputHandler();
 	public String username = "Player" + (System.currentTimeMillis() % 1000);
 	public SoundManager soundManager;
+	public List<String> messages = new ArrayList<>();
 
     public Client(Path saveDir) {
         this.saveDir = saveDir;
@@ -254,7 +256,9 @@ public class Client extends ThreadExecutor implements GameWindow.WindowEventHand
                     Client.this.inputHandler.onKey(key, 0, action, 0);
                     if (action == GLFW.GLFW_PRESS && key == GLFW.GLFW_KEY_ESCAPE) {
                         Client.this.setMenu(new WorldMenu());
-                    }
+                    } else if (action == GLFW.GLFW_PRESS && key == GLFW.GLFW_KEY_T) {
+						Client.this.setMenu(new ChatMenu());
+					}
                 }
             }
 
@@ -333,6 +337,14 @@ public class Client extends ThreadExecutor implements GameWindow.WindowEventHand
 				if (node.has("username") && node.get("username").isTextual() && node.get("username").asText().length() > 3) {
 					this.username = node.get("username").asText();
 				}
+
+				if (node.has("sound") && node.get("sound").isBoolean()) {
+					this.sound = node.get("sound").asBoolean();
+				}
+
+				if (node.has("vsync") && node.get("vsync").isBoolean()) {
+					this.vsync = node.get("sound").asBoolean();
+				}
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -372,6 +384,8 @@ public class Client extends ThreadExecutor implements GameWindow.WindowEventHand
     }
 
     public void disconnect() {
+		this.messages.clear();
+
         if (this.integratedServer != null) {
             System.out.println("Closing integrated server");
             this.integratedServer.stop(true);

@@ -17,7 +17,6 @@
 
 package me.kalmemarq.minicraft.client.menu;
 
-import me.kalmemarq.minicraft.client.Client;
 import me.kalmemarq.minicraft.client.util.Translation;
 import org.lwjgl.glfw.GLFW;
 

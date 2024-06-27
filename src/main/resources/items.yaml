@@ -1,68 +1,139 @@
-- id: apple
-  food:
-    heal: 1
-    stamina_cost: 5
-- id: bread
-  food:
-    heal: 2
-    stamina_cost: 5
-- id: potato
-  food:
-    heal: 1
-    stamina_cost: 5
-- id: baked_potato
-  food:
-    heal: 2
-    stamina_cost: 5
-- id: wood
-  resource: {}
-- id: stone
-  resource: {}
-- id: wheat
-  resource: {}
-- id: coal
-  resource: {}
-- id: iron_ore
-  resource: {}
-- id: gold_ore
-  resource: {}
-- id: iron_ingot
-  resource: {}
-- id: gold_ingot
-  resource: {}
-- id: slime
-  resource: {}
-- id: glass
-  resource: {}
-- id: cloth
-  resource: {}
-- id: gem
-  resource: {}
-- id: flower
-  plantable:
-    target: flower
-    sources: grass
-- id: acorn
-  plantable:
-    target: tree_sapling
-    sources: grass
-- id: dirt
-  plantable:
-    target: dirt
-    sources: [hole, water, lava]
-- id: sand
-  plantable:
-    target: sand
-    sources: [grass, dirt]
-- id: cactus_flower
-  plantable:
-    target: cactus_sapling
-    sources: sand
-- id: seeds
-  plantable:
-    target: wheat
-    sources: farmland
-- id: cloud
-  plantable:
-    target: cloud
-    sources: infinite_fall
+- id: 'minicraft:wood_shovel'
+  components:
+    'minicraft:tool':
+      type: 'shovel'
+      stamina_cost: 4
+      attack_damage_bonus: '1'
+
+- id: 'minicraft:wood_axe'
+  components:
+    'minicraft:tool':
+      type: 'axe'
+      stamina_cost: 4
+      attack_damage_bonus: '2 + math.random(4)'
+
+- id: 'minicraft:wood_sword'
+  components:
+    'minicraft:tool':
+      type: 'axe'
+      stamina_cost: 4
+      attack_damage_bonus: '3 + math.random(2)'
+
+- id: 'minicraft:apple'
+  components:
+    'minicraft:food':
+      heal: 1
+      stamina_cost: 5
+
+- id: 'minicraft:bread'
+  components:
+    'minicraft:food':
+      heal: 2
+      stamina_cost: 5
+
+- id: 'minicraft:potato'
+  components:
+    'minicraft:food':
+      heal: 1
+      stamina_cost: 5
+
+- id: 'minicraft:baked_potato'
+  components:
+    'minicraft:food':
+      heal: 2
+      stamina_cost: 5
+
+- id: 'minicraft:wood'
+  components:
+    'minicraft:resource': {}
+
+- id: 'minicraft:stone'
+  components:
+    'minicraft:resource': {}
+
+- id: 'minicraft:wheat'
+  components:
+    'minicraft:resource': {}
+
+- id: 'minicraft:coal'
+  components:
+    'minicraft:resource': {}
+
+- id: 'minicraft:iron_ore'
+  components:
+    'minicraft:resource': {}
+
+- id: 'minicraft:gold_ore'
+  components:
+    'minicraft:resource': {}
+
+- id: 'minicraft:iron_ingot'
+  components:
+    'minicraft:resource': {}
+
+- id: 'minicraft:gold_ingot'
+  components:
+    'minicraft:resource': {}
+
+- id: 'minicraft:slime'
+  components:
+    'minicraft:resource': {}
+
+- id: 'minicraft:glass'
+  components:
+    'minicraft:resource': {}
+
+- id: 'minicraft:cloth'
+  components:
+    'minicraft:resource': {}
+
+- id: 'minicraft:gem'
+  components:
+    'minicraft:resource': {}
+
+- id: 'minicraft:power_glove'
+  components:
+    'minicraft:power_glove': {}
+    'minicraft:max_stack_size': 1
+
+- id: 'minicraft:flower'
+  components:
+    'minicraft:plantable':
+      target: 'minicraft:flower'
+      sources: 'minicraft:grass'
+
+- id: 'minicraft:acorn'
+  components:
+    'minicraft:plantable':
+      target: 'minicraft:tree_sapling'
+      sources: 'minicraft:grass'
+
+- id: 'minicraft:dirt'
+  components:
+    'minicraft:plantable':
+      target: 'minicraft:dirt'
+      sources: ['minicraft:hole', 'minicraft:water', 'minicraft:lava']
+
+- id: 'minicraft:sand'
+  components:
+    'minicraft:plantable':
+      target: 'minicraft:sand'
+      sources: ['minicraft:grass', 'minicraft:dirt']
+
+- id: 'minicraft:cactus_flower'
+  components:
+    'minicraft:plantable':
+      target: 'minicraft:cactus_sapling'
+      sources: 'minicraft:sand'
+
+- id: 'minicraft:seeds'
+  components:
+    'minicraft:plantable':
+      target: 'minicraft:wheat'
+      sources: 'minicraft:farmland'
+
+- id: 'minicraft:cloud'
+  components:
+    'minicraft:plantable':
+      target: 'minicraft:cloud'
+      sources: 'minicraft:infinite_fall'
