@@ -33,9 +33,8 @@ public class DisconnectMenu extends Menu {
 	@Override
 	public void init(Client client) {
 		super.init(client);
-		this.bindings = new HashMap<>();
 		this.element = new UIElement();
-		this.bindings.put("#disconnect_reason", this.reason);
+		this.bindingsMap.put("#disconnect_reason", UIElement.Observable.of(this.reason));
 		this.loadScreen("/ui/disconnect_screen.json", "disconnect_screen");
 	}
 

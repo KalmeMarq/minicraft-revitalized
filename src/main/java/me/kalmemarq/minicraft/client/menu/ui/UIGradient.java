@@ -29,8 +29,8 @@ public class UIGradient extends UIElement {
 	private int dir;
 
 	@Override
-	public void init(Client client, Map<String, Object> menuBindings, JsonNode node) {
-		super.init(client, menuBindings, node);
+	public void init(Client client, Map<String, Observable<?>> menuBindingsMap, JsonNode node) {
+		super.init(client, menuBindingsMap, node);
 
 		if (node.has("start_color") && node.get("start_color").isArray()) {
 			JsonNode n = node.get("start_color");

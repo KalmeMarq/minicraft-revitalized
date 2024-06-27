@@ -20,13 +20,17 @@ package me.kalmemarq.minicraft.client.menu;
 import me.kalmemarq.minicraft.client.Client;
 import me.kalmemarq.minicraft.client.menu.ui.UIElement;
 import me.kalmemarq.minicraft.client.util.IOUtils;
+import org.lwjgl.glfw.GLFW;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.Map;
 
 public class Menu {
     protected Client client;
-	protected Map<String, Object> bindings;
+	protected Map<String, UIElement.Observable<?>> bindingsMap;
+	protected Map<String, Runnable> buttonEvents;
 	protected UIElement element;
 
     public void init(Client client) {
@@ -55,9 +59,22 @@ public class Menu {
 
 	protected void loadScreen(String path, String name) {
 		try {
-			this.element = UIElement.load(client, this.bindings, name, IOUtils.JSON_OBJECT_MAPPER.readTree(AboutMenu.class.getResourceAsStream(path)));
+			this.element = UIElement.load(client, this.bindingsMap, name, IOUtils.JSON_OBJECT_MAPPER.readTree(AboutMenu.class.getResourceAsStream(path)));
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+	}
+
+	public static Map<Integer, String> keyNames = new HashMap<>();
+
+	static {
+		for (Field field : GLFW.class.getFields()) {
+			if (!field.getName().startsWith("GLFW_KEY_")) continue;
+			try {
+				keyNames.put(field.getInt(null), "button." + field.getName().substring(5).toLowerCase());
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }

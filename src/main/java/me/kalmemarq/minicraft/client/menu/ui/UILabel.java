@@ -29,14 +29,15 @@ public class UILabel extends UIElement {
 	private int wrap = -1;
 
 	@Override
-	public void init(Client client, Map<String, Object> menuBindings, JsonNode node) {
-		super.init(client, menuBindings, node);
+	public void init(Client client, Map<String, Observable<?>> menuBindingsMap, JsonNode node) {
+		super.init(client, menuBindingsMap, node);
 
 		if (node.has("text")) {
 			String n = node.get("text").textValue();
 
 			if (n.startsWith("#") && this.propertyBag.containsKey(n)) {
-				this.text = String.valueOf(this.propertyBag.get(n));
+				this.text = String.valueOf(this.propertyBag.get(n).get());
+				this.propertyBag.get(n).cast().observe((val) -> this.text = String.valueOf(val));
 			} else {
 				this.text = n;
 			}
@@ -46,9 +47,19 @@ public class UILabel extends UIElement {
 			this.wrap = node.get("wrap").asInt();
 		}
 
-		if (node.has("color") && node.get("color").isArray()) {
+		if (node.has("color")) {
 			JsonNode n = node.get("color");
-			this.color = n.get(0).asInt() << 16 | n.get(1).asInt() << 8 | n.get(2).asInt();
+
+			if (n.isTextual() &&  n.textValue().startsWith("#") && this.propertyBag.containsKey(n.textValue())) {
+				int[] col = this.propertyBag.get(n.textValue()).<int[]>cast().get();
+				this.color = col[0] << 16 | col[1] << 8 | col[2];
+
+				this.propertyBag.get(n.textValue()).<int[]>cast().observe((val) -> {
+					this.color = val[0] << 16 | val[1] << 8 | val[2];
+				});
+			} else if (n.isArray()) {
+				this.color = n.get(0).asInt() << 16 | n.get(1).asInt() << 8 | n.get(2).asInt();
+			}
 		}
 
 		this.width = Translation.translate(this.text).length() * 8;

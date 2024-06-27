@@ -20,13 +20,17 @@ package me.kalmemarq.minicraft.client.menu.ui;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import me.kalmemarq.minicraft.client.Client;
+import me.kalmemarq.minicraft.client.menu.Menu;
 import me.kalmemarq.minicraft.client.util.IOUtils;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.function.Consumer;
 
 public class UIElement {
 	protected Client client;
@@ -36,12 +40,27 @@ public class UIElement {
 	protected int offsetY;
 	protected int width;
 	protected int height;
-	protected Map<String, Object> propertyBag = new HashMap<>();
+	protected Map<String, Observable<?>> propertyBag = new HashMap<>();
 	protected boolean visible = true;
 	public List<UIElement> controls = new ArrayList<>();
+	private final List<ButtonMapping> mappings = new ArrayList<>();
 
-	public void init(Client client, Map<String, Object> menuBindings, JsonNode node) {
+	public void init(Client client, Map<String, Observable<?>> menuBindingsMap, JsonNode node) {
 		this.client = client;
+
+		if (node.has("button_mappings") && node.get("button_mappings").isArray()) {
+			JsonNode arrayNode = node.get("button_mappings");
+
+			for (JsonNode n : arrayNode) {
+				if (n.has("ignored") && n.get("ignored").isBoolean()) {
+					if (!n.get("ignored").booleanValue()) break;
+				}
+
+				if (n.has("from_button_id") && n.has("to_button_id") && n.has("mapping_type")) {
+					this.mappings.add(new ButtonMapping(n.get("from_button_id").asText(), n.get("to_button_id").asText(), n.get("mapping_type").asText()));
+				}
+			}
+		}
 
 		if (node.has("bindings") && node.get("bindings").isArray()) {
 			JsonNode arrayNode = node.get("bindings");
@@ -49,17 +68,27 @@ public class UIElement {
 			for (JsonNode n : arrayNode) {
 				String m = n.get("binding_name").asText();
 
-
 				if (n.has("binding_name_override")) {
-					this.propertyBag.put(n.get("binding_name_override").asText(), menuBindings.get(m));
+					Observable<?> mbM = menuBindingsMap.get(m);
+					if (mbM != null) {
+						Observable<?> b = Observable.of(mbM.get());
+						mbM.cast().observe((val) -> b.cast().set(val));
+						this.propertyBag.put(n.get("binding_name_override").asText(), b);
+					}
 				} else {
-					this.propertyBag.put(m, menuBindings.get(m));
+					Observable<?> mbM = menuBindingsMap.get(m);
+					if (mbM != null) {
+						Observable<?> b = Observable.of(mbM.get());
+						mbM.cast().observe((val) -> b.cast().set(val));
+						this.propertyBag.put(m, b);
+					}
 				}
 			}
 		}
 
 		if (this.propertyBag.containsKey("#visible")) {
-			this.visible = Boolean.valueOf(String.valueOf(this.propertyBag.get("#visible")));
+			this.visible = Boolean.valueOf(String.valueOf(this.propertyBag.get("#visible").get()));
+			this.propertyBag.get("#visible").<Boolean>cast().observe((val) -> this.visible = val);
 		}
 
 		if (node.has("offset") && node.get("offset").isArray()) {
@@ -75,6 +104,24 @@ public class UIElement {
 		}
 	}
 
+	public void onKeyPress(int key, Map<String, Runnable> buttonEvents) {
+		String buttonId = switch (key) {
+			case GLFW.GLFW_KEY_ESCAPE, GLFW.GLFW_KEY_ENTER, GLFW.GLFW_KEY_C, GLFW.GLFW_KEY_SPACE -> "button.menu_cancel";
+			default -> Menu.keyNames.getOrDefault(key, "button.key_" + key);
+		};
+
+		for (ButtonMapping mapping : this.mappings) {
+			if (mapping.type.equals("global") && mapping.from.equals(buttonId)) {
+				Runnable runnable = buttonEvents.get(mapping.to);
+				if (runnable != null) runnable.run();
+			}
+		}
+
+		for (UIElement element : this.controls) {
+			element.onKeyPress(key, buttonEvents);
+		}
+	}
+
 	public void render() {
 		if (!this.visible) return;
 
@@ -83,11 +130,11 @@ public class UIElement {
 		}
 	}
 
-	public static UIElement load(Client client, Map<String, Object> menuBindings, String name, JsonNode node) {
-		return loadControl(client, menuBindings, node.get(name), node);
+	public static UIElement load(Client client, Map<String, Observable<?>> menuBindingsMap, String name, JsonNode node) {
+		return loadControl(client, menuBindingsMap, node.get(name), node);
 	}
 
-	private static UIElement loadControl(Client client, Map<String, Object> menuBindings, JsonNode node, JsonNode root) {
+	private static UIElement loadControl(Client client, Map<String, Observable<?>> menuBindingsMap, JsonNode node, JsonNode root) {
 		String type = node.get("type").asText();
 
 		UIElement element = switch (type) {
@@ -120,16 +167,16 @@ public class UIElement {
 							nn.set(km.getKey(), km.getValue());
 						}
 
-						element.controls.add(loadControl(client, menuBindings, nn, root));
+						element.controls.add(loadControl(client,  menuBindingsMap, nn, root));
 					} else {
-						element.controls.add(loadControl(client, menuBindings, n0.getValue(), root));
+						element.controls.add(loadControl(client,  menuBindingsMap, n0.getValue(), root));
 					}
 
 					break;
 				}
 			}
 		}
-		element.init(client, menuBindings, node);
+		element.init(client,  menuBindingsMap, node);
 		return element;
 	}
 
@@ -143,5 +190,51 @@ public class UIElement {
 		BOTTOM_LEFT,
 		BOTTOM_MIDDLE,
 		BOTTOM_RIGHT
+	}
+
+	public static class Observable<T> {
+
+		protected T value;
+		protected final List<Consumer<T>> observers;
+
+		protected Observable(T initial) {
+			this.value = initial;
+			this.observers = new ArrayList<>();
+		}
+
+		public static <T> Observable<T> of(T initial) {
+			return new Observable<>(initial);
+		}
+
+		public T get() {
+			return this.value;
+		}
+
+		public void observe(Consumer<T> observer) {
+			this.observers.add(observer);
+		}
+
+		@SuppressWarnings("unchecked")
+		public <C> Observable<C> cast() {
+			return (Observable<C>) this;
+		}
+
+		public void set(T newValue) {
+			var oldValue = this.value;
+			this.value = newValue;
+
+			if (!Objects.equals(this.value, oldValue)) {
+				this.notifyObservers(newValue);
+			}
+		}
+
+		protected void notifyObservers(T value) {
+			for (var observer : this.observers) {
+				observer.accept(value);
+			}
+		}
+	}
+
+	public record ButtonMapping(String from, String to, String type) {
 	}
 }

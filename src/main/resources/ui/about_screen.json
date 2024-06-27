@@ -6,13 +6,7 @@
     "texture": "textures/ui#frame.png",
     "offset": [8, 4],
     "size": [144, 16],
-    "nineslice_size": 8,
-    "bindings": [
-      {
-        "binding_name": "#is_in_game",
-        "binding_name_override": "#visible"
-      }
-    ]
+    "nineslice_size": 8
   },
 
   "message_bg": {
@@ -20,13 +14,7 @@
     "texture": "textures/ui#frame.png",
     "offset": [0, 20],
     "size": [160, 100],
-    "nineslice_size": 8,
-    "bindings": [
-      {
-        "binding_name": "#is_in_game",
-        "binding_name_override": "#visible"
-      }
-    ]
+    "nineslice_size": 8
   },
 
   "title": {
@@ -45,19 +33,58 @@
     "text": "#message_body",
     "wrap": 20,
     "offset": [4, 32],
-    "color": [128, 128, 128],
+    "color": "#color",
     "bindings": [
       {
         "binding_name": "#message_body"
+      },
+      {
+        "binding_name": "#message_color",
+        "binding_name_override": "#color"
       }
     ]
   },
 
   "about_screen": {
-    "type": "screen",
+    "type": "none",
+    "button_mappings": [
+      {
+        "from_button_id": "button.menu_cancel",
+        "to_button_id": "button.menu_exit",
+        "mapping_type": "global"
+      },
+      {
+        "from_button_id": "button.key_f8",
+        "to_button_id": "button.test_color_to_red",
+        "mapping_type": "global"
+      },
+      {
+        "from_button_id": "button.key_f9",
+        "to_button_id": "button.test_is_in_game_toggle",
+        "mapping_type": "global"
+      },
+      {
+        "from_button_id": "button.key_f10",
+        "to_button_id": "button.test_title_update",
+        "mapping_type": "global"
+      }
+    ],
     "controls": [
-      { "title_bg@title_bg": {} },
-      { "message_bg@message_bg": {} },
+      {
+        "bg": {
+          "type": "none",
+          "controls": [
+            { "title_bg@title_bg": {} },
+            { "message_bg@message_bg": {} }
+          ],
+          "bindings": [
+            {
+              "binding_name": "#is_in_game",
+              "binding_name_override": "#visible"
+            }
+          ]
+        }
+      },
       { "title@title": {} },
       { "message@message": {} }
     ]

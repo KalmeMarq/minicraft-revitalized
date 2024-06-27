@@ -25,7 +25,7 @@ import java.util.HashMap;
 
 public class AboutMenu extends Menu {
     private final Menu parent;
-    private final boolean isInGame;
+    private boolean isInGame;
 
     public AboutMenu(Menu parent) {
         this.parent = parent;
@@ -35,20 +35,29 @@ public class AboutMenu extends Menu {
 	@Override
 	public void init(Client client) {
 		super.init(client);
-		this.bindings = new HashMap<>();
+		this.bindingsMap = new HashMap<>();
+		this.buttonEvents = new HashMap<>();
 		this.element = new UIElement();
-		this.bindings.put("#is_in_game", this.isInGame);
-		this.bindings.put("#title", "minicraft.menu.about.title");
-		this.bindings.put("#message_body", "minicraft.menu.about.message");
+		this.bindingsMap.put("#is_in_game", UIElement.Observable.of(this.isInGame));
+		this.bindingsMap.put("#title", UIElement.Observable.of("minicraft.menu.about.title"));
+		this.bindingsMap.put("#message_body", UIElement.Observable.of("minicraft.menu.about.message"));
+		this.bindingsMap.put("#message_color", UIElement.Observable.of(new int[] { 128, 128, 128 }));
+		this.buttonEvents.put("button.menu_exit", () -> {
+			this.client.setMenu(this.parent);
+			this.client.soundManager.play("/sounds/craft.wav", 1.0f, 1.0f);
+		});
+		this.buttonEvents.put("button.test_title_update", () -> this.bindingsMap.get("#title").<String>cast().set("Sup " + (System.currentTimeMillis() % 1000)));
+		this.buttonEvents.put("button.test_is_in_game_toggle", () -> {
+			this.isInGame = !this.isInGame;
+			this.bindingsMap.get("#is_in_game").<Boolean>cast().set(this.isInGame);
+		});
+		this.buttonEvents.put("button.test_color_to_red", () -> this.bindingsMap.get("#message_color").<int[]>cast().set(new int[] { 255, 0, 0 }));
 		this.loadScreen("/ui/about_screen.json", "about_screen");
 	}
 
 	@Override
     public void keyPressed(int key) {
-        if (key == GLFW.GLFW_KEY_ESCAPE || key == GLFW.GLFW_KEY_ENTER || key == GLFW.GLFW_KEY_C || key == GLFW.GLFW_KEY_SPACE) {
-            this.client.setMenu(this.parent);
-			this.client.soundManager.play("/sounds/craft.wav", 1.0f, 1.0f);
-        }
+		this.element.onKeyPress(key, this.buttonEvents);
     }
 
     public void render() {

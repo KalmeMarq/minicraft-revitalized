@@ -31,13 +31,25 @@ public class UIImage extends UIElement {
 	private int ny1 = -1;
 
 	@Override
-	public void init(Client client, Map<String, Object> menuBindings, JsonNode node) {
-		super.init(client, menuBindings, node);
+	public void init(Client client, Map<String, Observable<?>> menuBindingsMap, JsonNode node) {
+		super.init(client, menuBindingsMap, node);
 
 		if (node.has("texture")) {
 			String n = node.get("texture").textValue();
-			this.atlas = n.substring(0, n.indexOf("#"));
-			this.sprite = n.substring(n.indexOf("#") + 1);
+
+			if (n.startsWith("#") && this.propertyBag.containsKey(n)) {
+				n = String.valueOf(this.propertyBag.get(n).get());
+				this.atlas = n.substring(0, n.indexOf("#"));
+				this.sprite = n.substring(n.indexOf("#") + 1);
+				this.propertyBag.get(n).cast().observe((val) -> {
+					String value = String.valueOf(val);
+					this.atlas = value.substring(0, value.indexOf("#"));
+					this.sprite = value.substring(value.indexOf("#") + 1);
+				});
+			} else {
+				this.atlas = n.substring(0, n.indexOf("#"));
+				this.sprite = n.substring(n.indexOf("#") + 1);
+			}
 		}
 
 		if (node.has("nineslice_size")) {
